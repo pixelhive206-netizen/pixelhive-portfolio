@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Olive & Ember — Modern Mediterranean Dining</title>
+  <meta name="description" content="Olive & Ember serves seasonal Mediterranean cuisine in a warm, candlelit setting. Reserve your table tonight." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0e0b08;          /* deep warm black */
+      --surface: #161210;
+      --ink: #f4ede2;         /* warm cream */
+      --muted: #9c9285;
+      --line: rgba(244, 237, 226, 0.12);
+      --accent: #c9a876;      /* warm gold */
+      --accent-deep: #8a6f3d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* serif display font */
+    .serif { font-family: 'Cormorant Garamond', serif; }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(14, 11, 8, 0.85);
+      backdrop-filter: blur(10px);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; letter-spacing: 0.02em; font-weight: 500;
+    }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 36px; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .nav-links a:hover { color: var(--accent); }
+    .reserve-btn {
+      padding: 10px 22px; border: 1px solid var(--accent);
+      color: var(--accent); border-radius: 0;
+      font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background .2s, color .2s;
+    }
+    .reserve-btn:hover { background: var(--accent); color: var(--bg); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 90vh;
+      display: flex; align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 0;
+    }
+    /* warm ember glow background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(201, 168, 118, 0.18), transparent 50%),
+        radial-gradient(circle at 80% 30%, rgba(138, 50, 30, 0.15), transparent 60%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 720px; }
+    .eyebrow {
+      font-size: 13px; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 10vw, 120px);
+      line-height: 0.95; font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--accent);
+      font-weight: 400;
+    }
+    .hero p {
+      font-size: 19px; color: var(--muted);
+      max-width: 52ch; margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 18px; flex-wrap: wrap; }
+    .btn-gold {
+      padding: 16px 32px; background: var(--accent); color: var(--bg);
+      font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase;
+      transition: background .2s;
+      font-weight: 500;
+    }
+    .btn-gold:hover { background: var(--ink); }
+    .btn-outline {
+      padding: 16px 32px; border: 1px solid var(--ink); color: var(--ink);
+      font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase;
+      transition: background .2s, color .2s;
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--bg); }
+
+    /* ---------- Section ---------- */
+    .section { padding: 120px 0; border-top: 1px solid var(--line); }
+    .section-head { text-align: center; margin-bottom: 80px; }
+    .section-head .eyebrow { margin-bottom: 16px; }
+    .section-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 500; line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .section-head h2 em { font-style: italic; color: var(--accent); }
+
+    /* ---------- Story ---------- */
+    .story {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .story-image {
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #2c1810 0%, #6b3410 50%, #c9a876 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .story-image::after {
+      content: '"';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 280px; font-style: italic;
+      color: rgba(244, 237, 226, 0.15);
+      bottom: -60px; right: 20px;
+      line-height: 1;
+    }
+    .story-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px; font-weight: 500;
+      line-height: 1.1; margin-bottom: 28px;
+    }
+    .story-text h3 em { font-style: italic; color: var(--accent); }
+    .story-text p { font-size: 17px; color: var(--muted); margin-bottom: 18px; }
+    .story-sig {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: var(--accent);
+      font-size: 22px; margin-top: 30px;
+    }
+    @media (max-width: 768px) {
+      .story { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    /* ---------- Menu ---------- */
+    .menu {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 60px 80px;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .menu-cat {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: var(--accent);
+      font-size: 28px; margin-bottom: 30px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .menu-item {
+      padding: 18px 0;
+      border-bottom: 1px dotted var(--line);
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline; gap: 18px; margin-bottom: 6px;
+    }
+    .menu-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 500;
+    }
+    .menu-dots {
+      flex: 1; height: 1px;
+      border-bottom: 1px dotted var(--line);
+      margin-bottom: 4px;
+    }
+    .menu-price { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--accent); }
+    .menu-desc { color: var(--muted); font-size: 14px; }
+    @media (max-width: 768px) {
+      .menu { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    /* ---------- Hours / Visit ---------- */
+    .visit {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 40px; text-align: center;
+    }
+    .visit-card { padding: 40px 20px; border: 1px solid var(--line); }
+    .visit-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-style: italic;
+      color: var(--accent); margin-bottom: 16px;
+    }
+    .visit-card p { color: var(--muted); font-size: 15px; line-height: 1.8; }
+    @media (max-width: 768px) {
+      .visit { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Reservation ---------- */
+    .reservation {
+      max-width: 600px; margin: 0 auto;
+    }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 18px; margin-bottom: 18px;
+    }
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 12px; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-family: inherit; font-size: 16px;
+      transition: border-color .2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .reservation .btn-gold {
+      width: 100%; margin-top: 12px; cursor: pointer; border: none;
+    }
+    @media (max-width: 540px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      padding: 60px 0 30px;
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+    footer .brand { font-size: 32px; margin-bottom: 12px; display: inline-block; }
+    .footer-tag {
+      color: var(--muted); font-size: 14px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 30px;
+      font-size: 13px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .footer-links a { color: var(--muted); }
+    .footer-links a:hover { color: var(--accent); }
+    .copy { font-size: 12px; color: var(--muted); }
+    .back-link {
+      display: inline-block; margin-top: 20px;
+      color: var(--accent); font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .section { padding: 80px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#" class="brand">Olive <span>&amp;</span> Ember</a>
+      <nav class="nav-links">
+        <a href="#story">Story</a>
+        <a href="#menu">Menu</a>
+        <a href="#visit">Visit</a>
+        <a href="#reserve">Reserve</a>
+      </nav>
+      <a href="#reserve" class="reserve-btn">Book a table</a>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap">
+    <div class="hero-content">
+      <div class="eyebrow">Modern Mediterranean · Est. 2018</div>
+      <h1>Where <em>fire</em> meets the <em>olive grove.</em></h1>
+      <p>Seasonal small plates and slow-cooked classics, served in a warm, candlelit room. A quiet corner of the Mediterranean — right around the corner.</p>
+      <div class="hero-actions">
+        <a href="#reserve" class="btn-gold">Reserve a table</a>
+        <a href="#menu" class="btn-outline">View menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STORY ================= -->
+  <section class="section wrap" id="story">
+    <div class="story">
+      <div class="story-image"></div>
+      <div class="story-text">
+        <div class="eyebrow">Our story</div>
+        <h3>A flame, an <em>olive tree,</em> and a small idea.</h3>
+        <p>Olive & Ember began in 2018 as a tiny five-table room with a single wood-fired oven and a love for the food of the Mediterranean — from the islands of Greece to the coasts of Lebanon.</p>
+        <p>Eight years later we still cook on open flame, still buy from the same families of farmers, and still believe the best meals are the slow ones. Pull up a chair.</p>
+        <div class="story-sig">— Marco & Lina, owners</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MENU ================= -->
+  <section class="section wrap" id="menu">
+    <div class="section-head">
+      <div class="eyebrow">Seasonal menu</div>
+      <h2>A taste of the <em>Mediterranean.</em></h2>
+    </div>
+
+    <div class="menu">
+
+      <div>
+        <div class="menu-cat">Small plates</div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Whipped feta &amp; honey</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$12</span>
+          </div>
+          <div class="menu-desc">Smoked sea salt, charred sourdough.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Charred octopus</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$18</span>
+          </div>
+          <div class="menu-desc">Smoked paprika, lemon, fingerling potatoes.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Heirloom tomato salad</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$14</span>
+          </div>
+          <div class="menu-desc">Burrata, basil oil, aged balsamic.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Lamb kofta</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$16</span>
+          </div>
+          <div class="menu-desc">Tahini, sumac, warm flatbread.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="menu-cat">From the fire</div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Wood-fired branzino</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$34</span>
+          </div>
+          <div class="menu-desc">Whole, salt-baked, with lemon and herbs.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Slow-roasted lamb shoulder</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$38</span>
+          </div>
+          <div class="menu-desc">Eight-hour, with rosemary and garlic.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Saffron risotto</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$26</span>
+          </div>
+          <div class="menu-desc">Aged parmesan, brown butter, sea herbs.</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-row">
+            <span class="menu-name">Coal-grilled ribeye</span>
+            <span class="menu-dots"></span>
+            <span class="menu-price">$42</span>
+          </div>
+          <div class="menu-desc">Bone marrow butter, smoked salt.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= VISIT ================= -->
+  <section class="section wrap" id="visit">
+    <div class="section-head">
+      <div class="eyebrow">Plan your visit</div>
+      <h2>Find <em>us.</em></h2>
+    </div>
+
+    <div class="visit">
+      <div class="visit-card">
+        <h4>Hours</h4>
+        <p>
+          Tuesday — Thursday<br />5:30 — 10:00 PM<br /><br />
+          Friday — Saturday<br />5:00 — 11:00 PM<br /><br />
+          Sunday — Monday<br />Closed
+        </p>
+      </div>
+      <div class="visit-card">
+        <h4>Address</h4>
+        <p>
+          24 Linden Lane<br />
+          Old Quarter<br />
+          Bangalore 560001<br /><br />
+          +91 80 4000 8888
+        </p>
+      </div>
+      <div class="visit-card">
+        <h4>Private events</h4>
+        <p>
+          Our upstairs room seats up to 28 guests for private dinners, anniversaries, and celebrations.<br /><br />
+          <a href="mailto:events@oliveandember.example" style="color: var(--accent);">events@oliveandember.example</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESERVATION ================= -->
+  <section class="section wrap" id="reserve">
+    <div class="section-head">
+      <div class="eyebrow">Reservations</div>
+      <h2>Book your <em>table.</em></h2>
+    </div>
+
+    <form class="reservation" onsubmit="handleReserve(event)">
+      <div class="form-row">
+        <div>
+          <label for="name">Name</label>
+          <input id="name" type="text" required />
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="date">Date</label>
+          <input id="date" type="date" required />
+        </div>
+        <div>
+          <label for="time">Time</label>
+          <select id="time" required>
+            <option value="">Select time</option>
+            <option>5:30 PM</option>
+            <option>6:00 PM</option>
+            <option>6:30 PM</option>
+            <option>7:00 PM</option>
+            <option>7:30 PM</option>
+            <option>8:00 PM</option>
+            <option>8:30 PM</option>
+            <option>9:00 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="guests">Guests</label>
+        <select id="guests" required>
+          <option value="">How many?</option>
+          <option>2 guests</option>
+          <option>3 guests</option>
+          <option>4 guests</option>
+          <option>5 guests</option>
+          <option>6 guests</option>
+          <option>7+ guests (we'll call you)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Special requests</label>
+        <textarea id="notes" rows="3" placeholder="Allergies, occasion, seating preferences..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-gold">Request reservation</button>
+    </form>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="brand">Olive <span style="color: var(--accent);">&amp;</span> Ember</div>
+    <div class="footer-tag">Cooked on open fire since 2018</div>
+    <div class="footer-links">
+      <a href="#story">Story</a>
+      <a href="#menu">Menu</a>
+      <a href="#reserve">Reserve</a>
+      <a href="mailto:hello@oliveandember.example">Contact</a>
+    </div>
+    <div class="copy">© 2026 Olive &amp; Ember · All rights reserved</div>
+    <a href="../index.html" class="back-link">← Back to portfolio</a>
+  </footer>
+
+  <script>
+    // simple reservation handler — in production this would POST to a backend
+    function handleReserve(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      alert(`Thank you, ${name}! We'll confirm your reservation by phone within an hour.`);
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
