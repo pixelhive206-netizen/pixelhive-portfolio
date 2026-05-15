@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#faf7f2"/>
+      <stop offset="1" stop-color="#fff1e6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- decorative hexagon, top-right -->
+  <g transform="translate(960 90)" opacity="0.10">
+    <path d="M180 0 L315 90 L315 270 L180 360 L45 270 L45 90 Z"
+          fill="none" stroke="#e85d04" stroke-width="6"/>
+    <path d="M180 90 L255 135 L255 225 L180 270 L105 225 L105 135 Z"
+          fill="#e85d04"/>
+  </g>
+
+  <!-- small accent hexagon, bottom-left -->
+  <g transform="translate(60 460)" opacity="0.10">
+    <path d="M70 0 L130 35 L130 105 L70 140 L10 105 L10 35 Z"
+          fill="#e85d04"/>
+  </g>
+
+  <!-- logo mark + wordmark -->
+  <g transform="translate(80 130)">
+    <g transform="translate(0 -4)">
+      <path d="M30 6 L54 18 L54 42 L30 54 L6 42 L6 18 Z"
+            fill="none" stroke="#e85d04" stroke-width="3"/>
+      <path d="M30 18 L42 24 L42 36 L30 42 L18 36 L18 24 Z"
+            fill="#e85d04"/>
+    </g>
+    <text x="70" y="44" font-family="Georgia, serif" font-weight="700"
+          font-size="36" fill="#1a1a1a" letter-spacing="-0.5">
+      Pixelhive<tspan fill="#e85d04">.</tspan>
+    </text>
+  </g>
+
+  <!-- headline -->
+  <text x="80" y="310" font-family="Georgia, serif" font-weight="500"
+        font-size="78" fill="#1a1a1a" letter-spacing="-1.5">
+    Websites that load
+  </text>
+  <text x="80" y="395" font-family="Georgia, serif" font-weight="500"
+        font-size="78" fill="#1a1a1a" letter-spacing="-1.5">
+    <tspan font-style="italic" fill="#e85d04">fast,</tspan> look <tspan font-style="italic" fill="#e85d04">sharp,</tspan>
+  </text>
+  <text x="80" y="480" font-family="Georgia, serif" font-weight="500"
+        font-size="78" fill="#1a1a1a" letter-spacing="-1.5">
+    and convert.
+  </text>
+
+  <!-- footer line -->
+  <text x="80" y="560" font-family="-apple-system, system-ui, sans-serif"
+        font-size="22" fill="#6b6b6b">
+    A small India-based web studio · Hand-coded · Delivered in 2 weeks
+  </text>
+</svg>

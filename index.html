@@ -14,9 +14,14 @@
   <meta property="og:description" content="A small web studio building fast, beautiful websites for small businesses and creators." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pixelhive-studio.netlify.app/" />
+  <meta property="og:image" content="https://pixelhive-studio.netlify.app/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Pixelhive Studio — Websites that load fast, look sharp, and convert." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pixelhive Studio — Web Design & Development" />
   <meta name="twitter:description" content="A small web studio building fast, beautiful websites for small businesses and creators." />
+  <meta name="twitter:image" content="https://pixelhive-studio.netlify.app/og-image.svg" />
   <meta name="theme-color" content="#e85d04" />
 
   <!-- Structured data for Google (helps search snippets show studio info) -->
@@ -101,7 +106,18 @@
     .launch-banner .dismiss:hover { color: white; }
     .launch-banner.hidden { display: none; }
     @media (max-width: 540px) {
-      .launch-banner { font-size: 13px; padding: 10px 36px 10px 14px; }
+      .launch-banner {
+        font-size: 12.5px; line-height: 1.5;
+        padding: 10px 42px 10px 14px;
+        text-align: left;
+        justify-content: flex-start;
+      }
+      /* anchor dismiss to top-right so it doesn't overlap wrapped lines */
+      .launch-banner .dismiss {
+        top: 6px;
+        transform: none;
+        font-size: 16px;
+      }
     }
 
     /* ---------- Floating WhatsApp button ---------- */
@@ -133,6 +149,17 @@
       0% { transform: scale(1); opacity: 0.5; }
       100% { transform: scale(1.4); opacity: 0; }
     }
+
+    /* ---------- Skip link (keyboard a11y) ---------- */
+    .skip-link {
+      position: absolute; left: 12px; top: -100px;
+      background: var(--ink); color: white;
+      padding: 10px 16px; border-radius: 8px;
+      font-size: 14px; font-weight: 500;
+      z-index: 200;
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 12px; outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* ---------- Reset & base ---------- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -250,6 +277,8 @@
 
     /* ---------- Section heading ---------- */
     .section { padding: 80px 0; }
+    /* keep anchor-jump targets clear of the sticky nav */
+    section[id], header[id] { scroll-margin-top: 84px; }
     .section-label {
       font-size: 13px; text-transform: uppercase;
       letter-spacing: 0.12em; color: var(--accent);
@@ -503,6 +532,58 @@
     footer a { transition: color .15s; }
     footer a:hover { color: var(--accent); }
 
+    /* ---------- Proof / Promises (testimonials-ready) ---------- */
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+    .proof-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+      display: flex; flex-direction: column;
+    }
+    .proof-mark {
+      width: 36px; height: 36px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+    .proof-card h4 {
+      font-size: 18px; font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .proof-card p {
+      color: var(--muted); font-size: 15px;
+    }
+    /* testimonial variant — same grid, different content treatment */
+    .proof-card.quote blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: 19px; line-height: 1.4;
+      color: var(--ink);
+      font-style: italic;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+    .proof-card.quote figcaption {
+      display: flex; flex-direction: column;
+      gap: 2px;
+      font-size: 14px;
+      margin-top: auto;
+    }
+    .proof-card.quote figcaption strong { color: var(--ink); font-weight: 600; }
+    .proof-card.quote figcaption span { color: var(--muted); font-size: 13px; }
+    @media (max-width: 900px) {
+      .proof { grid-template-columns: 1fr; }
+    }
+
     /* ---------- Process / How it works ---------- */
     .process {
       display: grid;
@@ -685,10 +766,12 @@
 </head>
 <body>
 
+  <a href="#main" class="skip-link">Skip to content</a>
+
   <!-- ================= LAUNCH OFFER BANNER ================= -->
   <div class="launch-banner" id="launchBanner">
-    <span>⚡ <strong>Launch offer:</strong> First 3 clients get <strong>25% off</strong> any package + 60 days of free tweaks. <a href="#contact">Book a slot →</a></span>
-    <button class="dismiss" id="dismissBanner" aria-label="Dismiss banner">✕</button>
+    <span><span aria-hidden="true">⚡</span> <strong>Launch offer:</strong> First 3 clients get <strong>25% off</strong> any package + 60 days of free tweaks. <a href="#contact">Book a slot <span aria-hidden="true">→</span></a></span>
+    <button class="dismiss" id="dismissBanner" aria-label="Dismiss banner"><span aria-hidden="true">✕</span></button>
   </div>
 
   <!-- ================= NAV ================= -->
@@ -714,19 +797,19 @@
   </nav>
 
   <!-- ================= HERO ================= -->
-  <header class="hero wrap">
+  <header class="hero wrap" id="main">
     <div class="hero-tag"><span class="dot"></span> Available for new projects</div>
     <h1>Websites that load <em>fast,</em> look <em>sharp,</em> and convert.</h1>
     <p>Pixelhive is a small India-based web studio building hand-coded sites for small businesses — delivered in 2 weeks, mobile-first by default, and ready to rank on Google from day one.</p>
     <div class="hero-actions">
-      <a href="#work" class="btn btn-primary">See sample work →</a>
+      <a href="#work" class="btn btn-primary">See sample work <span aria-hidden="true">→</span></a>
       <a href="#contact" class="btn btn-ghost">Let's talk</a>
     </div>
   </header>
 
   <!-- ================= SERVICES ================= -->
   <section class="section wrap" id="services">
-    <div class="section-label">What I do</div>
+    <div class="section-label">What we do</div>
     <h2 class="section-title">Services built around your business.</h2>
     <p class="section-sub">From a single landing page to a full multi-section website — clean code, beautiful design, mobile-first.</p>
 
@@ -766,12 +849,12 @@
   <section class="section wrap" id="work">
     <div class="section-label">Sample work</div>
     <h2 class="section-title">Sample projects & ideas.</h2>
-    <p class="section-sub">A small collection of concept websites we've designed and built — examples of the kind of work we love taking on. Click any sample to view the live page.</p>
+    <p class="section-sub">Concept sites we've designed and built — examples of the kind of work we love taking on. Our first client launches are landing here soon. Click any sample to view it live.</p>
 
     <div class="projects-grid">
 
       <a href="projects/restaurant.html" class="project-card">
-        <div class="project-thumb thumb-restaurant">
+        <div class="project-thumb thumb-restaurant" aria-hidden="true">
           <div class="thumb-bar">
             <span class="thumb-dot"></span><span class="thumb-dot"></span><span class="thumb-dot"></span>
             <span class="thumb-url">olive-and-ember.com</span>
@@ -788,12 +871,12 @@
           <div class="project-tag">Restaurant · Concept</div>
           <h3>Olive & Ember</h3>
           <p>An elegant single-page sample for a fine-dining restaurant — menu, story, and reservation form.</p>
-          <span class="project-link">View sample →</span>
+          <span class="project-link">View sample <span aria-hidden="true">→</span></span>
         </div>
       </a>
 
       <a href="projects/agency.html" class="project-card">
-        <div class="project-thumb thumb-agency">
+        <div class="project-thumb thumb-agency" aria-hidden="true">
           <div class="thumb-bar">
             <span class="thumb-dot"></span><span class="thumb-dot"></span><span class="thumb-dot"></span>
             <span class="thumb-url">northwind.co</span>
@@ -810,12 +893,12 @@
           <div class="project-tag">Small Business · Concept</div>
           <h3>Northwind Co.</h3>
           <p>A clean multi-section sample for a consulting business — services, team, testimonials, and contact.</p>
-          <span class="project-link">View sample →</span>
+          <span class="project-link">View sample <span aria-hidden="true">→</span></span>
         </div>
       </a>
 
       <a href="projects/saas.html" class="project-card">
-        <div class="project-thumb thumb-saas">
+        <div class="project-thumb thumb-saas" aria-hidden="true">
           <div class="thumb-bar">
             <span class="thumb-dot"></span><span class="thumb-dot"></span><span class="thumb-dot"></span>
             <span class="thumb-url">linq.app</span>
@@ -832,11 +915,60 @@
           <div class="project-tag">SaaS Product · Concept</div>
           <h3>Linq</h3>
           <p>A modern landing page sample for a SaaS product — features, pricing, FAQ, and a polished call-to-action.</p>
-          <span class="project-link">View sample →</span>
+          <span class="project-link">View sample <span aria-hidden="true">→</span></span>
         </div>
       </a>
 
     </div>
+  </section>
+
+  <!-- ================= PROOF / PROMISE ================= -->
+  <section class="section wrap" id="promise">
+    <div class="section-label">Our promise</div>
+    <h2 class="section-title">Three things baked into every project.</h2>
+    <p class="section-sub">Our first client launches are in motion — real testimonials and case studies will land here soon. Until then, here's what every client gets from day one.</p>
+
+    <div class="proof">
+      <div class="proof-card">
+        <div class="proof-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h4>A real person on the other end</h4>
+        <p>You talk to the designer and developer directly — no account managers, no ticket queues, no copy-paste replies.</p>
+      </div>
+      <div class="proof-card">
+        <div class="proof-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Honest timelines</h4>
+        <p>What we quote is what we ship. Most projects land in 7–14 days — and if yours won't, we tell you upfront.</p>
+      </div>
+      <div class="proof-card">
+        <div class="proof-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h4>Code you can keep</h4>
+        <p>Clean hand-written HTML and CSS. No proprietary builders, no lock-in — the files are yours forever.</p>
+      </div>
+    </div>
+
+    <!--
+      ===== TESTIMONIAL TEMPLATE =====
+      When real client quotes are ready, replace the .proof block above with the markup below.
+      The .proof grid is reused — just swap the children.
+
+      <div class="proof">
+        <figure class="proof-card quote">
+          <blockquote>"Quote from the client about the experience or the result."</blockquote>
+          <figcaption>
+            <strong>Client Name</strong>
+            <span>Role · Company</span>
+          </figcaption>
+        </figure>
+        <figure class="proof-card quote"> ... </figure>
+        <figure class="proof-card quote"> ... </figure>
+      </div>
+    -->
   </section>
 
   <!-- ================= PROCESS ================= -->
@@ -889,7 +1021,7 @@
           <li>Basic SEO setup</li>
           <li>Delivered in 7 days</li>
         </ul>
-        <a href="#contact" class="price-cta">Enquire →</a>
+        <a href="mailto:pixelhive206@gmail.com?subject=Project%20enquiry%20%E2%80%94%20Starter%20package&amp;body=Hi%20Pixelhive%2C%0A%0AI%27d%20like%20a%20quote%20for%20the%20Starter%20package.%0A%0AAbout%20my%20project%3A%0A" class="price-cta">Enquire <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="price-card featured">
@@ -907,7 +1039,7 @@
           <li>Delivered in 2 weeks</li>
           <li>30 days of free tweaks</li>
         </ul>
-        <a href="#contact" class="price-cta">Enquire →</a>
+        <a href="mailto:pixelhive206@gmail.com?subject=Project%20enquiry%20%E2%80%94%20Standard%20package&amp;body=Hi%20Pixelhive%2C%0A%0AI%27d%20like%20a%20quote%20for%20the%20Standard%20package.%0A%0AAbout%20my%20project%3A%0A" class="price-cta">Enquire <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="price-card">
@@ -923,7 +1055,7 @@
           <li>Priority support</li>
           <li>Flexible timeline</li>
         </ul>
-        <a href="#contact" class="price-cta">Enquire →</a>
+        <a href="mailto:pixelhive206@gmail.com?subject=Project%20enquiry%20%E2%80%94%20Custom%20package&amp;body=Hi%20Pixelhive%2C%0A%0AI%27d%20like%20to%20discuss%20a%20Custom%20project.%0A%0AAbout%20my%20project%3A%0A" class="price-cta">Enquire <span aria-hidden="true">→</span></a>
       </div>
 
     </div>
@@ -997,6 +1129,16 @@
         <summary>Do you only build with HTML, CSS, and JavaScript?</summary>
         <p>That's our default — it makes sites fast, easy to host, and easy to maintain. For projects that need a CMS (so you can edit content yourself), we can also work with WordPress or headless options. Just ask.</p>
       </details>
+
+      <details class="faq">
+        <summary>Do you work with clients outside India?</summary>
+        <p>Yes — we work with clients globally over email and WhatsApp. We accept international payments via PayPal or bank transfer, and we'll match our working hours to overlap with yours where it helps.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Can you redesign or rebuild an existing site?</summary>
+        <p>Definitely. We can redesign a tired site, rebuild a slow one for speed, or migrate you off a bloated builder (Wix, Squarespace, etc.) onto clean code you fully own. Share your current URL when you email and we'll send back honest thoughts before quoting.</p>
+      </details>
     </div>
   </section>
 
@@ -1018,15 +1160,15 @@
       </div>
 
       <div class="contact-direct">
-        <span>📧 <a href="mailto:pixelhive206@gmail.com">pixelhive206@gmail.com</a></span>
-        <span>💬 <a href="https://wa.me/919360345471" target="_blank" rel="noopener">WhatsApp chat</a></span>
+        <span><span aria-hidden="true">📧</span> <a href="mailto:pixelhive206@gmail.com">pixelhive206@gmail.com</a></span>
+        <span><span aria-hidden="true">💬</span> <a href="https://wa.me/919360345471" target="_blank" rel="noopener">WhatsApp chat</a></span>
       </div>
     </div>
   </section>
 
   <!-- ================= FOOTER ================= -->
   <footer class="wrap">
-    <div>© 2026 Pixelhive Studio · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+    <div>© <span id="year">2026</span> Pixelhive Studio · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
     <div class="socials">
       <a href="mailto:pixelhive206@gmail.com">Email</a>
       <a href="https://wa.me/919360345471" target="_blank" rel="noopener">WhatsApp</a>
@@ -1069,6 +1211,9 @@
         hamburger.setAttribute('aria-expanded', 'false');
       });
     });
+
+    // Keep footer year fresh
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
 </body>
