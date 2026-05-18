@@ -636,14 +636,21 @@
       border-top: 1px solid var(--line);
     }
     .proof-featured .avatar {
-      width: 48px; height: 48px;
+      width: 56px; height: 56px;
       border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--line);
       background: linear-gradient(135deg, #14532d, #65a30d);
       color: white;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Fraunces', serif;
-      font-size: 18px; font-weight: 600;
-      flex-shrink: 0;
+      font-size: 20px; font-weight: 600;
+    }
+    .proof-featured .avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
     }
     .proof-featured .author strong {
       display: block;
@@ -1037,10 +1044,12 @@
         <p>Pixelhive exemplifies what a modern digital transformation partner should be &mdash; innovative, reliable, quality-driven, and deeply committed to client success. We look forward to continuing this partnership for future initiatives.</p>
       </blockquote>
       <figcaption>
-        <div class="avatar" aria-hidden="true">GB</div>
+        <div class="avatar" aria-hidden="true">
+          <img src="assets/gopal.jpg" alt="" width="56" height="56" loading="lazy" />
+        </div>
         <div class="author">
           <strong>Gopal Bakthavachalam</strong>
-          <span>Advocate &middot; Founder, Maram The Tree Foundation</span>
+          <span>Advocate, Madras High Court &middot; Founder, Maram The Tree Foundation</span>
         </div>
       </figcaption>
     </figure>
