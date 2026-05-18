@@ -404,6 +404,10 @@
     }
 
     /* per-project palettes */
+    .thumb-maram { background: linear-gradient(135deg, #0f2a1a 0%, #1f5237 45%, #65a30d 100%); }
+    .thumb-maram .thumb-h em { color: #d9f99d; }
+    .thumb-maram .thumb-cta { background: #d9f99d; color: #14532d; }
+
     .thumb-restaurant { background: linear-gradient(135deg, #1a0e08 0%, #3a1d0c 50%, #6b3410 100%); }
     .thumb-restaurant .thumb-h em { color: #c9a876; }
     .thumb-restaurant .thumb-cta { background: #c9a876; color: #1a0e08; }
@@ -421,6 +425,15 @@
       font-size: 12px; font-weight: 600;
       color: var(--accent); text-transform: uppercase;
       letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .live-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: 1px;
+      animation: pulse 2s infinite;
     }
     .project-body h3 { font-size: 22px; margin-bottom: 8px; font-weight: 600; }
     .project-body p { color: var(--muted); font-size: 15px; margin-bottom: 16px; }
@@ -847,11 +860,33 @@
 
   <!-- ================= WORK / PROJECTS ================= -->
   <section class="section wrap" id="work">
-    <div class="section-label">Sample work</div>
-    <h2 class="section-title">Sample projects & ideas.</h2>
-    <p class="section-sub">Concept sites we've designed and built — examples of the kind of work we love taking on. Our first client launches are landing here soon. Click any sample to view it live.</p>
+    <div class="section-label">Selected work</div>
+    <h2 class="section-title">Recent launches & sample projects.</h2>
+    <p class="section-sub">Our first client launch is live, alongside a small set of concept sites — examples of the kind of work we love taking on. Click any card to view it.</p>
 
     <div class="projects-grid">
+
+      <a href="https://maramthetree.com/" target="_blank" rel="noopener" class="project-card">
+        <div class="project-thumb thumb-maram" aria-hidden="true">
+          <div class="thumb-bar">
+            <span class="thumb-dot"></span><span class="thumb-dot"></span><span class="thumb-dot"></span>
+            <span class="thumb-url">maramthetree.com</span>
+          </div>
+          <div class="thumb-body">
+            <div class="thumb-tag">1 Crore Native Trees</div>
+            <div class="thumb-h">Planting for the <em>future</em></div>
+            <div class="thumb-line"></div>
+            <div class="thumb-line short"></div>
+            <div class="thumb-cta">Donate →</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tag"><span class="live-dot" aria-hidden="true"></span>Live launch · Non-profit</div>
+          <h3>Maram The Tree Foundation</h3>
+          <p>A complete website for a Tamil Nadu-based tree-planting non-profit — campaign drives, native species guides, donation tiers, and event coverage. Built to grow with their mission of planting 1 crore native trees.</p>
+          <span class="project-link">Visit live site <span aria-hidden="true">↗</span></span>
+        </div>
+      </a>
 
       <a href="projects/restaurant.html" class="project-card">
         <div class="project-thumb thumb-restaurant" aria-hidden="true">
@@ -926,7 +961,7 @@
   <section class="section wrap" id="promise">
     <div class="section-label">Our promise</div>
     <h2 class="section-title">Three things baked into every project.</h2>
-    <p class="section-sub">Our first client launches are in motion — real testimonials and case studies will land here soon. Until then, here's what every client gets from day one.</p>
+    <p class="section-sub">Our first client is live (see <a href="#work" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;">Maram The Tree Foundation</a> above), with more launches and testimonials landing here soon. Until then, here's what every client gets from day one.</p>
 
     <div class="proof">
       <div class="proof-card">
