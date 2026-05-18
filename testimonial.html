@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Share your experience — Pixelhive Studio</title>
+  <meta name="description" content="If we built a website for you, we'd love to hear how it went. Share your experience in a minute." />
+
+  <!-- private link: keep out of search results -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e85d04'><path d='M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff;
+      --ink: #1a1a1a; --muted: #6b6b6b;
+      --line: #ececea; --accent: #e85d04;
+      --accent-soft: #fff1e6; --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg); color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+    /* nav */
+    nav {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1120px; margin: 0 auto;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-weight: 700; font-size: 22px;
+      color: var(--ink);
+      display: inline-flex; align-items: center; gap: 10px;
+      letter-spacing: -0.02em;
+    }
+    .logo svg { color: var(--accent); }
+    .logo span { color: var(--accent); }
+    .back {
+      font-size: 14px; color: var(--muted);
+    }
+    .back:hover { color: var(--accent); }
+
+    /* hero */
+    .hero { padding: 70px 0 40px; text-align: center; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-soft); color: var(--accent);
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 500; line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+    h1 em { color: var(--accent); font-style: italic; }
+    .lede {
+      color: var(--muted); font-size: 17.5px;
+      max-width: 56ch; margin: 0 auto;
+    }
+
+    /* form card */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      margin: 40px 0 60px;
+      box-shadow: 0 20px 40px -28px rgba(0,0,0,0.12);
+    }
+    .field { margin-bottom: 22px; }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 600px) {
+      .field-row { grid-template-columns: 1fr; gap: 0; }
+      .field-row .field { margin-bottom: 22px; }
+    }
+    label {
+      display: block;
+      font-size: 14px; font-weight: 500;
+      margin-bottom: 7px; color: var(--ink);
+    }
+    label .req {
+      color: var(--accent); margin-left: 2px;
+    }
+    label .hint {
+      color: var(--muted); font-weight: 400;
+      font-size: 13px; margin-left: 6px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      font-family: inherit;
+      font-size: 15.5px;
+      color: var(--ink);
+      transition: border-color .15s, background .15s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--surface);
+    }
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    .helper {
+      font-size: 13px; color: var(--muted);
+      margin-top: 6px; line-height: 1.5;
+    }
+    .helper strong { color: var(--ink); font-weight: 600; }
+
+    /* checkbox */
+    .consent {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      margin-bottom: 24px;
+    }
+    .consent input { margin-top: 3px; flex-shrink: 0; }
+    .consent label {
+      margin: 0; font-weight: 400;
+      font-size: 14px; line-height: 1.5;
+      color: var(--ink);
+    }
+
+    /* button */
+    .btn-submit {
+      width: 100%;
+      background: var(--ink); color: white;
+      border: none; border-radius: 999px;
+      padding: 15px 24px;
+      font-family: inherit; font-size: 16px; font-weight: 500;
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+    .btn-submit:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* honeypot */
+    .pot { display: none; }
+
+    /* thanks state */
+    .thanks-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 60px 32px;
+      margin: 40px 0 60px;
+      text-align: center;
+      box-shadow: 0 20px 40px -28px rgba(0,0,0,0.12);
+    }
+    .thanks-mark {
+      width: 64px; height: 64px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 22px;
+    }
+    .thanks-card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 32px; font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .thanks-card p {
+      color: var(--muted);
+      font-size: 16.5px; max-width: 44ch;
+      margin: 0 auto 26px;
+    }
+    .thanks-card .back-home {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      background: var(--ink); color: white;
+      border-radius: 999px;
+      font-weight: 500; font-size: 15px;
+      transition: background .15s, transform .15s;
+    }
+    .thanks-card .back-home:hover {
+      background: var(--accent); transform: translateY(-1px);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 30px 24px;
+      text-align: center;
+      color: var(--muted); font-size: 14px;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 7 L17 9.5 L17 14.5 L12 17 L7 14.5 L7 9.5 Z" fill="currentColor"/></svg>
+      Pixelhive<span>.</span>
+    </a>
+    <a href="index.html" class="back">← Back to home</a>
+  </nav>
+
+  <main class="wrap">
+
+    <!-- ========== FORM STATE ========== -->
+    <section class="hero" id="formIntro">
+      <div class="hero-tag">For our clients</div>
+      <h1>Share your <em>experience</em>.</h1>
+      <p class="lede">If we built a website for you, we'd love to hear how it went. Your words help future small businesses, non-profits, and creators trust us with their site. Takes about a minute.</p>
+    </section>
+
+    <form
+      name="testimonials"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      action="testimonial.html?success=1"
+      class="form-card"
+      id="testimonialForm"
+    >
+      <!-- Netlify form-name marker -->
+      <input type="hidden" name="form-name" value="testimonials" />
+
+      <!-- Honeypot (hidden from real users; bots fill it in and we drop the submission) -->
+      <p class="pot">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="role">Your role <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="role" name="role" required placeholder="e.g. Founder, Director, Owner" />
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="organization">Organization <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="organization" name="organization" required placeholder="Your business or non-profit" />
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="req" aria-hidden="true">*</span><span class="hint">(kept private)</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="website">Your website <span class="hint">(the one we built — optional)</span></label>
+        <input type="url" id="website" name="website" placeholder="https://" inputmode="url" />
+      </div>
+
+      <div class="field">
+        <label for="message">Your experience <span class="req" aria-hidden="true">*</span></label>
+        <textarea id="message" name="message" required minlength="40" placeholder="Even a couple of sentences is plenty. People often mention: turnaround time, communication, the final result, or what they'd tell a friend considering us."></textarea>
+        <p class="helper">Write whatever feels true — <strong>what we did well, what surprised you, or what you'd tell a friend considering us.</strong> No need to polish.</p>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="consent" value="yes" required />
+        <label for="consent">I'm okay with Pixelhive Studio displaying my name, role, organization, and message on their portfolio and marketing materials. <em>(Your email and website URL stay private.)</em></label>
+      </div>
+
+      <button type="submit" class="btn-submit">Send your experience →</button>
+    </form>
+
+    <!-- ========== THANKS STATE (revealed after submit via ?success=1) ========== -->
+    <section class="thanks-card" id="thanksCard" hidden>
+      <div class="thanks-mark" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Thank you — truly.</h2>
+      <p>Your words mean a lot. We'll feature them on our portfolio soon (and may follow up by email if we need to clarify anything). Onward 🌱</p>
+      <a href="index.html" class="back-home">← Back to Pixelhive</a>
+    </section>
+
+  </main>
+
+  <footer>© <span id="year">2026</span> Pixelhive Studio · <a href="index.html">Home</a> · <a href="privacy.html">Privacy</a></footer>
+
+  <script>
+    // After Netlify accepts the submission it redirects to ?success=1.
+    // Show the thank-you card, hide the form.
+    if (new URLSearchParams(location.search).get('success') === '1') {
+      document.getElementById('formIntro').hidden = true;
+      document.getElementById('testimonialForm').hidden = true;
+      document.getElementById('thanksCard').hidden = false;
+      // Scroll to top for the thank-you reveal
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // Keep footer year fresh
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
