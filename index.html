@@ -597,6 +597,70 @@
       .proof { grid-template-columns: 1fr; }
     }
 
+    /* featured testimonial — single big card for our first client */
+    .proof-featured {
+      max-width: 780px;
+      margin: 50px auto 0;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 50px;
+      position: relative;
+      box-shadow: 0 20px 40px -28px rgba(0,0,0,0.15);
+    }
+    .proof-featured .quote-mark {
+      position: absolute;
+      top: 14px; left: 28px;
+      font-family: 'Fraunces', serif;
+      font-size: 110px;
+      color: var(--accent-soft);
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .proof-featured blockquote {
+      position: relative; z-index: 1;
+      font-family: 'Inter', sans-serif;
+      font-size: 16.5px;
+      line-height: 1.75;
+      color: var(--ink);
+      font-style: normal;
+      font-weight: 400;
+      margin-bottom: 32px;
+    }
+    .proof-featured blockquote p { margin-bottom: 14px; }
+    .proof-featured blockquote p:last-child { margin-bottom: 0; }
+    .proof-featured figcaption {
+      display: flex; align-items: center; gap: 14px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    .proof-featured .avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #14532d, #65a30d);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 18px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .proof-featured .author strong {
+      display: block;
+      font-size: 16px;
+      color: var(--ink);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .proof-featured .author span {
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+    @media (max-width: 600px) {
+      .proof-featured { padding: 36px 26px; }
+      .proof-featured .quote-mark { font-size: 76px; top: 8px; left: 16px; }
+    }
+
     /* ---------- Process / How it works ---------- */
     .process {
       display: grid;
@@ -957,51 +1021,46 @@
     </div>
   </section>
 
-  <!-- ================= PROOF / PROMISE ================= -->
+  <!-- ================= WHAT CLIENTS SAY ================= -->
   <section class="section wrap" id="promise">
-    <div class="section-label">Our promise</div>
-    <h2 class="section-title">Three things baked into every project.</h2>
-    <p class="section-sub">Our first client is live (see <a href="#work" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;">Maram The Tree Foundation</a> above), with more launches and testimonials landing here soon. Until then, here's what every client gets from day one.</p>
+    <div class="section-label">What clients say</div>
+    <h2 class="section-title">In their own words.</h2>
+    <p class="section-sub">Real feedback from the people we've built sites for.</p>
 
-    <div class="proof">
-      <div class="proof-card">
-        <div class="proof-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <figure class="proof-featured">
+      <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+      <blockquote>
+        <p>Working with Pixelhive has been an exceptional experience from both a strategic and operational standpoint. What impressed us most was their ability to deeply understand not just our business requirements, but the core values, vision, and purpose driving our organization.</p>
+        <p>From the initial discussions to the final deployment, the team demonstrated remarkable professionalism, agility, and commitment. Their turnaround time was outstanding, yet they never compromised on quality or attention to detail. Every interaction reflected transparency, accountability, and a genuine dedication to delivering beyond expectations.</p>
+        <p>What truly differentiates Pixelhive is their ability to transform ideas into impactful digital experiences. They didn&rsquo;t simply execute instructions &mdash; they brought fresh perspectives, innovative thinking, and highly effective digital solutions that elevated our vision far beyond what we initially imagined. Their out-of-the-box approach, combined with strong technical execution, resulted in a platform that is not only visually impressive but strategically aligned with our long-term goals.</p>
+        <p>The communication throughout the project was seamless and highly effective. The team was patient, collaborative, and proactive in refining every aspect of the delivery. Their ability to convert complex business concepts into a clean, engaging, and user-centric digital platform is truly commendable.</p>
+        <p>Pixelhive exemplifies what a modern digital transformation partner should be &mdash; innovative, reliable, quality-driven, and deeply committed to client success. We look forward to continuing this partnership for future initiatives.</p>
+      </blockquote>
+      <figcaption>
+        <div class="avatar" aria-hidden="true">GB</div>
+        <div class="author">
+          <strong>Gopal Bakthavachalam</strong>
+          <span>Advocate &middot; Founder, Maram The Tree Foundation</span>
         </div>
-        <h4>A real person on the other end</h4>
-        <p>You talk to the designer and developer directly — no account managers, no ticket queues, no copy-paste replies.</p>
-      </div>
-      <div class="proof-card">
-        <div class="proof-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <h4>Honest timelines</h4>
-        <p>What we quote is what we ship. Most projects land in 7–14 days — and if yours won't, we tell you upfront.</p>
-      </div>
-      <div class="proof-card">
-        <div class="proof-mark">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </div>
-        <h4>Code you can keep</h4>
-        <p>Clean hand-written HTML and CSS. No proprietary builders, no lock-in — the files are yours forever.</p>
-      </div>
-    </div>
+      </figcaption>
+    </figure>
 
     <!--
-      ===== TESTIMONIAL TEMPLATE =====
-      When real client quotes are ready, replace the .proof block above with the markup below.
-      The .proof grid is reused — just swap the children.
+      ===== ADDING MORE TESTIMONIALS =====
+      When a second client testimonial arrives, switch from .proof-featured (single big card)
+      to the .proof grid (2-3 cards). Replace the <figure class="proof-featured"> block above
+      with:
 
       <div class="proof">
         <figure class="proof-card quote">
-          <blockquote>"Quote from the client about the experience or the result."</blockquote>
+          <blockquote>"Short quote from client 1 (a punchy pull-quote works best here)."</blockquote>
           <figcaption>
             <strong>Client Name</strong>
             <span>Role · Company</span>
           </figcaption>
         </figure>
-        <figure class="proof-card quote"> ... </figure>
-        <figure class="proof-card quote"> ... </figure>
+        <figure class="proof-card quote"> ... client 2 ... </figure>
+        <figure class="proof-card quote"> ... client 3 ... </figure>
       </div>
     -->
   </section>
