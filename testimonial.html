@@ -247,7 +247,7 @@
       method="POST"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
-      action="testimonial.html?success=1"
+      action="/testimonial-thanks.html"
       class="form-card"
       id="testimonialForm"
     >
@@ -300,32 +300,11 @@
       <button type="submit" class="btn-submit">Send your experience →</button>
     </form>
 
-    <!-- ========== THANKS STATE (revealed after submit via ?success=1) ========== -->
-    <section class="thanks-card" id="thanksCard" hidden>
-      <div class="thanks-mark" aria-hidden="true">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <h2>Thank you — truly.</h2>
-      <p>Your words mean a lot. We'll feature them on our portfolio soon (and may follow up by email if we need to clarify anything). Onward 🌱</p>
-      <a href="index.html" class="back-home">← Back to Pixelhive</a>
-    </section>
-
   </main>
 
   <footer>© <span id="year">2026</span> Pixelhive Studio · <a href="index.html">Home</a> · <a href="privacy.html">Privacy</a></footer>
 
   <script>
-    // After Netlify accepts the submission it redirects to ?success=1.
-    // Show the thank-you card, hide the form.
-    if (new URLSearchParams(location.search).get('success') === '1') {
-      document.getElementById('formIntro').hidden = true;
-      document.getElementById('testimonialForm').hidden = true;
-      document.getElementById('thanksCard').hidden = false;
-      // Scroll to top for the thank-you reveal
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
-    // Keep footer year fresh
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
