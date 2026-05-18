@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#faf7f2" rx="48"/>
+  <g transform="translate(200 200)">
+    <path d="M0 -100 L86.6 -50 L86.6 50 L0 100 L-86.6 50 L-86.6 -50 Z"
+          fill="none" stroke="#e85d04" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M0 -50 L43.3 -25 L43.3 25 L0 50 L-43.3 25 L-43.3 -25 Z"
+          fill="#e85d04"/>
+  </g>
+</svg>
