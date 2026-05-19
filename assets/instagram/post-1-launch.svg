@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#faf7f2"/>
+
+  <!-- Decorative hexagons (background) -->
+  <g opacity="0.08">
+    <g transform="translate(880 120)">
+      <path d="M0 -90 L78 -45 L78 45 L0 90 L-78 45 L-78 -45 Z"
+            fill="none" stroke="#e85d04" stroke-width="6"/>
+    </g>
+    <g transform="translate(140 940)">
+      <path d="M0 -55 L48 -27 L48 27 L0 55 L-48 27 L-48 -27 Z"
+            fill="#e85d04"/>
+    </g>
+    <g transform="translate(960 820)">
+      <path d="M0 -35 L30 -17 L30 17 L0 35 L-30 17 L-30 -17 Z"
+            fill="#e85d04"/>
+    </g>
+  </g>
+
+  <!-- Top logo mark -->
+  <g transform="translate(540 260)">
+    <path d="M0 -65 L56 -32 L56 32 L0 65 L-56 32 L-56 -32 Z"
+          fill="none" stroke="#e85d04" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M0 -32 L28 -16 L28 16 L0 32 L-28 16 L-28 -16 Z"
+          fill="#e85d04"/>
+  </g>
+
+  <!-- Pulsing dot accent -->
+  <g transform="translate(540 380)">
+    <circle r="6" fill="#e85d04"/>
+  </g>
+
+  <!-- Main headline: "We're live." -->
+  <text x="540" y="600" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="500"
+        font-size="170"
+        fill="#1a1a1a"
+        letter-spacing="-6">We're <tspan fill="#e85d04" font-style="italic">live.</tspan></text>
+
+  <!-- Divider line -->
+  <line x1="430" y1="680" x2="650" y2="680" stroke="#ececea" stroke-width="2"/>
+
+  <!-- Tagline -->
+  <text x="540" y="740" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', system-ui, sans-serif"
+        font-weight="500"
+        font-size="34"
+        fill="#1a1a1a">Pixelhive Studio</text>
+
+  <text x="540" y="790" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', system-ui, sans-serif"
+        font-weight="400"
+        font-size="28"
+        fill="#6b6b6b">Hand-coded modern websites</text>
+
+  <text x="540" y="830" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', system-ui, sans-serif"
+        font-weight="400"
+        font-size="28"
+        fill="#6b6b6b">for small businesses, non-profits and creators</text>
+
+  <!-- Bottom handle -->
+  <text x="540" y="990" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', system-ui, sans-serif"
+        font-weight="600"
+        font-size="22"
+        fill="#e85d04"
+        letter-spacing="2">@PIXELHIVE__STUDIO</text>
+
+</svg>

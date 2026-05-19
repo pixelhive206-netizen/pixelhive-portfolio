@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#faf7f2"/>
+
+  <!-- Decorative hexagon -->
+  <g opacity="0.06" transform="translate(880 880)">
+    <path d="M0 -90 L78 -45 L78 45 L0 90 L-78 45 L-78 -45 Z"
+          fill="#e85d04"/>
+  </g>
+
+  <!-- Top label -->
+  <g transform="translate(540 140)">
+    <rect x="-140" y="-30" width="280" height="56" rx="28"
+          fill="#fff1e6"/>
+    <text x="0" y="7" text-anchor="middle"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="600"
+          font-size="22"
+          fill="#e85d04"
+          letter-spacing="4">OUR PROCESS</text>
+  </g>
+
+  <!-- Main heading -->
+  <text x="540" y="320" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="500"
+        font-size="84"
+        fill="#1a1a1a"
+        letter-spacing="-2">Why we</text>
+  <text x="540" y="420" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="500"
+        font-style="italic"
+        font-size="84"
+        fill="#e85d04"
+        letter-spacing="-2">hand-code</text>
+  <text x="540" y="510" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="500"
+        font-size="84"
+        fill="#1a1a1a"
+        letter-spacing="-2">every website.</text>
+
+  <!-- Three value props -->
+  <g transform="translate(180 640)">
+    <!-- Prop 1 -->
+    <g transform="translate(0 0)">
+      <circle cx="30" cy="30" r="30" fill="#fff1e6"/>
+      <path d="M20 30 L27 37 L41 23" stroke="#e85d04" stroke-width="4"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="80" y="28"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="600"
+            font-size="30"
+            fill="#1a1a1a">Loads in under 2 seconds</text>
+      <text x="80" y="60"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="400"
+            font-size="22"
+            fill="#6b6b6b">No bloated builders. No tracker junk.</text>
+    </g>
+
+    <!-- Prop 2 -->
+    <g transform="translate(0 130)">
+      <circle cx="30" cy="30" r="30" fill="#fff1e6"/>
+      <path d="M20 30 L27 37 L41 23" stroke="#e85d04" stroke-width="4"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="80" y="28"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="600"
+            font-size="30"
+            fill="#1a1a1a">Works on every phone</text>
+      <text x="80" y="60"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="400"
+            font-size="22"
+            fill="#6b6b6b">Mobile-first by default. Tested on real devices.</text>
+    </g>
+
+    <!-- Prop 3 -->
+    <g transform="translate(0 260)">
+      <circle cx="30" cy="30" r="30" fill="#fff1e6"/>
+      <path d="M20 30 L27 37 L41 23" stroke="#e85d04" stroke-width="4"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="80" y="28"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="600"
+            font-size="30"
+            fill="#1a1a1a">Yours forever</text>
+      <text x="80" y="60"
+            font-family="'Inter', system-ui, sans-serif"
+            font-weight="400"
+            font-size="22"
+            fill="#6b6b6b">No platform lock-in. No monthly rental fees.</text>
+    </g>
+  </g>
+
+  <!-- Bottom signature -->
+  <g transform="translate(540 1020)">
+    <text text-anchor="middle"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="600"
+          font-size="22"
+          fill="#e85d04"
+          letter-spacing="3">@PIXELHIVE__STUDIO</text>
+  </g>
+
+</svg>

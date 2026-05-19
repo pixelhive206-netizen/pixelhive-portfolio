@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+
+  <defs>
+    <!-- Circular clip for the avatar photo -->
+    <clipPath id="avatarClip">
+      <circle cx="48" cy="48" r="48"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="#faf7f2"/>
+
+  <!-- Decorative hexagon (subtle) -->
+  <g opacity="0.06" transform="translate(960 100)">
+    <path d="M0 -75 L65 -38 L65 38 L0 75 L-65 38 L-65 -38 Z"
+          fill="#e85d04"/>
+  </g>
+  <g opacity="0.05" transform="translate(120 990)">
+    <path d="M0 -45 L39 -22 L39 22 L0 45 L-39 22 L-39 -22 Z"
+          fill="#e85d04"/>
+  </g>
+
+  <!-- Giant decorative quote mark -->
+  <text x="120" y="320"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="700"
+        font-size="380"
+        fill="#fff1e6">"</text>
+
+  <!-- Quote text (positioned over the quote mark) -->
+  <g transform="translate(540 540)">
+    <text text-anchor="middle"
+          font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+          font-weight="500"
+          font-style="italic"
+          font-size="48"
+          fill="#1a1a1a">
+      <tspan x="0" dy="0">Pixelhive exemplifies what</tspan>
+      <tspan x="0" dy="76">a modern digital transformation</tspan>
+      <tspan x="0" dy="76">partner should be — innovative,</tspan>
+      <tspan x="0" dy="76">reliable, quality-driven.</tspan>
+    </text>
+  </g>
+
+  <!-- Divider above attribution -->
+  <line x1="420" y1="870" x2="660" y2="870" stroke="#ececea" stroke-width="2"/>
+
+  <!-- Attribution: avatar + name -->
+  <g transform="translate(280 920)">
+    <!-- Avatar circle background (fallback color if image fails) -->
+    <circle cx="48" cy="48" r="49" fill="#14532d" stroke="#ececea" stroke-width="2"/>
+    <!-- Photo loaded from live site -->
+    <image x="0" y="0" width="96" height="96"
+           href="https://pixelhive-studio.netlify.app/assets/gopal.jpeg"
+           clip-path="url(#avatarClip)"
+           preserveAspectRatio="xMidYMid slice"/>
+
+    <!-- Name + role text -->
+    <text x="120" y="38"
+          font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+          font-weight="600"
+          font-size="32"
+          fill="#1a1a1a">Gopal Bakthavachalam</text>
+    <text x="120" y="76"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="400"
+          font-size="22"
+          fill="#6b6b6b">Advocate, Madras High Court · Founder, Maram</text>
+  </g>
+
+  <!-- Bottom signature -->
+  <g transform="translate(540 1030)">
+    <text text-anchor="middle"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="600"
+          font-size="20"
+          fill="#e85d04"
+          letter-spacing="3">@PIXELHIVE__STUDIO</text>
+  </g>
+
+</svg>
