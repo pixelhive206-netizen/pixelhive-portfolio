@@ -814,6 +814,120 @@
       max-width: 65ch;
     }
 
+    /* ---------- Animations & motion ---------- */
+
+    /* Hero entrance — staggered fade-up on page load */
+    .hero-tag,
+    .hero h1,
+    .hero p,
+    .hero-actions {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fade-up 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hero h1       { animation-delay: 0.1s; }
+    .hero p        { animation-delay: 0.25s; }
+    .hero-actions  { animation-delay: 0.4s; }
+    @keyframes fade-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll-reveal — sections fade in as they enter the viewport */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Rotating hero word ("fast / lean / clean / smooth") */
+    .cycler {
+      position: relative;
+      display: inline-block;
+      vertical-align: baseline;
+    }
+    .cycler-phantom { visibility: hidden; }
+    .cycler em.cw {
+      position: absolute;
+      left: 0; top: 0;
+      opacity: 0;
+      animation: word-cycle 12s infinite;
+    }
+    .cycler em.cw-1 { animation-delay: 0s; }
+    .cycler em.cw-2 { animation-delay: 3s; }
+    .cycler em.cw-3 { animation-delay: 6s; }
+    .cycler em.cw-4 { animation-delay: 9s; }
+    @keyframes word-cycle {
+      0%, 25%, 100% { opacity: 0; transform: translateY(10px); }
+      3%, 22%       { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Project card hover overlay — replaces the static thumb on hover */
+    .project-thumb { position: relative; }
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.65));
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .project-overlay .overlay-text {
+      color: white;
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 600;
+      transform: translateY(10px);
+      transition: transform 0.3s ease;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-card:hover .project-overlay .overlay-text { transform: translateY(0); }
+
+    /* Cursor follower — desktop only, ignored on touch devices */
+    .cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 14px; height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      mix-blend-mode: multiply;
+      transition: opacity 0.25s ease, width 0.2s ease, height 0.2s ease;
+      will-change: transform;
+    }
+    .cursor-dot.visible { opacity: 0.55; }
+    .cursor-dot.hovering {
+      width: 38px; height: 38px;
+      opacity: 0.4;
+    }
+    @media (pointer: coarse), (max-width: 768px) {
+      .cursor-dot { display: none !important; }
+    }
+
+    /* Respect reduced-motion preference — disable all heavy animation */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tag, .hero h1, .hero p, .hero-actions,
+      .reveal, .cycler em.cw,
+      .float-wa::after, .hero-tag .dot,
+      .project-overlay, .project-overlay .overlay-text {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .cycler em.cw:not(.cw-1) { display: none; }
+      .cycler em.cw-1 { position: static; }
+      .cycler-phantom { display: none; }
+      .cursor-dot { display: none !important; }
+    }
+
     /* ---------- Mobile ---------- */
     @media (max-width: 720px) {
       .hamburger { display: flex; }
@@ -883,7 +997,7 @@
   <!-- ================= HERO ================= -->
   <header class="hero wrap" id="main">
     <div class="hero-tag"><span class="dot"></span> Available for new projects</div>
-    <h1>Websites that load <em>fast,</em> look <em>sharp,</em> and convert.</h1>
+    <h1>Websites that load <span class="cycler"><em class="cycler-phantom">smooth,</em><em class="cw cw-1">fast,</em><em class="cw cw-2">lean,</em><em class="cw cw-3">clean,</em><em class="cw cw-4">smooth,</em></span> look <em>sharp,</em> and convert.</h1>
     <p>Pixelhive is a small India-based web studio building hand-coded sites for small businesses — delivered in 2 weeks, mobile-first by default, and ready to rank on Google from day one.</p>
     <div class="hero-actions">
       <a href="#work" class="btn btn-primary">See sample work <span aria-hidden="true">→</span></a>
@@ -892,7 +1006,7 @@
   </header>
 
   <!-- ================= SERVICES ================= -->
-  <section class="section wrap" id="services">
+  <section class="section wrap reveal" id="services">
     <div class="section-label">What we do</div>
     <h2 class="section-title">Services built around your business.</h2>
     <p class="section-sub">From a single landing page to a full multi-section website — clean code, beautiful design, mobile-first.</p>
@@ -930,7 +1044,7 @@
   </section>
 
   <!-- ================= WORK / PROJECTS ================= -->
-  <section class="section wrap" id="work">
+  <section class="section wrap reveal" id="work">
     <div class="section-label">Selected work</div>
     <h2 class="section-title">Recent launches & sample projects.</h2>
     <p class="section-sub">Our first client launch is live, alongside a small set of concept sites — examples of the kind of work we love taking on. Click any card to view it.</p>
@@ -950,6 +1064,7 @@
             <div class="thumb-line short"></div>
             <div class="thumb-cta">Donate →</div>
           </div>
+          <div class="project-overlay"><span class="overlay-text">Visit live <span aria-hidden="true">↗</span></span></div>
         </div>
         <div class="project-body">
           <div class="project-tag"><span class="live-dot" aria-hidden="true"></span>Live launch · Non-profit</div>
@@ -972,6 +1087,7 @@
             <div class="thumb-line short"></div>
             <div class="thumb-cta">Reserve →</div>
           </div>
+          <div class="project-overlay"><span class="overlay-text">View sample <span aria-hidden="true">→</span></span></div>
         </div>
         <div class="project-body">
           <div class="project-tag">Restaurant · Concept</div>
@@ -994,6 +1110,7 @@
             <div class="thumb-line short"></div>
             <div class="thumb-cta">Book a call</div>
           </div>
+          <div class="project-overlay"><span class="overlay-text">View sample <span aria-hidden="true">→</span></span></div>
         </div>
         <div class="project-body">
           <div class="project-tag">Small Business · Concept</div>
@@ -1016,6 +1133,7 @@
             <div class="thumb-line short"></div>
             <div class="thumb-cta">Try free →</div>
           </div>
+          <div class="project-overlay"><span class="overlay-text">View sample <span aria-hidden="true">→</span></span></div>
         </div>
         <div class="project-body">
           <div class="project-tag">SaaS Product · Concept</div>
@@ -1029,7 +1147,7 @@
   </section>
 
   <!-- ================= WHAT CLIENTS SAY ================= -->
-  <section class="section wrap" id="promise">
+  <section class="section wrap reveal" id="promise">
     <div class="section-label">What clients say</div>
     <h2 class="section-title">In their own words.</h2>
     <p class="section-sub">Real feedback from the people we've built sites for.</p>
@@ -1075,7 +1193,7 @@
   </section>
 
   <!-- ================= PROCESS ================= -->
-  <section class="section wrap" id="process">
+  <section class="section wrap reveal" id="process">
     <div class="section-label">How we work</div>
     <h2 class="section-title">A simple, four-step process.</h2>
     <p class="section-sub">No bloated proposals. No surprise invoices. Just clear steps from idea to launch.</p>
@@ -1105,7 +1223,7 @@
   </section>
 
   <!-- ================= PRICING ================= -->
-  <section class="section wrap" id="pricing">
+  <section class="section wrap reveal" id="pricing">
     <div class="section-label">Packages</div>
     <h2 class="section-title">Pick the right package.</h2>
     <p class="section-sub">Choose a starting point. We'll send a clear, written quote tailored to your project — no hourly billing, no surprises.</p>
@@ -1165,7 +1283,7 @@
   </section>
 
   <!-- ================= ABOUT ================= -->
-  <section class="section wrap" id="about">
+  <section class="section wrap reveal" id="about">
     <div class="about">
       <div class="about-text">
         <div class="section-label">About the studio</div>
@@ -1176,15 +1294,15 @@
       </div>
       <div class="about-stats">
         <div class="stat">
-          <div class="stat-num">100%</div>
+          <div class="stat-num" data-counter="100" data-suffix="%">100%</div>
           <div class="stat-label">Hand-coded, no templates</div>
         </div>
         <div class="stat">
-          <div class="stat-num">&lt; 2s</div>
+          <div class="stat-num" data-counter="2" data-suffix="s" data-prefix="&lt; " data-decimals="0">&lt; 2s</div>
           <div class="stat-label">Average page load time</div>
         </div>
         <div class="stat">
-          <div class="stat-num">24h</div>
+          <div class="stat-num" data-counter="24" data-suffix="h">24h</div>
           <div class="stat-label">Reply time for new enquiries</div>
         </div>
       </div>
@@ -1192,7 +1310,7 @@
   </section>
 
   <!-- ================= FAQ ================= -->
-  <section class="section wrap" id="faq">
+  <section class="section wrap reveal" id="faq">
     <div class="section-label">FAQ</div>
     <h2 class="section-title">Common questions.</h2>
     <p class="section-sub">If your question isn't here, just email us — we usually reply within a few hours.</p>
@@ -1246,7 +1364,7 @@
   </section>
 
   <!-- ================= CONTACT ================= -->
-  <section class="wrap" id="contact">
+  <section class="wrap reveal" id="contact">
     <div class="contact">
       <h2>Have a project in <em>mind?</em></h2>
       <p>Tell us about it — pick whichever way you like to chat. We usually reply within a few hours.</p>
@@ -1317,6 +1435,99 @@
 
     // Keep footer year fresh
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Motion helpers ---------- */
+    const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Section scroll reveal — fades each section in as it enters the viewport */
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+      document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+    } else {
+      // No IntersectionObserver — just reveal everything immediately
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in-view'));
+    }
+
+    /* Stat counters — animate from 0 to target when scrolled into view */
+    const counters = document.querySelectorAll('[data-counter]');
+    function animateCounter(el) {
+      const target = parseFloat(el.dataset.counter);
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const elapsed = now - start;
+        const p = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const value = target * eased;
+        const display = target < 10 ? value.toFixed(0) : Math.floor(value);
+        el.textContent = prefix + display + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    if (prefersReducedMotion) {
+      counters.forEach((c) => {
+        c.textContent = (c.dataset.prefix || '') + c.dataset.counter + (c.dataset.suffix || '');
+      });
+    } else if ('IntersectionObserver' in window) {
+      const counterObs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      counters.forEach((c) => counterObs.observe(c));
+    }
+
+    /* Cursor follower — desktop only, skipped on touch + reduced-motion */
+    if (!prefersReducedMotion && matchMedia('(pointer: fine)').matches) {
+      const cursor = document.createElement('div');
+      cursor.className = 'cursor-dot';
+      document.body.appendChild(cursor);
+
+      let mx = 0, my = 0, dx = 0, dy = 0;
+      let visible = false;
+
+      document.addEventListener('mousemove', (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!visible) {
+          cursor.classList.add('visible');
+          visible = true;
+          dx = mx; dy = my; // snap to first known position
+        }
+      });
+      document.addEventListener('mouseleave', () => {
+        cursor.classList.remove('visible');
+        visible = false;
+      });
+
+      function loop() {
+        dx += (mx - dx) * 0.2;
+        dy += (my - dy) * 0.2;
+        cursor.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%)`;
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      const hoverables = 'a, button, summary, [role="button"]';
+      document.querySelectorAll(hoverables).forEach((el) => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+      });
+    }
   </script>
 
 </body>

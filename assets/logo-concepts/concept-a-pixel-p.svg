@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CONCEPT A — "PIXEL P"
+  A capital P built from a 5×6 grid of square pixels.
+  Reasoning: leans into the "pixel" half of the brand name. Distinct from every
+  hex-based studio logo. Looks deliberate, technical, hand-built.
+  Animation potential: pixels assemble one-by-one on page load (top-left first,
+  then sweeping right and down — like watching it being built).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+
+  <!-- Soft rounded background -->
+  <rect width="400" height="400" rx="56" fill="#faf7f2"/>
+
+  <!--
+    Pixel grid (each pixel 50×50 with 4px gaps, top-left starts at 78,62)
+    Filled cells form a P:
+      ■ ■ ■ ■ .
+      ■ . . . ■
+      ■ . . . ■
+      ■ ■ ■ ■ .
+      ■ . . . .
+      ■ . . . .
+  -->
+  <g fill="#e85d04">
+    <!-- Row 0: top of bowl -->
+    <rect x="78"  y="62"  width="46" height="46" rx="8"/>
+    <rect x="128" y="62"  width="46" height="46" rx="8"/>
+    <rect x="178" y="62"  width="46" height="46" rx="8"/>
+    <rect x="228" y="62"  width="46" height="46" rx="8"/>
+
+    <!-- Row 1: stem + right edge of bowl -->
+    <rect x="78"  y="112" width="46" height="46" rx="8"/>
+    <rect x="278" y="112" width="46" height="46" rx="8"/>
+
+    <!-- Row 2: stem + right edge of bowl -->
+    <rect x="78"  y="162" width="46" height="46" rx="8"/>
+    <rect x="278" y="162" width="46" height="46" rx="8"/>
+
+    <!-- Row 3: bottom of bowl (closes it) -->
+    <rect x="78"  y="212" width="46" height="46" rx="8"/>
+    <rect x="128" y="212" width="46" height="46" rx="8"/>
+    <rect x="178" y="212" width="46" height="46" rx="8"/>
+    <rect x="228" y="212" width="46" height="46" rx="8"/>
+
+    <!-- Row 4: stem only -->
+    <rect x="78"  y="262" width="46" height="46" rx="8"/>
+
+    <!-- Row 5: stem only (foot of P) -->
+    <rect x="78"  y="312" width="46" height="46" rx="8"/>
+  </g>
+
+  <!--
+    The "first pixel" highlight — bottom-left foot in a slightly darker tone.
+    Acts as a visual anchor and hints "build starts here."
+    (Optional — comment out if you want it pure-monochrome.)
+  -->
+  <rect x="78" y="312" width="46" height="46" rx="8" fill="#c14a00"/>
+</svg>
