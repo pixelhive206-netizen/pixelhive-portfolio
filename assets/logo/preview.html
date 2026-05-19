@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixelhive Logo · Preview</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #fbbf24;
+      --gold-deep: #d97706;
+      --navy: #0b0f14;
+      --cream: #f5f1ea;
+      --ink: #1a1a1a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #faf7f2;
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+      padding: 40px;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .lede { color: #6b6b6b; margin-bottom: 40px; max-width: 60ch; font-size: 15px; }
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+      margin: 0 0 20px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .panel {
+      border-radius: 16px;
+      padding: 40px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-label {
+      position: absolute;
+      top: 16px; left: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    .panel.dark { background: var(--navy); color: var(--gold); }
+    .panel.dark .panel-label { color: rgba(245,241,234,0.55); }
+    .panel.light { background: var(--cream); color: var(--ink); border: 1px solid #e5e2dc; }
+    .panel.gold { background: var(--gold); color: var(--navy); }
+    .panel.invert { background: white; color: var(--ink); border: 1px solid #ececea; }
+
+    .panel svg { display: block; }
+
+    /* Favicon size demo */
+    .fav-strip {
+      display: flex; gap: 20px; align-items: end;
+      padding: 16px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .fav { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .fav svg { background: var(--navy); padding: 4px; border-radius: 4px; }
+    .fav span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #888;
+      letter-spacing: 0.08em;
+    }
+
+    /* Browser tab mock */
+    .tab-mock {
+      background: #e5e2dc;
+      border-radius: 8px 8px 0 0;
+      padding: 8px 12px;
+      display: flex; align-items: center; gap: 6px;
+      max-width: 240px;
+      font-size: 12px;
+      color: #555;
+      font-family: 'Inter', sans-serif;
+    }
+    .tab-mock .x { color: #999; font-size: 14px; }
+
+    /* Avatar mock */
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+    }
+    .avatar.large { width: 200px; height: 200px; }
+    .avatar.square { border-radius: 18px; }
+
+    /* Nav mock */
+    .nav-mock {
+      background: var(--navy);
+      padding: 18px 28px;
+      border-radius: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%;
+      max-width: 600px;
+      color: var(--cream);
+    }
+    .nav-mock .nav-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--cream);
+      letter-spacing: -0.03em;
+    }
+    .nav-mock .nav-logo .mark { color: var(--gold); width: 22px; height: 22px; }
+    .nav-mock .nav-links {
+      display: flex; gap: 24px;
+      font-size: 13px;
+      color: rgba(245,241,234,0.7);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .compare {
+      margin-top: 60px;
+      padding: 32px;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #ececea;
+    }
+    .compare h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+    .compare ul { padding-left: 20px; color: #555; font-size: 14.5px; }
+    .compare ul li { margin-bottom: 6px; }
+    .compare ul li strong { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <h1>Pixelhive · logo proposal</h1>
+  <p class="lede">A honeycomb hex (the "hive") with three pixels drifting toward it (the "pixel"). Flat, single-color, scales from a 16-px favicon up to a banner. Pairs with the same Space Grotesk family you're already using on V4 so the brand reads as one system.</p>
+
+  <h2>Mark — primary, in context</h2>
+  <div class="row">
+    <div class="panel dark">
+      <span class="panel-label">Dark · gold</span>
+      <svg width="120" height="120" viewBox="0 0 80 80" fill="currentColor">
+        <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+        <rect x="3" y="31" width="7" height="7"/>
+        <rect x="6" y="20" width="4.5" height="4.5"/>
+        <rect x="8.5" y="44" width="3" height="3"/>
+      </svg>
+    </div>
+    <div class="panel light">
+      <span class="panel-label">Light · ink</span>
+      <svg width="120" height="120" viewBox="0 0 80 80" fill="currentColor">
+        <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+        <rect x="3" y="31" width="7" height="7"/>
+        <rect x="6" y="20" width="4.5" height="4.5"/>
+        <rect x="8.5" y="44" width="3" height="3"/>
+      </svg>
+    </div>
+    <div class="panel gold">
+      <span class="panel-label">Reversed · navy on gold</span>
+      <svg width="120" height="120" viewBox="0 0 80 80" fill="currentColor">
+        <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+        <rect x="3" y="31" width="7" height="7"/>
+        <rect x="6" y="20" width="4.5" height="4.5"/>
+        <rect x="8.5" y="44" width="3" height="3"/>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Horizontal lockup — for nav, header, business card</h2>
+  <div class="row">
+    <div class="panel dark">
+      <span class="panel-label">Dark</span>
+      <svg width="280" height="60" viewBox="0 0 320 64" fill="currentColor">
+        <g><g transform="translate(0,4) scale(0.7)">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </g></g>
+        <text x="68" y="42" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="32" letter-spacing="-1.3" fill="currentColor">Pixelhive</text>
+      </svg>
+    </div>
+    <div class="panel light">
+      <span class="panel-label">Light</span>
+      <svg width="280" height="60" viewBox="0 0 320 64" fill="currentColor">
+        <g><g transform="translate(0,4) scale(0.7)">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </g></g>
+        <text x="68" y="42" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="32" letter-spacing="-1.3" fill="currentColor">Pixelhive</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Stacked lockup — for Instagram, square avatars, OG image</h2>
+  <div class="row">
+    <div class="panel dark">
+      <span class="panel-label">Dark</span>
+      <svg width="200" height="170" viewBox="0 0 240 200" fill="currentColor">
+        <g transform="translate(80,20)">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </g>
+        <text x="120" y="138" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="34" letter-spacing="-1.36" text-anchor="middle" fill="currentColor">Pixelhive</text>
+        <text x="120" y="162" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.8" text-anchor="middle" fill="currentColor" opacity="0.55">WEB STUDIO · INDIA</text>
+      </svg>
+    </div>
+    <div class="panel light">
+      <span class="panel-label">Light</span>
+      <svg width="200" height="170" viewBox="0 0 240 200" fill="currentColor">
+        <g transform="translate(80,20)">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </g>
+        <text x="120" y="138" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="34" letter-spacing="-1.36" text-anchor="middle" fill="currentColor">Pixelhive</text>
+        <text x="120" y="162" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.8" text-anchor="middle" fill="currentColor" opacity="0.55">WEB STUDIO · INDIA</text>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Real-world placements</h2>
+  <div class="row">
+    <div class="panel invert">
+      <span class="panel-label">Site navigation</span>
+      <div class="nav-mock">
+        <span class="nav-logo">
+          <svg class="mark" viewBox="0 0 80 80" fill="currentColor">
+            <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+            <rect x="3" y="31" width="7" height="7"/>
+            <rect x="6" y="20" width="4.5" height="4.5"/>
+            <rect x="8.5" y="44" width="3" height="3"/>
+          </svg>
+          Pixelhive
+        </span>
+        <span class="nav-links"><span>Work</span><span>Clients</span><span>Contact</span></span>
+      </div>
+    </div>
+    <div class="panel invert">
+      <span class="panel-label">Browser tab + favicon</span>
+      <div class="tab-mock">
+        <svg width="14" height="14" viewBox="0 0 80 80" fill="#fbbf24" style="flex-shrink:0">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </svg>
+        <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">Pixelhive Studio — Hand-coded sites</span>
+        <span class="x">×</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="panel invert">
+      <span class="panel-label">Social avatar (Instagram, LinkedIn)</span>
+      <div class="avatar large square">
+        <svg width="100" height="100" viewBox="0 0 80 80" fill="currentColor">
+          <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+          <rect x="3" y="31" width="7" height="7"/>
+          <rect x="6" y="20" width="4.5" height="4.5"/>
+          <rect x="8.5" y="44" width="3" height="3"/>
+        </svg>
+      </div>
+    </div>
+    <div class="panel invert">
+      <span class="panel-label">Favicon — every size</span>
+      <div class="fav-strip">
+        <div class="fav">
+          <svg width="64" height="64" viewBox="0 0 80 80" fill="#fbbf24">
+            <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+            <rect x="3" y="31" width="7" height="7"/>
+            <rect x="6" y="20" width="4.5" height="4.5"/>
+            <rect x="8.5" y="44" width="3" height="3"/>
+          </svg>
+          <span>64</span>
+        </div>
+        <div class="fav">
+          <svg width="32" height="32" viewBox="0 0 80 80" fill="#fbbf24">
+            <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+            <rect x="3" y="31" width="7" height="7"/>
+            <rect x="6" y="20" width="4.5" height="4.5"/>
+            <rect x="8.5" y="44" width="3" height="3"/>
+          </svg>
+          <span>32</span>
+        </div>
+        <div class="fav">
+          <svg width="24" height="24" viewBox="0 0 80 80" fill="#fbbf24">
+            <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+            <rect x="3" y="31" width="7" height="7"/>
+            <rect x="6" y="20" width="4.5" height="4.5"/>
+            <rect x="8.5" y="44" width="3" height="3"/>
+          </svg>
+          <span>24</span>
+        </div>
+        <div class="fav">
+          <svg width="16" height="16" viewBox="0 0 80 80" fill="#fbbf24">
+            <path d="M40 12 L64 26 L64 54 L40 68 L16 54 L16 26 Z"/>
+            <rect x="3" y="31" width="7" height="7"/>
+            <rect x="6" y="20" width="4.5" height="4.5"/>
+            <rect x="8.5" y="44" width="3" height="3"/>
+          </svg>
+          <span>16</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <h3>What you're trading vs the references you sent</h3>
+    <ul>
+      <li><strong>Drops the 3D bevel</strong> — that's the #1 thing that telegraphs "logo template." Studios use flat marks; agencies use bevels.</li>
+      <li><strong>Drops the inner cube</strong> — too literal, makes the mark busy. The hex alone reads as "hive cell" without help.</li>
+      <li><strong>Drops the tagline ("crafting digital experiences")</strong> — that's a body-copy element, not a logo element. Live separately on the site.</li>
+      <li><strong>Keeps the pixel dispersion</strong> — but distilled to 3 squares of decreasing size, so the gesture is clear at any scale (a Fiverr logo with 20 pixels reads as noise at 24px favicon).</li>
+      <li><strong>Keeps the hex</strong> — the strongest semantic move (hive cell ⇄ hexagon ⇄ pixel cluster).</li>
+      <li><strong>One color, scales clean</strong> — works at 16px, works at 1080px, works in print, works embroidered.</li>
+    </ul>
+  </div>
+</body>
+</html>
