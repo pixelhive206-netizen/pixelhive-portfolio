@@ -888,6 +888,69 @@
     .project-card:hover .project-overlay { opacity: 1; }
     .project-card:hover .project-overlay .overlay-text { transform: translateY(0); }
 
+    /* Testimonial paragraph stagger — quote builds line-by-line as it enters viewport */
+    .proof-featured blockquote p {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .proof-featured.tline-active blockquote p { opacity: 1; transform: translateY(0); }
+    .proof-featured.tline-active blockquote p:nth-of-type(1) { transition-delay: 0s; }
+    .proof-featured.tline-active blockquote p:nth-of-type(2) { transition-delay: 0.18s; }
+    .proof-featured.tline-active blockquote p:nth-of-type(3) { transition-delay: 0.36s; }
+    .proof-featured.tline-active blockquote p:nth-of-type(4) { transition-delay: 0.54s; }
+    .proof-featured.tline-active blockquote p:nth-of-type(5) { transition-delay: 0.72s; }
+    .proof-featured figcaption {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease 0.95s, transform 0.6s ease 0.95s;
+    }
+    .proof-featured.tline-active figcaption { opacity: 1; transform: translateY(0); }
+
+    /* Hero gradient mesh — soft floating orbs that drift on mouse-move (Phase 3 parallax) */
+    .hero { position: relative; overflow: hidden; }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-mesh {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .mesh-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .mesh-orb-1 {
+      width: 480px; height: 480px;
+      background: var(--accent);
+      top: -140px; left: -120px;
+      opacity: 0.14;
+    }
+    .mesh-orb-2 {
+      width: 400px; height: 400px;
+      background: var(--accent-soft);
+      top: 60px; right: -120px;
+      opacity: 0.65;
+    }
+    .mesh-orb-3 {
+      width: 340px; height: 340px;
+      background: var(--accent);
+      bottom: -160px; left: 38%;
+      opacity: 0.1;
+    }
+
+    /* Cross-document View Transitions — smooth crossfade between pages on supported browsers */
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.35s; }
+    ::view-transition-old(root) { animation-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+    ::view-transition-new(root) { animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+
     /* Cursor follower — desktop only, ignored on touch devices */
     .cursor-dot {
       position: fixed;
@@ -916,7 +979,9 @@
       .hero-tag, .hero h1, .hero p, .hero-actions,
       .reveal, .cycler em.cw,
       .float-wa::after, .hero-tag .dot,
-      .project-overlay, .project-overlay .overlay-text {
+      .project-overlay, .project-overlay .overlay-text,
+      .proof-featured blockquote p, .proof-featured figcaption,
+      .mesh-orb {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
@@ -926,6 +991,9 @@
       .cycler em.cw-1 { position: static; }
       .cycler-phantom { display: none; }
       .cursor-dot { display: none !important; }
+      .mesh-orb { opacity: 0.1 !important; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation: none !important; }
     }
 
     /* ---------- Mobile ---------- */
@@ -996,6 +1064,11 @@
 
   <!-- ================= HERO ================= -->
   <header class="hero wrap" id="main">
+    <div class="hero-mesh" aria-hidden="true">
+      <div class="mesh-orb mesh-orb-1"></div>
+      <div class="mesh-orb mesh-orb-2"></div>
+      <div class="mesh-orb mesh-orb-3"></div>
+    </div>
     <div class="hero-tag"><span class="dot"></span> Available for new projects</div>
     <h1>Websites that load <span class="cycler"><em class="cycler-phantom">smooth,</em><em class="cw cw-1">fast,</em><em class="cw cw-2">lean,</em><em class="cw cw-3">clean,</em><em class="cw cw-4">smooth,</em></span> look <em>sharp,</em> and convert.</h1>
     <p>Pixelhive is a small India-based web studio building hand-coded sites for small businesses — delivered in 2 weeks, mobile-first by default, and ready to rank on Google from day one.</p>
@@ -1489,6 +1562,48 @@
         });
       }, { threshold: 0.5 });
       counters.forEach((c) => counterObs.observe(c));
+    }
+
+    /* Testimonial line-by-line reveal — quote builds as it enters viewport */
+    const testimonial = document.querySelector('.proof-featured');
+    if (testimonial && 'IntersectionObserver' in window) {
+      const tlineObs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            testimonial.classList.add('tline-active');
+            tlineObs.unobserve(testimonial);
+          }
+        });
+      }, { threshold: 0.2 });
+      tlineObs.observe(testimonial);
+    } else if (testimonial) {
+      testimonial.classList.add('tline-active');
+    }
+
+    /* Hero gradient mesh parallax — orbs drift on mouse-move */
+    if (!prefersReducedMotion) {
+      const heroEl = document.querySelector('.hero');
+      const orbs = document.querySelectorAll('.mesh-orb');
+      if (heroEl && orbs.length) {
+        let raf = null;
+        let targetX = 0, targetY = 0;
+        heroEl.addEventListener('mousemove', (e) => {
+          const rect = heroEl.getBoundingClientRect();
+          targetX = (e.clientX - rect.left) / rect.width - 0.5;
+          targetY = (e.clientY - rect.top) / rect.height - 0.5;
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            orbs.forEach((orb, i) => {
+              const strength = 12 + i * 10;
+              orb.style.transform = `translate3d(${targetX * strength}px, ${targetY * strength}px, 0)`;
+            });
+            raf = null;
+          });
+        });
+        heroEl.addEventListener('mouseleave', () => {
+          orbs.forEach((orb) => { orb.style.transform = ''; });
+        });
+      }
     }
 
     /* Cursor follower — desktop only, skipped on touch + reduced-motion */
