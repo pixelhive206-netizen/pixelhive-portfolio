@@ -888,6 +888,59 @@
     .project-card:hover .project-overlay { opacity: 1; }
     .project-card:hover .project-overlay .overlay-text { transform: translateY(0); }
 
+    /* ---------- "Warm + Smart" — selective dark sections for visual hierarchy ---------- */
+    .section-dark {
+      position: relative;
+      color: #faf7f2;
+      isolation: isolate;
+    }
+    .section-dark::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%; right: 50%;
+      margin-left: -50vw; margin-right: -50vw;
+      background: #0a1628;
+      z-index: -1;
+    }
+    .section-dark .section-title { color: #faf7f2; }
+    .section-dark .section-sub { color: rgba(250, 247, 242, 0.72); }
+    .section-dark .section-sub a { color: var(--accent); }
+    /* Section-label keeps accent orange — already legible on dark */
+
+    /* Magnetic buttons — primary CTAs gently follow the cursor on hover */
+    .btn-primary,
+    .price-cta,
+    .contact-btn.email,
+    .contact-btn.whatsapp,
+    .contact-btn.call {
+      transform: translate(var(--mx, 0), var(--my, 0));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background .15s ease, color .15s ease;
+      will-change: transform;
+    }
+    /* Override existing translateY hover so magnetic effect doesn't fight it */
+    .btn-primary:hover { transform: translate(var(--mx, 0), var(--my, 0)); }
+
+    /* 3D card tilt on hover — perspective rotation toward cursor */
+    .project-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .25s;
+    }
+    /* The existing :hover translateY rule still works as a fallback when JS hasn't set inline transform yet */
+
+    /* Scroll progress bar — thin accent gradient at top of viewport */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent) 0%, #0a1628 100%);
+      z-index: 200;
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
     /* Testimonial paragraph stagger — quote builds line-by-line as it enters viewport */
     .proof-featured blockquote p {
       opacity: 0;
@@ -981,12 +1034,20 @@
       .float-wa::after, .hero-tag .dot,
       .project-overlay, .project-overlay .overlay-text,
       .proof-featured blockquote p, .proof-featured figcaption,
-      .mesh-orb {
+      .mesh-orb,
+      .btn-primary, .price-cta, .contact-btn.email,
+      .contact-btn.whatsapp, .contact-btn.call,
+      .project-card, .scroll-progress {
         animation: none !important;
-        opacity: 1 !important;
         transform: none !important;
         transition: none !important;
       }
+      .hero-tag, .hero h1, .hero p, .hero-actions,
+      .reveal, .cycler em.cw,
+      .proof-featured blockquote p, .proof-featured figcaption {
+        opacity: 1 !important;
+      }
+      .scroll-progress { display: none !important; }
       .cycler em.cw:not(.cw-1) { display: none; }
       .cycler em.cw-1 { position: static; }
       .cycler-phantom { display: none; }
@@ -1033,6 +1094,9 @@
 <body>
 
   <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Scroll progress indicator -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
   <!-- ================= LAUNCH OFFER BANNER ================= -->
   <div class="launch-banner" id="launchBanner">
@@ -1117,7 +1181,7 @@
   </section>
 
   <!-- ================= WORK / PROJECTS ================= -->
-  <section class="section wrap reveal" id="work">
+  <section class="section wrap reveal section-dark" id="work">
     <div class="section-label">Selected work</div>
     <h2 class="section-title">Recent launches & sample projects.</h2>
     <p class="section-sub">Our first client launch is live, alongside a small set of concept sites — examples of the kind of work we love taking on. Click any card to view it.</p>
@@ -1220,7 +1284,7 @@
   </section>
 
   <!-- ================= WHAT CLIENTS SAY ================= -->
-  <section class="section wrap reveal" id="promise">
+  <section class="section wrap reveal section-dark" id="promise">
     <div class="section-label">What clients say</div>
     <h2 class="section-title">In their own words.</h2>
     <p class="section-sub">Real feedback from the people we've built sites for.</p>
@@ -1604,6 +1668,66 @@
           orbs.forEach((orb) => { orb.style.transform = ''; });
         });
       }
+    }
+
+    /* Scroll progress bar — top of viewport, accent → navy gradient */
+    const progressBar = document.getElementById('scrollProgress');
+    if (progressBar) {
+      let ticking = false;
+      function updateProgress() {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.min((window.scrollY / max) * 100, 100) : 0;
+        progressBar.style.width = pct + '%';
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateProgress);
+          ticking = true;
+        }
+      }, { passive: true });
+      updateProgress();
+    }
+
+    /* Magnetic buttons — primary CTAs gently follow the cursor on hover (desktop only) */
+    if (!prefersReducedMotion && matchMedia('(pointer: fine)').matches) {
+      const magneticSelector = '.btn-primary, .price-cta, .contact-btn.email, .contact-btn.whatsapp, .contact-btn.call';
+      document.querySelectorAll(magneticSelector).forEach((btn) => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - (rect.left + rect.width / 2);
+          const y = e.clientY - (rect.top + rect.height / 2);
+          btn.style.setProperty('--mx', `${x * 0.18}px`);
+          btn.style.setProperty('--my', `${y * 0.18}px`);
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.setProperty('--mx', '0px');
+          btn.style.setProperty('--my', '0px');
+        });
+      });
+    }
+
+    /* 3D card tilt — project cards rotate toward cursor on hover (desktop only) */
+    if (!prefersReducedMotion && matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.project-card').forEach((card) => {
+        let raf = null;
+        let nx = 0, ny = 0;
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          nx = (e.clientX - rect.left) / rect.width - 0.5;
+          ny = (e.clientY - rect.top) / rect.height - 0.5;
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            const ry = nx * 7;      // rotate Y up to 7°
+            const rx = -ny * 7;     // rotate X up to 7°
+            card.style.transform = `perspective(900px) rotateY(${ry}deg) rotateX(${rx}deg) translateY(-4px) scale(1.01)`;
+            raf = null;
+          });
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
     }
 
     /* Cursor follower — desktop only, skipped on touch + reduced-motion */
