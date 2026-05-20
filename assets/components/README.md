@@ -23,7 +23,7 @@ function App() {
     <>
       {/* … rest of your site … */}
       <FloatingAvatar
-        phone="919360345471"
+        phone="918220404529"
         message="Hi Pixelhive, I'd like to discuss a project."
       />
     </>
@@ -34,7 +34,7 @@ function App() {
 ## Props
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `phone` | string | `"919360345471"` | Phone number with country code (no `+`, no spaces) |
+| `phone` | string | `"918220404529"` | Phone number with country code (no `+`, no spaces) |
 | `message` | string | `"Hi Pixelhive, I'd like to discuss a project."` | Auto-encoded into the wa.me URL |
 | `size` | number | `148` | Diameter in px. Matches vanilla version. |
 | `className` | string | `""` | Additional Tailwind classes appended to the container |

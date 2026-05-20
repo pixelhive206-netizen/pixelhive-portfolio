@@ -23,7 +23,7 @@
  * Usage:
  *   import FloatingAvatar from './FloatingAvatar';
  *   <FloatingAvatar
- *     phone="919360345471"
+ *     phone="918220404529"
  *     message="Hi Pixelhive, I'd like to discuss a project."
  *   />
  */
@@ -34,7 +34,7 @@ import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-moti
 const ROTATING_TEXT = "LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ ";
 
 export default function FloatingAvatar({
-  phone = '919360345471',
+  phone = '918220404529',
   message = "Hi Pixelhive, I'd like to discuss a project.",
   size = 148,
   className = '',
