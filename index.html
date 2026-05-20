@@ -173,7 +173,7 @@
     /* ============================================================ HERO ============================================================ */
     .hero {
       min-height: 100vh;
-      padding: 200px 40px 60px;
+      padding: 140px 40px 50px;
       display: flex; flex-direction: column; justify-content: space-between;
       position: relative;
     }
@@ -193,7 +193,7 @@
     }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
-    .hero-headline { max-width: 1320px; width: 100%; margin: 60px auto 0; }
+    .hero-headline { max-width: 1320px; width: 100%; margin: 40px auto 0; }
     .hero-headline h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(56px, 11vw, 200px);
@@ -207,7 +207,7 @@
     .char { display: inline-block; transform: translateY(110%); will-change: transform; }
 
     .hero-footer {
-      max-width: 1320px; width: 100%; margin: 80px auto 0;
+      max-width: 1320px; width: 100%; margin: 50px auto 0;
       display: flex; justify-content: space-between; align-items: end;
       gap: 60px; flex-wrap: wrap;
     }
@@ -231,7 +231,7 @@
 
     /* ============================================================ MARQUEE ============================================================ */
     .marquee-section {
-      padding: 80px 0;
+      padding: 50px 0;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       overflow: hidden;
@@ -258,14 +258,14 @@
 
     /* ============================================================ SHARED SECTION HEAD ============================================================ */
     .section-block {
-      padding: 140px 40px 80px;
+      padding: 90px 40px 60px;
       max-width: 1480px; margin: 0 auto;
       border-top: 1px solid var(--line);
     }
     .section-block:first-of-type { border-top: none; }
     .section-head {
       display: flex; justify-content: space-between; align-items: end;
-      margin-bottom: 100px; gap: 40px; flex-wrap: wrap;
+      margin-bottom: 60px; gap: 40px; flex-wrap: wrap;
     }
     .section-head .num {
       font-family: 'JetBrains Mono', monospace;
@@ -333,10 +333,10 @@
     @media (max-width: 600px) { .services-grid { grid-template-columns: 1fr; } }
 
     /* ============================================================ CASE MOCKUPS — animated scenes ============================================================ */
-    .work-section { padding: 140px 40px 80px; max-width: 1480px; margin: 0 auto; border-top: 1px solid var(--line); }
+    .work-section { padding: 90px 40px 60px; max-width: 1480px; margin: 0 auto; border-top: 1px solid var(--line); }
     .work-head {
       display: flex; justify-content: space-between; align-items: end;
-      margin-bottom: 100px; gap: 40px; flex-wrap: wrap;
+      margin-bottom: 60px; gap: 40px; flex-wrap: wrap;
     }
     .work-head .num {
       font-family: 'JetBrains Mono', monospace;
@@ -355,9 +355,9 @@
     .work-head .sub { max-width: 36ch; color: var(--muted); font-size: 15.5px; line-height: 1.55; }
 
     .case {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-      margin-bottom: 140px; align-items: center;
-      padding-bottom: 80px; border-bottom: 1px solid var(--line);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 70px;
+      margin-bottom: 70px; align-items: center;
+      padding-bottom: 50px; border-bottom: 1px solid var(--line);
     }
     .case:last-of-type { border-bottom: none; }
     .case.reverse { direction: rtl; }
@@ -571,7 +571,7 @@
 
     /* ============================================================ TESTIMONIAL ============================================================ */
     .testimonial-section {
-      padding: 160px 40px;
+      padding: 100px 40px;
       max-width: 1480px; margin: 0 auto;
       border-top: 1px solid var(--line);
     }
@@ -579,7 +579,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px; color: var(--accent);
       letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 48px;
+      margin-bottom: 32px;
     }
     .testimonial-quote {
       font-family: 'Space Grotesk', sans-serif;
@@ -587,7 +587,7 @@
       font-weight: 400; line-height: 1.05;
       letter-spacing: -0.025em;
       color: var(--ink-bright);
-      max-width: 28ch; margin-bottom: 80px;
+      max-width: 28ch; margin-bottom: 50px;
     }
     .testimonial-quote em { font-style: normal; color: var(--accent); }
     .testimonial-attr {
@@ -612,7 +612,7 @@
 
     /* Full testimonial body + read-more toggle */
     .testimonial-full {
-      margin-top: 64px;
+      margin-top: 40px;
       max-width: 760px;
     }
     .testimonial-body p {
@@ -808,12 +808,12 @@
 
     /* ============================================================ MEGA FOOTER ============================================================ */
     .mega-footer {
-      padding: 140px 40px 0;
+      padding: 90px 40px 0;
       border-top: 1px solid var(--line);
       position: relative; overflow: hidden;
     }
     .mega-footer .top-meta {
-      max-width: 1480px; margin: 0 auto 80px;
+      max-width: 1480px; margin: 0 auto 50px;
       display: flex; justify-content: space-between; align-items: end;
       gap: 40px; flex-wrap: wrap;
       font-family: 'JetBrains Mono', monospace;
@@ -838,7 +838,7 @@
     }
     .mega-footer h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
     .mega-footer h2 .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
-    .mega-footer .actions { max-width: 1480px; margin: 100px auto 0; display: flex; gap: 14px; flex-wrap: wrap; }
+    .mega-footer .actions { max-width: 1480px; margin: 60px auto 0; display: flex; gap: 14px; flex-wrap: wrap; }
     .mega-footer .pill {
       position: relative; overflow: hidden;
       display: inline-flex; align-items: center; gap: 12px;
@@ -865,11 +865,11 @@
     .mega-footer .pill:hover .ico { color: var(--bg); }
 
     .mega-footer .columns {
-      max-width: 1480px; margin: 120px auto 0;
+      max-width: 1480px; margin: 70px auto 0;
       display: grid;
       grid-template-columns: 2.2fr 1fr 1fr 1fr;
-      gap: 50px;
-      padding-bottom: 60px;
+      gap: 40px;
+      padding-bottom: 40px;
       border-bottom: 1px solid var(--line);
     }
     .mega-footer .col-head {
@@ -1795,7 +1795,10 @@
       gsap.ticker.add(() => {
         cx += (mx - cx) * 0.18; cy += (my - cy) * 0.18;
         cursor.style.transform = `translate3d(${cx - 6}px, ${cy - 6}px, 0)`;
-        cursorLabel.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+        // Use left/top so the CSS transform: translate(-50%, -50%) keeps the
+        // label centered on the cursor instead of anchored at top-left
+        cursorLabel.style.left = mx + 'px';
+        cursorLabel.style.top = my + 'px';
       });
       document.querySelectorAll('[data-cursor]').forEach((el) => {
         el.addEventListener('mouseenter', () => {
