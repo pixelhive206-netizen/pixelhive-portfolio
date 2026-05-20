@@ -73,29 +73,109 @@
     .display { font-family: 'Space Grotesk', 'Inter Tight', system-ui, sans-serif; }
     .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
-    /* ============================================================ LOADER ============================================================ */
+    /* ============================================================ LOADER — Laptop opens, screen turns on, camera zooms in ============================================================ */
     .loader {
       position: fixed; inset: 0; z-index: 9999;
       background: var(--bg);
-      display: flex; align-items: flex-end; justify-content: space-between;
-      padding: 40px; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px;
+      perspective: 1400px;
+      perspective-origin: center 60%;
+      pointer-events: none; overflow: hidden;
     }
-    .loader-label {
+    .loader-brand {
+      position: absolute; top: 40px; left: 50%;
+      transform: translateX(-50%);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; color: var(--muted);
-      letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
     }
-    .loader-count {
+    .laptop {
+      position: relative;
+      width: clamp(280px, 38vw, 400px);
+      aspect-ratio: 16 / 10;
+      transform-style: preserve-3d;
+      transform-origin: center 60%;
+      will-change: transform;
+    }
+    .laptop-base {
+      position: absolute; bottom: 0; left: -2.5%; right: -2.5%;
+      height: 10px;
+      background: linear-gradient(180deg, #2a2e36 0%, #15181d 100%);
+      border-radius: 3px 3px 14px 14px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+    }
+    .laptop-base::after {
+      content: ''; position: absolute; bottom: -2px; left: 50%;
+      transform: translateX(-50%);
+      width: 22%; height: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 0 0 4px 4px;
+    }
+    .laptop-lid {
+      position: absolute; bottom: 6px; left: 0; right: 0; top: 0;
+      background: linear-gradient(180deg, #2a2e36 0%, #1a1d23 100%);
+      border-radius: 8px 8px 4px 4px;
+      transform-origin: center bottom;
+      transform: rotateX(-95deg);
+      padding: 10px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+    .laptop-bezel {
+      width: 100%; height: 100%;
+      background: #000; border-radius: 2px;
+      padding: 7px; position: relative;
+    }
+    .laptop-bezel::before {
+      content: ''; position: absolute;
+      top: 3px; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 4px;
+      background: #444; border-radius: 50%;
+    }
+    .laptop-screen {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      border-radius: 2px;
+      position: relative; overflow: hidden;
+      transition: background 0.55s ease;
+    }
+    .screen-glow {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(251, 191, 36, 0.22), transparent 60%),
+        radial-gradient(circle at 75% 80%, rgba(251, 191, 36, 0.10), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .laptop-screen.on { background: linear-gradient(135deg, #0b0f14 0%, #141a23 100%); }
+    .laptop-screen.on .screen-glow { opacity: 1; }
+    .screen-content {
+      position: absolute; inset: 14px;
+      display: flex; flex-direction: column; gap: 6px;
+      opacity: 0;
+    }
+    .screen-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px; letter-spacing: 0.15em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .screen-headline {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(120px, 22vw, 320px);
-      font-weight: 500; line-height: 0.85;
-      letter-spacing: -0.05em; color: var(--ink-bright);
+      font-size: 14px; font-weight: 500;
+      letter-spacing: -0.02em; line-height: 1;
+      color: var(--ink-bright);
+      margin-bottom: 8px;
     }
-    .loader-count .pct {
-      font-size: 0.3em; color: var(--accent);
-      vertical-align: top; margin-left: 8px;
+    .screen-headline em { font-style: normal; color: var(--accent); }
+    .screen-line {
+      height: 4px;
+      background: var(--ink); opacity: 0.35;
+      border-radius: 2px;
     }
-    .loader-bar { position: absolute; bottom: 0; left: 0; height: 1px; width: 0; background: var(--accent); }
+    .screen-line.short { width: 60%; }
+    .screen-line.shorter { width: 40%; }
 
     /* ============================================================ CUSTOM CURSOR ============================================================ */
     .cursor {
@@ -1095,11 +1175,26 @@
 </head>
 <body>
 
-  <!-- ====== LOADER ====== -->
+  <!-- ====== LOADER — laptop opens, screen turns on, camera zooms in ====== -->
   <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader-label">PIXEL<span style="color:var(--accent)">·</span>HIVE STUDIO · Loading</div>
-    <div class="loader-count" id="loaderCount">0<span class="pct">%</span></div>
-    <div class="loader-bar" id="loaderBar"></div>
+    <div class="loader-brand">PIXEL<span style="color:var(--accent)">·</span>HIVE STUDIO</div>
+    <div class="laptop" id="laptop">
+      <div class="laptop-lid">
+        <div class="laptop-bezel">
+          <div class="laptop-screen" id="laptopScreen">
+            <div class="screen-glow"></div>
+            <div class="screen-content">
+              <div class="screen-label">PIXEL·HIVE · 2026</div>
+              <div class="screen-headline">Websites that load <em>fast,</em><br/>look <em>sharp.</em></div>
+              <div class="screen-line"></div>
+              <div class="screen-line short"></div>
+              <div class="screen-line shorter"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="laptop-base"></div>
+    </div>
   </div>
 
   <!-- ====== CUSTOM CURSOR ====== -->
@@ -1701,23 +1796,30 @@
     gsap.ticker.lagSmoothing(0);
     document.documentElement.classList.add('lenis-smooth');
 
-    // Loader
-    const loaderTl = gsap.timeline({
-      onComplete: () => { document.getElementById('loader').remove(); }
-    });
-    loaderTl.to('#loaderCount', {
-      duration: 2.0, ease: 'power2.inOut',
-      innerHTML: '100<span class="pct">%</span>',
-      modifiers: {
-        innerHTML: () => {
-          const progress = loaderTl.progress();
-          const n = Math.floor(Math.min(progress * 100 * 2.5, 100));
-          return n + '<span class="pct">%</span>';
-        }
-      }
-    })
-    .to('#loaderBar', { width: '100%', duration: 2.0, ease: 'power2.inOut' }, 0)
-    .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '-=0.3');
+    // Loader — laptop opens, screen turns on, camera zooms in (~2.4s total)
+    const loaderTl = gsap.timeline();
+    // Initial state
+    gsap.set('.laptop-lid', { rotationX: -95 });
+    gsap.set('.screen-content', { opacity: 0, y: 6 });
+    gsap.set('.laptop', { scale: 1 });
+
+    loaderTl
+      // 1. Lid swings open (0 - 0.9s)
+      .to('.laptop-lid', { rotationX: 0, duration: 0.9, ease: 'back.out(1.4)' }, 0)
+      // 2. Screen turns on mid-open (0.55s mark)
+      .call(() => { document.getElementById('laptopScreen').classList.add('on'); }, null, 0.55)
+      // 3. Screen content fades in (0.9 - 1.3s)
+      .to('.screen-content', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.9)
+      // 4. Hold briefly (1.3 - 1.5s) so user can register the mockup
+      // 5. Zoom into the screen — laptop scales up dramatically (1.5 - 2.3s)
+      .to('.laptop', { scale: 22, duration: 0.8, ease: 'power3.inOut' }, 1.5)
+      // 6. Brand label + screen content fade as zoom advances (1.5 - 2.0s)
+      .to('.loader-brand', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 1.5)
+      .to('.screen-content', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 1.8)
+      // 7. Loader overlay fades to reveal the real page (2.0 - 2.4s)
+      .to('#loader', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
+      // 8. Clean up DOM
+      .call(() => { const l = document.getElementById('loader'); if (l) l.remove(); }, null, 2.45);
 
     // Hero
     gsap.set('.hero .char', { y: '110%' });
