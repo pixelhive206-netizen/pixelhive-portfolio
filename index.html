@@ -1843,6 +1843,61 @@
     });
 
     // ============================================================
+    // NAV LOGO — magnetic on cursor proximity (hex + 3 pixels react)
+    // ============================================================
+    const logo = document.querySelector('.logo');
+    const logoMark = logo && logo.querySelector('.logo-mark');
+    if (logoMark && !prefersReducedMotion && matchMedia('(pointer: fine)').matches) {
+      const proximityRange = 200; // px from logo center
+      let logoBounds = logo.getBoundingClientRect();
+      const refreshLogoBounds = () => { logoBounds = logo.getBoundingClientRect(); };
+      window.addEventListener('resize', refreshLogoBounds);
+      window.addEventListener('load', refreshLogoBounds);
+
+      // Mark = the SVG container; pixels = the 3 rects (descending zigzag inside hex)
+      const pixels = logoMark.querySelectorAll('rect');
+      const markX = gsap.quickTo(logoMark, 'x', { duration: 0.6, ease: 'power3.out' });
+      const markY = gsap.quickTo(logoMark, 'y', { duration: 0.6, ease: 'power3.out' });
+      // Each pixel reacts with a different "weight" — feels like they have independent personality
+      const pixelTos = Array.from(pixels).map((p, i) => ({
+        x: gsap.quickTo(p, 'x', { duration: 0.55, ease: 'power3.out' }),
+        y: gsap.quickTo(p, 'y', { duration: 0.55, ease: 'power3.out' }),
+        weight: 1.2 + i * 0.6  // pixel 1 reacts least, pixel 3 reacts most
+      }));
+
+      let isInProximity = false;
+
+      document.addEventListener('mousemove', (e) => {
+        const cx = logoBounds.left + logoBounds.width / 2;
+        const cy = logoBounds.top + logoBounds.height / 2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < proximityRange) {
+          isInProximity = true;
+          // Strength falls off from 1.0 at center to 0 at edge of range
+          const strength = 1 - dist / proximityRange;
+          // Magnetic pull on the whole mark
+          markX(dx * strength * 0.16);
+          markY(dy * strength * 0.16);
+          // Pixels lean toward cursor with their own weights — scattered feel
+          pixelTos.forEach((p) => {
+            p.x(dx * strength * 0.06 * p.weight);
+            p.y(dy * strength * 0.06 * p.weight);
+          });
+        } else if (isInProximity) {
+          // Just left proximity — elastic snap back to rest
+          isInProximity = false;
+          gsap.to(logoMark, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.55)', overwrite: 'auto' });
+          pixels.forEach((p) => {
+            gsap.to(p, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' });
+          });
+        }
+      });
+    }
+
+    // ============================================================
     // FLOAT-WA — premium GSAP interactions (entry, float, magnetic, ripple)
     // ============================================================
     const wa = document.querySelector('.float-wa');
