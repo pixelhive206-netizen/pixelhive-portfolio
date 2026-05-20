@@ -895,6 +895,89 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
+    /* ============================================================ MOBILE OVERRIDES ============================================================ */
+    @media (max-width: 800px) {
+      nav { padding: 18px 20px; top: 0; }
+      .logo { font-size: 19px; gap: 8px; }
+      .logo-mark { width: 22px; height: 22px; }
+
+      .hero {
+        min-height: auto;
+        padding: 110px 22px 60px;
+        justify-content: flex-start;
+      }
+      .hero-meta { font-size: 10px; }
+      .hero-headline { margin-top: 40px; }
+      .hero-headline h1 { font-size: clamp(40px, 12vw, 64px); line-height: 0.95; }
+      .hero-footer { margin-top: 50px; flex-direction: column; align-items: start; gap: 28px; }
+      .hero-footer .lede { font-size: 15.5px; }
+      .hero-actions { flex-direction: column; align-items: start; gap: 18px; }
+
+      .marquee-section { padding: 50px 0; }
+      .marquee { gap: 32px; }
+      .marquee-item { font-size: clamp(36px, 10vw, 56px); gap: 32px; }
+      .marquee-item::after { width: 10px; height: 10px; }
+
+      .section-block,
+      .work-section { padding: 80px 22px 40px; }
+      .section-head,
+      .work-head { margin-bottom: 50px; gap: 24px; }
+      .section-head h2,
+      .work-head h2 { font-size: clamp(34px, 9vw, 52px); }
+
+      .services-grid { gap: 16px; }
+      .service-card { padding: 28px 22px; }
+      .service-card .service-num { margin-bottom: 20px; }
+      .service-card .service-icon { margin-bottom: 18px; }
+
+      .case { margin-bottom: 60px; padding-bottom: 50px; gap: 28px; }
+      .case-text h3 { font-size: clamp(28px, 7vw, 40px); margin: 12px 0 18px; }
+
+      .process-grid { border-radius: 4px; }
+      .step { padding: 32px 24px 36px; }
+      .step-num { font-size: 44px; margin-bottom: 20px; }
+      .step h4 { font-size: 19px; }
+
+      .testimonial-section { padding: 80px 22px; }
+      .testimonial-head { margin-bottom: 32px; }
+      .testimonial-quote { font-size: clamp(28px, 8vw, 44px); margin-bottom: 50px; line-height: 1.1; }
+      .testimonial-attr { gap: 18px; padding-top: 28px; }
+      .testimonial-attr .avatar { width: 56px; height: 56px; }
+      .testimonial-attr .name { font-size: 18px; }
+      .testimonial-attr .role { font-size: 13px; }
+      .testimonial-full { margin-top: 48px; }
+      .testimonial-body p { font-size: 15.5px; }
+
+      .price-card { padding: 28px 22px; }
+      .price-card .price-blurb { min-height: 0; }
+
+      .faq-item { padding: 22px 0; }
+      .faq-item summary { font-size: clamp(17px, 4.5vw, 22px); gap: 16px; }
+      .faq-item summary::after { font-size: 24px; }
+      .faq-item p { font-size: 14.5px; margin-top: 14px; }
+
+      .mega-footer { padding: 80px 22px 0; }
+      .mega-footer .top-meta { margin-bottom: 40px; font-size: 10px; gap: 18px; }
+      .mega-footer h2 { font-size: clamp(54px, 15vw, 96px); }
+      .mega-footer .actions { margin-top: 50px; gap: 10px; flex-direction: column; align-items: stretch; }
+      .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; justify-content: center; }
+      .mega-footer .columns { margin-top: 60px; grid-template-columns: 1fr 1fr; gap: 28px 24px; padding-bottom: 40px; }
+      .mega-footer .col p { font-size: 13.5px; }
+      .mega-footer .col ul a { font-size: 13.5px; }
+      .mega-footer .stats { flex-wrap: wrap; gap: 18px 24px; margin-top: 20px; }
+      .mega-footer .stat .stat-num { font-size: 26px; }
+      .mega-footer .bottom { padding: 20px 0 32px; font-size: 9px; gap: 14px; }
+      .mega-footer .bottom .logo-big { font-size: 16px; }
+    }
+
+    /* Tighter for very small phones */
+    @media (max-width: 420px) {
+      nav { padding: 14px 16px; }
+      .hero, .section-block, .work-section, .testimonial-section, .mega-footer { padding-left: 18px; padding-right: 18px; }
+      .marquee-item { font-size: 36px; }
+      .case-text h3 { font-size: 28px; }
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .loader { display: none !important; }
@@ -1338,7 +1421,7 @@
     <div class="top-meta">
       <span><span class="num">/</span> Contact · 010</span>
       <span class="live-time" id="liveTime">— : — : — IST</span>
-      <span>Kallakurichi, Tamil Nadu</span>
+      <span>Tamil Nadu, IN</span>
     </div>
 
     <h2 class="section-anim">
@@ -1453,7 +1536,8 @@
         const span = document.createElement('span');
         span.className = 'char';
         if (wasItalic) span.style.fontStyle = 'normal';
-        span.textContent = c === ' ' ? ' ' : c;
+        // Use non-breaking space so inline-block doesn't collapse it to zero width
+        span.textContent = c === ' ' ? ' ' : c;
         el.appendChild(span);
       });
     }
