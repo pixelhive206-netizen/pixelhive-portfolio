@@ -895,73 +895,141 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
-    /* ============================================================ FLOATING WHATSAPP — Cuberto rotating-text style ============================================================ */
+    /* ============================================================ FLOATING WHATSAPP — Cuberto rotating-text + Pixelhive avatar ============================================================ */
     .float-wa {
       position: fixed;
       bottom: 32px;
       right: 32px;
       z-index: 100;
-      width: 140px;
-      height: 140px;
+      width: 148px;
+      height: 148px;
       border-radius: 50%;
-      background: #25d366;
-      color: white;
+      background: var(--accent);
+      color: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
+      box-shadow: 0 14px 36px rgba(251, 191, 36, 0.32);
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.5s ease,
-                  background 0.4s ease;
+                  background 0.45s ease,
+                  color 0.45s ease;
     }
     .float-wa::before {
       content: '';
       position: absolute;
       inset: -6px;
       border-radius: 50%;
-      border: 1px solid rgba(37, 211, 102, 0.45);
+      border: 1px solid var(--accent);
+      opacity: 0.5;
       animation: waPing 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
       pointer-events: none;
     }
     @keyframes waPing {
-      0% { transform: scale(1); opacity: 0.55; }
+      0% { transform: scale(1); opacity: 0.5; }
       100% { transform: scale(1.55); opacity: 0; }
     }
+
     .float-wa .rotating-text {
       position: absolute;
       inset: 0;
       width: 100%; height: 100%;
       pointer-events: none;
-      animation: waRotate 14s linear infinite;
+      animation: waRotate 16s linear infinite;
     }
     .float-wa .rotating-text text {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       fill: currentColor;
     }
     @keyframes waRotate { to { transform: rotate(360deg); } }
-    .float-wa .center-icon {
+
+    /* ---- Avatar ---- */
+    .float-wa .avatar {
       position: relative;
       z-index: 2;
+      width: 76px;
+      height: 76px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .float-wa:hover {
-      transform: scale(1.05);
-      background: #1ea854;
-      box-shadow: 0 20px 48px rgba(37, 211, 102, 0.6);
+    .float-wa .avatar svg { overflow: visible; }
+    .float-wa .avatar .eye {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: eyeBlink 5.4s infinite;
     }
-    .float-wa:hover .center-icon { transform: rotate(-14deg) scale(1.18); }
-    .float-wa:hover .rotating-text { animation-duration: 7s; }
+    .float-wa .avatar .eye-r { animation-delay: 0.05s; }
+    @keyframes eyeBlink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      93%, 96% { transform: scaleY(0.12); }
+    }
+    .float-wa .avatar .pixel-antenna {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: pixelBob 2.6s ease-in-out infinite;
+    }
+    @keyframes pixelBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .float-wa .avatar .smile {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: smileBob 4.8s ease-in-out infinite;
+    }
+    @keyframes smileBob {
+      0%, 80%, 100% { transform: scaleY(1); }
+      40% { transform: scaleY(1.15); }
+    }
+
+    /* ---- WhatsApp brand badge (corner) ---- */
+    .float-wa .wa-badge {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      z-index: 3;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #25d366;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.45),
+                  0 0 0 3px var(--accent);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.4s ease;
+    }
+
+    /* Hover state — invert palette + character leans in */
+    .float-wa:hover {
+      transform: scale(1.06);
+      background: var(--ink-bright);
+      color: var(--bg);
+      box-shadow: 0 22px 52px rgba(251, 191, 36, 0.5);
+    }
+    .float-wa:hover .avatar { transform: scale(1.08) rotate(-5deg); }
+    .float-wa:hover .rotating-text { animation-duration: 8s; }
+    .float-wa:hover .wa-badge {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6),
+                  0 0 0 3px var(--ink-bright);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .float-wa::before { animation: none; opacity: 0; }
       .float-wa .rotating-text { animation: none; }
+      .float-wa .avatar .eye,
+      .float-wa .avatar .pixel-antenna,
+      .float-wa .avatar .smile { animation: none; }
     }
 
     /* ============================================================ MOBILE OVERRIDES ============================================================ */
@@ -1049,13 +1117,16 @@
 
     /* Smaller WhatsApp button on phones */
     @media (max-width: 800px) {
-      .float-wa { bottom: 20px; right: 20px; width: 100px; height: 100px; }
-      .float-wa .rotating-text text { font-size: 16px; letter-spacing: 2px; }
-      .float-wa .center-icon svg { width: 24px; height: 24px; }
+      .float-wa { bottom: 20px; right: 20px; width: 108px; height: 108px; }
+      .float-wa .avatar { width: 54px; height: 54px; }
+      .float-wa .rotating-text text { font-size: 15px; letter-spacing: 1.8px; }
+      .float-wa .wa-badge { width: 24px; height: 24px; bottom: 4px; right: 4px; }
+      .float-wa .wa-badge svg { width: 12px; height: 12px; }
     }
     @media (max-width: 420px) {
-      .float-wa { width: 88px; height: 88px; }
-      .float-wa .rotating-text text { font-size: 14px; letter-spacing: 1.5px; }
+      .float-wa { width: 92px; height: 92px; }
+      .float-wa .avatar { width: 46px; height: 46px; }
+      .float-wa .rotating-text text { font-size: 13px; letter-spacing: 1.4px; }
     }
 
     /* Reduced motion */
@@ -1588,21 +1659,40 @@
     </div>
   </section>
 
-  <!-- ====== FLOATING WHATSAPP — Cuberto rotating-text circle ====== -->
+  <!-- ====== FLOATING WHATSAPP — Cuberto rotating-text + Pixelhive avatar ====== -->
   <a href="https://wa.me/919360345471?text=Hi%20Pixelhive%2C%20I%27d%20like%20to%20discuss%20a%20project."
      target="_blank" rel="noopener"
      class="float-wa" aria-label="Let's talk on WhatsApp"
      data-cursor data-cursor-label="CHAT">
+
+    <!-- Rotating LET'S TALK text on a circular path -->
     <svg class="rotating-text" viewBox="0 0 200 200" aria-hidden="true">
       <defs>
-        <path id="waTextCircle" d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" fill="none"/>
+        <path id="waTextCircle" d="M 100,100 m -82,0 a 82,82 0 1,1 164,0 a 82,82 0 1,1 -164,0" fill="none"/>
       </defs>
       <text>
-        <textPath href="#waTextCircle" startOffset="0">LET'S TALK · LET'S TALK · LET'S TALK · LET'S TALK · </textPath>
+        <textPath href="#waTextCircle" startOffset="0">LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ </textPath>
       </text>
     </svg>
-    <span class="center-icon" aria-hidden="true">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+
+    <!-- Pixelhive avatar — minimal face + bobbing pixel antenna -->
+    <span class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <!-- Floating pixel antenna -->
+        <rect class="pixel-antenna" x="46" y="6" width="8" height="8" rx="1" fill="currentColor"/>
+        <!-- Eyes -->
+        <circle class="eye eye-l" cx="36" cy="44" r="4.5" fill="currentColor"/>
+        <circle class="eye eye-r" cx="64" cy="44" r="4.5" fill="currentColor"/>
+        <!-- Smile -->
+        <path class="smile" d="M 34 64 Q 50 78 66 64"
+              stroke="currentColor" stroke-width="4"
+              fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+
+    <!-- Tiny WhatsApp badge in the corner so destination is clear -->
+    <span class="wa-badge" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
         <path d="M17.6 6.3A8 8 0 0 0 4 12.3c0 1.4.4 2.8 1 4L4 20l3.8-1a8 8 0 0 0 11.8-7 8 8 0 0 0-2-5.7zm-5.6 12a6.7 6.7 0 0 1-3.4-.9l-.2-.1-2.3.6.6-2.2-.2-.2a6.7 6.7 0 1 1 5.5 2.8zm3.7-5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1l-.7.8c-.1.2-.3.2-.5.1-.6-.3-1.2-.7-1.7-1.2-.4-.4-.8-1-1.1-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.3a.4.4 0 0 0 0-.4l-.7-1.6c-.2-.4-.3-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.4 2.4 0 0 0-.7 1.7c0 1 .7 2 .9 2.1.1.2 1.5 2.3 3.6 3.2.5.2.9.3 1.2.4.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
       </svg>
     </span>
