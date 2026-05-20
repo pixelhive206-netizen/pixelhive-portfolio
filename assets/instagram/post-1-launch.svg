@@ -61,7 +61,7 @@
         font-family="'Inter', 'Helvetica Neue', system-ui, sans-serif"
         font-weight="400"
         font-size="28"
-        fill="#6b6b6b">for small businesses, non-profits and creators</text>
+        fill="#6b6b6b">for businesses, non-profits and creators</text>
 
   <!-- Bottom handle -->
   <text x="540" y="990" text-anchor="middle"
