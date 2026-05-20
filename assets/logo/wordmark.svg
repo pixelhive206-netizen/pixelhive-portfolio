@@ -1,7 +1,10 @@
-<svg width="260" height="56" viewBox="0 0 260 56" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pixelhive">
-  <title>Pixelhive wordmark</title>
+<svg width="520" height="120" viewBox="0 0 520 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pixelhive Studio">
+  <title>Pixelhive Studio wordmark</title>
   <style>
-    .wm { font-family: 'Space Grotesk', 'Inter Tight', system-ui, sans-serif; font-weight: 700; font-size: 36px; letter-spacing: -0.04em; fill: currentColor; }
+    .wm { font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 60px; letter-spacing: -1.4px; fill: currentColor; }
+    .dot { fill: #fbbf24; }
+    .sub { font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 20px; letter-spacing: 8.5px; fill: #fbbf24; }
   </style>
-  <text x="0" y="40" class="wm">Pixelhive</text>
+  <text x="0" y="62" class="wm">PIXEL<tspan class="dot">·</tspan>HIVE</text>
+  <text x="0" y="102" class="sub">STUDIO</text>
 </svg>
