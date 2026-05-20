@@ -1989,34 +1989,34 @@
     }
 
     loaderTl
-      // 1. Laptop fades up into place (0 - 0.55s)
-      .to('.laptop', { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
-      // 2. Lid swings open (0.05 - 0.95s)
-      .to('.laptop-lid', { rotationX: 0, duration: 0.9, ease: 'back.out(1.3)' }, 0.05)
-      // 2b. Lid settle wobble (0.95 - 1.3s) — tiny back-and-forth like a real laptop's hinge
-      .to('.laptop-lid', { rotationX: -0.8, duration: 0.18, ease: 'sine.inOut' }, 0.95)
-      .to('.laptop-lid', { rotationX: 0.4, duration: 0.14, ease: 'sine.inOut' }, 1.13)
-      .to('.laptop-lid', { rotationX: 0, duration: 0.16, ease: 'power2.out' }, 1.27)
-      // 3. Power LED blinks twice (0.45s mark)
+      // 1. Laptop fades up into place (0 - 0.7s) — slower, more deliberate
+      .to('.laptop', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, 0)
+      // 2. Lid swings open (0.1 - 1.2s) — gentler back.out, more time to admire
+      .to('.laptop-lid', { rotationX: 0, duration: 1.1, ease: 'back.out(1.1)' }, 0.1)
+      // 2b. Lid settle wobble (1.2 - 1.85s) — slower and gentler than v1
+      .to('.laptop-lid', { rotationX: -0.5, duration: 0.22, ease: 'sine.inOut' }, 1.2)
+      .to('.laptop-lid', { rotationX: 0.25, duration: 0.20, ease: 'sine.inOut' }, 1.42)
+      .to('.laptop-lid', { rotationX: 0, duration: 0.22, ease: 'power2.out' }, 1.62)
+      // 3. Power LED blinks twice (0.55s mark)
       .call(() => {
         const led = document.getElementById('powerLed');
         if (!led) return;
         led.classList.add('on');
-        setTimeout(() => led.classList.remove('on'), 80);
-        setTimeout(() => led.classList.add('on'), 200);
-      }, null, 0.45)
-      // 4. Screen turns on — smooth, premium
+        setTimeout(() => led.classList.remove('on'), 100);
+        setTimeout(() => led.classList.add('on'), 260);
+      }, null, 0.55)
+      // 4. Screen turns on (0.9s)
       .call(() => {
         const screen = document.getElementById('laptopScreen');
         if (screen) screen.classList.add('on');
-      }, null, 0.75)
-      // 5. Status: "Connecting…" (0.85s)
-      .call(() => setStatus('Connecting'), null, 0.85)
-      // 6. Browser window fades in (1.0 - 1.7s)
-      .to('.browser-window', { opacity: 1, scale: 1, duration: 0.7, ease: 'expo.out' }, 1.0)
-      // 7. Status: "Loading pixelhivestudio.in" (1.25s)
-      .call(() => setStatus('Loading pixelhivestudio.in'), null, 1.25)
-      // 8. URL types character-by-character (1.3 - 1.95s)
+      }, null, 0.9)
+      // 5. Status: "Connecting…" (1.05s)
+      .call(() => setStatus('Connecting'), null, 1.05)
+      // 6. Browser window fades in (1.30 - 2.20s) — slower expo.out
+      .to('.browser-window', { opacity: 1, scale: 1, duration: 0.9, ease: 'expo.out' }, 1.3)
+      // 7. Status: "Loading pixelhivestudio.in" (1.55s)
+      .call(() => setStatus('Loading pixelhivestudio.in'), null, 1.55)
+      // 8. URL types character-by-character (1.6 - 2.5s) — slower 50ms/char
       .call(() => {
         const url = 'pixelhivestudio.in';
         const urlEl = document.getElementById('urlText');
@@ -2026,35 +2026,35 @@
           if (i > url.length) { clearInterval(typeInt); return; }
           urlEl.textContent = url.substring(0, i);
           i++;
-        }, 35);
-      }, null, 1.3)
-      // 9. Status: "Rendering site" (1.95s)
-      .call(() => setStatus('Rendering site'), null, 1.95)
-      // 10. Status: "Ready" (2.3s)
-      .call(() => setStatus('Ready'), null, 2.3)
+        }, 50);
+      }, null, 1.6)
+      // 9. Status: "Rendering site" (2.7s) — held longer
+      .call(() => setStatus('Rendering site'), null, 2.7)
+      // 10. Status: "Ready" (3.25s)
+      .call(() => setStatus('Ready'), null, 3.25)
 
-      // 11. Camera dolly-in (2.5 - 3.4s) — cinematic, softer than before
-      .to('.laptop', { scale: 7, duration: 0.9, ease: 'expo.inOut' }, 2.5)
-      // 12. Depth-of-field — bezel/base/labels blur as camera pushes in (screen stays sharp)
+      // 11. Camera dolly-in (3.55 - 4.75s) — much slower, full cinematic dolly
+      .to('.laptop', { scale: 7, duration: 1.2, ease: 'expo.inOut' }, 3.55)
+      // 12. Depth-of-field — bezel/base blur over the full zoom duration
       .to(['.laptop-lid', '.laptop-base', '.laptop-shadow'], {
-        filter: 'blur(3px)', duration: 0.7, ease: 'power2.in'
-      }, 2.6)
+        filter: 'blur(3px)', duration: 0.95, ease: 'power2.in'
+      }, 3.7)
       // 13. Screen-to-hero morph — fade browser chrome so only the headline remains
       .to(['.browser-bar', '.browser-nav', '.screen-line', '.screen-label'], {
-        opacity: 0, duration: 0.45, ease: 'power2.out'
-      }, 2.5)
-      // 14. Brand + status fade as camera pushes (2.5 - 2.9s)
-      .to(['.loader-brand', '.loader-status'], { opacity: 0, duration: 0.4, ease: 'power2.out' }, 2.5)
-      // 15. Loader overlay fades to reveal the real hero (2.95 - 3.4s) — overlaps with hero chars rising
-      .to('#loader', { opacity: 0, duration: 0.45, ease: 'power2.out' }, 2.95)
+        opacity: 0, duration: 0.55, ease: 'power2.out'
+      }, 3.55)
+      // 14. Brand + status fade as camera pushes
+      .to(['.loader-brand', '.loader-status'], { opacity: 0, duration: 0.5, ease: 'power2.out' }, 3.55)
+      // 15. Loader overlay fades (4.20 - 4.85s) — slower fade for soft handoff
+      .to('#loader', { opacity: 0, duration: 0.65, ease: 'power2.out' }, 4.2)
       // 16. Clean up DOM
-      .call(() => { const l = document.getElementById('loader'); if (l) l.remove(); }, null, 3.45);
+      .call(() => { const l = document.getElementById('loader'); if (l) l.remove(); }, null, 4.9);
 
     // Hero — chars start rising while loader is still fading (overlap for morph illusion)
     gsap.set('.hero .char', { y: '110%' });
-    gsap.to('.hero .char', { y: 0, stagger: 0.018, duration: 1.0, ease: 'expo.out', delay: 2.95 });
-    gsap.to('.hero-footer .lede', { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', delay: 3.9 });
-    gsap.to('.hero-actions', { opacity: 1, duration: 0.9, ease: 'expo.out', delay: 4.1 });
+    gsap.to('.hero .char', { y: 0, stagger: 0.022, duration: 1.1, ease: 'expo.out', delay: 4.2 });
+    gsap.to('.hero-footer .lede', { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', delay: 5.2 });
+    gsap.to('.hero-actions', { opacity: 1, duration: 0.9, ease: 'expo.out', delay: 5.4 });
 
     // Case studies
     gsap.utils.toArray('.case').forEach((caseEl) => {
@@ -2283,7 +2283,7 @@
         scale: 1, y: 0, opacity: 1,
         duration: 1.4,
         ease: 'elastic.out(1, 0.55)',
-        delay: 4.4
+        delay: 5.7
       });
 
       // --- 2. Idle vertical float (paused on hover) ---
@@ -2295,7 +2295,7 @@
         repeat: -1,
         paused: true
       });
-      gsap.delayedCall(5.8, () => idleFloat.play());
+      gsap.delayedCall(7.1, () => idleFloat.play());
 
       // --- 3. Magnetic hover (desktop pointer only) ---
       if (matchMedia('(pointer: fine)').matches && !prefersReducedMotion) {
