@@ -895,7 +895,7 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
-    /* ============================================================ FLOATING WHATSAPP — Cinematic Pixelhive avatar (GSAP-driven) ============================================================ */
+    /* ============================================================ FLOATING CONTACT AVATAR — uses pre-rendered PNG (face + text + arrow baked) ============================================================ */
     .float-wa {
       position: fixed;
       bottom: 32px;
@@ -904,36 +904,30 @@
       width: 148px;
       height: 148px;
       border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 30%, #fde68a 0%, var(--accent) 45%, var(--accent-deep) 100%);
-      color: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: url('assets/pixelhive-contact-avatar.png') center/cover no-repeat #faf7f1;
+      display: block;
       text-decoration: none;
       box-shadow:
-        0 24px 60px -12px rgba(251, 191, 36, 0.55),
-        0 8px 22px -4px rgba(217, 119, 6, 0.35),
-        inset 0 -6px 14px rgba(217, 119, 6, 0.18),
-        inset 0 4px 10px rgba(255, 255, 255, 0.3);
-      transition: background 0.45s ease, color 0.45s ease, box-shadow 0.5s ease;
+        0 24px 50px -12px rgba(0, 0, 0, 0.45),
+        0 8px 18px -4px rgba(0, 0, 0, 0.25);
+      transition: box-shadow 0.5s ease;
       will-change: transform;
       overflow: hidden;
     }
-    /* Ambient glow ring (outside the button) — pulses softly */
+    /* Soft warm ambient glow behind the button */
     .float-wa::before {
       content: '';
       position: absolute;
       inset: -10px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(251, 191, 36, 0.4), transparent 65%);
-      opacity: 0;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent 65%);
       pointer-events: none;
       animation: waAmbient 4.2s ease-in-out infinite;
+      z-index: -1;
     }
     @keyframes waAmbient {
-      0%, 100% { opacity: 0.25; transform: scale(1); }
-      50%      { opacity: 0.65; transform: scale(1.15); }
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50%      { opacity: 0.7; transform: scale(1.18); }
     }
     /* Expanding ping ring (subtle pulse out) */
     .float-wa::after {
@@ -947,14 +941,14 @@
     }
     @keyframes waPing {
       0%   { transform: scale(1);    opacity: 0.55; }
-      100% { transform: scale(1.7);  opacity: 0;    }
+      100% { transform: scale(1.65); opacity: 0;    }
     }
 
     /* Click ripple (created by JS) */
     .wa-ripple {
       position: absolute;
       width: 14px; height: 14px;
-      background: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.5);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
@@ -967,105 +961,16 @@
       }
     }
 
-    .float-wa .rotating-text {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      animation: waRotate 16s linear infinite;
-    }
-    .float-wa .rotating-text text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      fill: currentColor;
-    }
-    @keyframes waRotate { to { transform: rotate(360deg); } }
-
-    /* ---- Avatar ---- */
-    .float-wa .avatar {
-      position: relative;
-      z-index: 2;
-      width: 76px;
-      height: 76px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .float-wa .avatar svg { overflow: visible; }
-    .float-wa .avatar .eye {
-      transform-origin: center;
-      transform-box: fill-box;
-      animation: eyeBlink 5.4s infinite;
-    }
-    .float-wa .avatar .eye-r { animation-delay: 0.05s; }
-    @keyframes eyeBlink {
-      0%, 90%, 100% { transform: scaleY(1); }
-      93%, 96% { transform: scaleY(0.12); }
-    }
-    .float-wa .avatar .pixel-antenna {
-      transform-origin: center;
-      transform-box: fill-box;
-      animation: pixelBob 2.6s ease-in-out infinite;
-    }
-    @keyframes pixelBob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-    .float-wa .avatar .smile {
-      transform-origin: center;
-      transform-box: fill-box;
-      animation: smileBob 4.8s ease-in-out infinite;
-    }
-    @keyframes smileBob {
-      0%, 80%, 100% { transform: scaleY(1); }
-      40% { transform: scaleY(1.15); }
-    }
-
-    /* ---- WhatsApp brand badge (corner) ---- */
-    .float-wa .wa-badge {
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      z-index: 3;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #25d366;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.45),
-                  0 0 0 3px var(--accent);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.4s ease;
-    }
-
-    /* Hover state — palette deepens (transforms handled by GSAP) */
+    /* Hover state — shadow intensifies (transforms handled by GSAP) */
     .float-wa.is-hover {
-      background: radial-gradient(circle at 35% 30%, #fef3c7 0%, #fbbf24 35%, #b45309 100%);
       box-shadow:
-        0 32px 80px -10px rgba(251, 191, 36, 0.7),
-        0 12px 28px -4px rgba(217, 119, 6, 0.45),
-        inset 0 -6px 14px rgba(180, 83, 9, 0.25),
-        inset 0 4px 10px rgba(255, 255, 255, 0.4);
-    }
-    .float-wa.is-hover .rotating-text { animation-duration: 7s; }
-    .float-wa.is-hover .wa-badge {
-      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.65),
-                  0 0 0 3px var(--accent);
+        0 36px 70px -10px rgba(0, 0, 0, 0.55),
+        0 14px 26px -4px rgba(0, 0, 0, 0.35),
+        0 0 0 4px rgba(251, 191, 36, 0.35);
     }
 
     @media (prefers-reduced-motion: reduce) {
       .float-wa::before, .float-wa::after { animation: none; opacity: 0; }
-      .float-wa .rotating-text { animation: none; }
-      .float-wa .avatar .eye,
-      .float-wa .avatar .pixel-antenna,
-      .float-wa .avatar .smile { animation: none; }
       .wa-ripple { animation: none !important; display: none; }
     }
 
@@ -1152,18 +1057,12 @@
       .case-text h3 { font-size: 28px; }
     }
 
-    /* Smaller WhatsApp button on phones */
+    /* Smaller floating avatar on phones */
     @media (max-width: 800px) {
-      .float-wa { bottom: 20px; right: 20px; width: 108px; height: 108px; }
-      .float-wa .avatar { width: 54px; height: 54px; }
-      .float-wa .rotating-text text { font-size: 15px; letter-spacing: 1.8px; }
-      .float-wa .wa-badge { width: 24px; height: 24px; bottom: 4px; right: 4px; }
-      .float-wa .wa-badge svg { width: 12px; height: 12px; }
+      .float-wa { bottom: 20px; right: 20px; width: 112px; height: 112px; }
     }
     @media (max-width: 420px) {
-      .float-wa { width: 92px; height: 92px; }
-      .float-wa .avatar { width: 46px; height: 46px; }
-      .float-wa .rotating-text text { font-size: 13px; letter-spacing: 1.4px; }
+      .float-wa { width: 96px; height: 96px; }
     }
 
     /* Reduced motion */
@@ -1696,44 +1595,11 @@
     </div>
   </section>
 
-  <!-- ====== FLOATING WHATSAPP — Cuberto rotating-text + Pixelhive avatar ====== -->
+  <!-- ====== FLOATING CONTACT AVATAR — image baked with rotating text + arrow, motion via GSAP ====== -->
   <a href="https://wa.me/919360345471?text=Hi%20Pixelhive%2C%20I%27d%20like%20to%20discuss%20a%20project."
      target="_blank" rel="noopener"
-     class="float-wa" aria-label="Let's talk on WhatsApp"
-     data-cursor data-cursor-label="CHAT">
-
-    <!-- Rotating LET'S TALK text on a circular path -->
-    <svg class="rotating-text" viewBox="0 0 200 200" aria-hidden="true">
-      <defs>
-        <path id="waTextCircle" d="M 100,100 m -82,0 a 82,82 0 1,1 164,0 a 82,82 0 1,1 -164,0" fill="none"/>
-      </defs>
-      <text>
-        <textPath href="#waTextCircle" startOffset="0">LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ LET'S TALK ✦ </textPath>
-      </text>
-    </svg>
-
-    <!-- Pixelhive avatar — minimal face + bobbing pixel antenna -->
-    <span class="avatar" aria-hidden="true">
-      <svg viewBox="0 0 100 100" width="100%" height="100%">
-        <!-- Floating pixel antenna -->
-        <rect class="pixel-antenna" x="46" y="6" width="8" height="8" rx="1" fill="currentColor"/>
-        <!-- Eyes -->
-        <circle class="eye eye-l" cx="36" cy="44" r="4.5" fill="currentColor"/>
-        <circle class="eye eye-r" cx="64" cy="44" r="4.5" fill="currentColor"/>
-        <!-- Smile -->
-        <path class="smile" d="M 34 64 Q 50 78 66 64"
-              stroke="currentColor" stroke-width="4"
-              fill="none" stroke-linecap="round"/>
-      </svg>
-    </span>
-
-    <!-- Tiny WhatsApp badge in the corner so destination is clear -->
-    <span class="wa-badge" aria-hidden="true">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.6 6.3A8 8 0 0 0 4 12.3c0 1.4.4 2.8 1 4L4 20l3.8-1a8 8 0 0 0 11.8-7 8 8 0 0 0-2-5.7zm-5.6 12a6.7 6.7 0 0 1-3.4-.9l-.2-.1-2.3.6.6-2.2-.2-.2a6.7 6.7 0 1 1 5.5 2.8zm3.7-5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1l-.7.8c-.1.2-.3.2-.5.1-.6-.3-1.2-.7-1.7-1.2-.4-.4-.8-1-1.1-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.3a.4.4 0 0 0 0-.4l-.7-1.6c-.2-.4-.3-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.4 2.4 0 0 0-.7 1.7c0 1 .7 2 .9 2.1.1.2 1.5 2.3 3.6 3.2.5.2.9.3 1.2.4.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
-      </svg>
-    </span>
-  </a>
+     class="float-wa" aria-label="Contact Pixelhive on WhatsApp"
+     data-cursor data-cursor-label="CHAT"></a>
 
   <!-- ============ ANIMATION LIBRARIES (CDN, no build step) ============ -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -1977,11 +1843,10 @@
     });
 
     // ============================================================
-    // FLOAT-WA — premium GSAP interactions (entry, float, magnetic, tilt, ripple)
+    // FLOAT-WA — premium GSAP interactions (entry, float, magnetic, ripple)
     // ============================================================
     const wa = document.querySelector('.float-wa');
-    const waAvatar = wa && wa.querySelector('.avatar');
-    if (wa && waAvatar) {
+    if (wa) {
       // --- 1. Page entry: spring up from bottom-right ---
       gsap.set(wa, { scale: 0, y: 100, opacity: 0, transformOrigin: 'center center' });
       gsap.to(wa, {
@@ -2002,29 +1867,7 @@
       });
       gsap.delayedCall(5.2, () => idleFloat.play());
 
-      // --- 3. Occasional head tilt (the character "looks around") ---
-      function scheduleHeadTilt() {
-        const tilt = (Math.random() - 0.5) * 10; // -5° to +5°
-        const wait = 6 + Math.random() * 6;       // 6-12s
-        gsap.to(waAvatar, {
-          rotation: tilt,
-          duration: 0.7,
-          ease: 'power2.inOut',
-          delay: wait,
-          onComplete: () => {
-            gsap.to(waAvatar, {
-              rotation: 0,
-              duration: 1.0,
-              ease: 'elastic.out(1, 0.6)',
-              delay: 0.5 + Math.random() * 0.8,
-              onComplete: scheduleHeadTilt
-            });
-          }
-        });
-      }
-      gsap.delayedCall(6.5, scheduleHeadTilt);
-
-      // --- 4. Magnetic hover (desktop pointer only) ---
+      // --- 3. Magnetic hover (desktop pointer only) ---
       if (matchMedia('(pointer: fine)').matches && !prefersReducedMotion) {
         let bounds = wa.getBoundingClientRect();
         const refreshBounds = () => { bounds = wa.getBoundingClientRect(); };
@@ -2038,7 +1881,6 @@
           wa.classList.add('is-hover');
           idleFloat.pause();
           gsap.to(wa, { scale: 1.08, duration: 0.5, ease: 'power3.out' });
-          gsap.to(waAvatar, { scale: 1.1, duration: 0.5, ease: 'power3.out' });
         });
 
         wa.addEventListener('mousemove', (e) => {
@@ -2051,14 +1893,13 @@
         wa.addEventListener('mouseleave', () => {
           wa.classList.remove('is-hover');
           xTo(0); yTo(0);
-          gsap.to(wa, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)' });
-          gsap.to(waAvatar, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)',
+          gsap.to(wa, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)',
             onComplete: () => { idleFloat.resume(); }
           });
         });
       }
 
-      // --- 5. Click ripple (works on touch + mouse) ---
+      // --- 4. Click ripple (works on touch + mouse) ---
       wa.addEventListener('click', (e) => {
         const ripple = document.createElement('span');
         ripple.className = 'wa-ripple';
