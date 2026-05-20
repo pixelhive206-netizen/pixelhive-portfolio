@@ -145,8 +145,21 @@
       width: 26px; height: 26px;
       display: inline-flex; align-items: center; justify-content: center;
       color: var(--accent);
+      margin-right: 10px;
     }
-    .logo .dot { color: var(--accent); }
+    .logo-text { display: inline-block; }
+    .logo-letter {
+      display: inline-block;
+      will-change: transform;
+      transition: text-shadow 0.4s ease;
+    }
+    .logo .dot {
+      color: var(--accent);
+      transition: text-shadow 0.4s ease, color 0.4s ease;
+    }
+    .logo.is-near .dot {
+      text-shadow: 0 0 12px var(--accent), 0 0 28px rgba(251, 191, 36, 0.5);
+    }
     .nav-links { display: flex; gap: 32px; font-size: 13px; font-weight: 500; color: white; }
     .nav-links a { position: relative; padding-bottom: 4px; }
     .nav-links a::after {
@@ -1098,8 +1111,18 @@
           <rect x="42" y="44" width="14" height="14" rx="2"/>
           <rect x="30" y="60" width="14" height="14" rx="2"/>
         </svg>
-      </span>
-      PIXEL<span class="dot">·</span>HIVE
+      </span><span class="logo-text"
+      ><span class="logo-letter">P</span
+      ><span class="logo-letter">I</span
+      ><span class="logo-letter">X</span
+      ><span class="logo-letter">E</span
+      ><span class="logo-letter">L</span
+      ><span class="logo-letter dot">·</span
+      ><span class="logo-letter">H</span
+      ><span class="logo-letter">I</span
+      ><span class="logo-letter">V</span
+      ><span class="logo-letter">E</span
+    ></span>
     </a>
     <div class="nav-links">
       <a href="#services" data-cursor>Services</a>
@@ -1865,6 +1888,25 @@
         weight: 1.2 + i * 0.6  // pixel 1 reacts least, pixel 3 reacts most
       }));
 
+      // Letters of PIXEL·HIVE — each one tracks cursor proximity for the wave effect
+      const letters = logo.querySelectorAll('.logo-letter');
+      const letterData = Array.from(letters).map((l) => ({
+        el: l,
+        yTo: gsap.quickTo(l, 'y', { duration: 0.4, ease: 'power3.out' }),
+        scaleTo: gsap.quickTo(l, 'scale', { duration: 0.4, ease: 'power3.out' }),
+        cx: 0, cy: 0
+      }));
+      function refreshLetterBounds() {
+        letterData.forEach((ld) => {
+          const r = ld.el.getBoundingClientRect();
+          ld.cx = r.left + r.width / 2;
+          ld.cy = r.top + r.height / 2;
+        });
+      }
+      refreshLetterBounds();
+      window.addEventListener('resize', refreshLetterBounds);
+      window.addEventListener('load', refreshLetterBounds);
+
       let isInProximity = false;
 
       document.addEventListener('mousemove', (e) => {
@@ -1886,14 +1928,32 @@
             p.x(dx * strength * 0.06 * p.weight);
             p.y(dy * strength * 0.06 * p.weight);
           });
+          logo.classList.add('is-near');
         } else if (isInProximity) {
           // Just left proximity — elastic snap back to rest
           isInProximity = false;
+          logo.classList.remove('is-near');
           gsap.to(logoMark, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.55)', overwrite: 'auto' });
           pixels.forEach((p) => {
             gsap.to(p, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' });
           });
         }
+
+        // --- Letter wave: each letter lifts + scales based on cursor proximity ---
+        const letterRange = 95;
+        letterData.forEach((ld) => {
+          const ldx = e.clientX - ld.cx;
+          const ldy = e.clientY - ld.cy;
+          const ldist = Math.hypot(ldx, ldy);
+          if (ldist < letterRange) {
+            const s = 1 - ldist / letterRange;
+            ld.yTo(-s * 9);                // lift up to 9px
+            ld.scaleTo(1 + s * 0.18);      // grow up to 1.18x
+          } else {
+            ld.yTo(0);
+            ld.scaleTo(1);
+          }
+        });
       });
     }
 
