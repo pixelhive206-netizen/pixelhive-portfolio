@@ -92,18 +92,27 @@
     }
     .laptop {
       position: relative;
-      width: clamp(280px, 38vw, 400px);
+      width: clamp(300px, 40vw, 440px);
       aspect-ratio: 16 / 10;
       transform-style: preserve-3d;
       transform-origin: center 60%;
       will-change: transform;
+    }
+    /* Soft floor shadow under the laptop */
+    .laptop-shadow {
+      position: absolute;
+      bottom: -32px; left: 6%; right: 6%;
+      height: 22px;
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 65%);
+      filter: blur(10px);
+      pointer-events: none;
     }
     .laptop-base {
       position: absolute; bottom: 0; left: -2.5%; right: -2.5%;
       height: 10px;
       background: linear-gradient(180deg, #2a2e36 0%, #15181d 100%);
       border-radius: 3px 3px 14px 14px;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .laptop-base::after {
       content: ''; position: absolute; bottom: -2px; left: 50%;
@@ -133,6 +142,20 @@
       width: 4px; height: 4px;
       background: #444; border-radius: 50%;
     }
+    /* Power LED that blinks before the screen lights up */
+    .power-led {
+      position: absolute;
+      bottom: 3px; right: 14px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      z-index: 2;
+    }
+    .power-led.on {
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(251, 191, 36, 0.9), 0 0 12px rgba(251, 191, 36, 0.5);
+    }
     .laptop-screen {
       width: 100%; height: 100%;
       background: var(--bg);
@@ -150,6 +173,79 @@
     }
     .laptop-screen.on { background: linear-gradient(135deg, #0b0f14 0%, #141a23 100%); }
     .laptop-screen.on .screen-glow { opacity: 1; }
+    /* CRT scanlines — subtle */
+    .screen-scanlines {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        180deg, transparent 0, transparent 2px,
+        rgba(0, 0, 0, 0.06) 2px, rgba(0, 0, 0, 0.06) 3px
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .laptop-screen.on .screen-scanlines { opacity: 1; }
+
+    /* Browser window inside the screen */
+    .browser-window {
+      position: absolute; inset: 10px;
+      background: #0b0f14;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      opacity: 0;
+    }
+    .browser-bar {
+      display: flex; align-items: center;
+      padding: 5px 8px; gap: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .browser-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+    .browser-dot:nth-child(1) { background: #ff5f57; }
+    .browser-dot:nth-child(2) { background: #febc2e; }
+    .browser-dot:nth-child(3) { background: #28c840; }
+    .browser-url {
+      flex: 1;
+      margin-left: 8px;
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: rgba(255, 255, 255, 0.7);
+      display: flex; align-items: center;
+      gap: 4px;
+      min-width: 0;
+      min-height: 12px;
+    }
+    .lock-icon {
+      color: var(--accent);
+      font-size: 6px;
+    }
+    .url-cursor {
+      display: inline-block;
+      width: 1px; height: 8px;
+      background: var(--accent);
+      animation: cursorBlink 0.8s steps(1) infinite;
+    }
+    @keyframes cursorBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    .browser-content {
+      flex: 1;
+      padding: 12px;
+      display: flex; flex-direction: column;
+      gap: 6px;
+    }
+
     .screen-content {
       position: absolute; inset: 14px;
       display: flex; flex-direction: column; gap: 6px;
@@ -1138,20 +1234,34 @@
 </head>
 <body>
 
-  <!-- ====== LOADER — laptop opens, screen turns on, camera zooms in ====== -->
+  <!-- ====== LOADER — laptop opens, browser appears, URL types, camera dollies in ====== -->
   <div class="loader" id="loader" aria-hidden="true">
     <div class="loader-brand">PIXEL<span style="color:var(--accent)">·</span>HIVE STUDIO</div>
     <div class="laptop" id="laptop">
+      <div class="laptop-shadow"></div>
       <div class="laptop-lid">
         <div class="laptop-bezel">
+          <div class="power-led" id="powerLed"></div>
           <div class="laptop-screen" id="laptopScreen">
             <div class="screen-glow"></div>
-            <div class="screen-content">
-              <div class="screen-label">PIXEL·HIVE · 2026</div>
-              <div class="screen-headline">Websites that load <em>fast,</em><br/>look <em>sharp.</em></div>
-              <div class="screen-line"></div>
-              <div class="screen-line short"></div>
-              <div class="screen-line shorter"></div>
+            <div class="screen-scanlines"></div>
+            <div class="browser-window" id="browserWindow">
+              <div class="browser-bar">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <div class="browser-url">
+                  <span class="lock-icon">●</span>
+                  <span class="url-text" id="urlText"></span>
+                  <span class="url-cursor"></span>
+                </div>
+              </div>
+              <div class="browser-content">
+                <div class="screen-label">PIXEL·HIVE · 2026</div>
+                <div class="screen-headline">Websites that load <em>fast,</em><br/>look <em>sharp.</em></div>
+                <div class="screen-line"></div>
+                <div class="screen-line short"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1743,36 +1853,64 @@
     gsap.ticker.lagSmoothing(0);
     document.documentElement.classList.add('lenis-smooth');
 
-    // Loader — laptop opens, screen turns on, camera zooms in (~2.4s total)
+    // Loader — laptop opens, browser appears, URL types, camera dollies in (~3.2s total)
     const loaderTl = gsap.timeline();
     // Initial state
+    gsap.set('.laptop', { scale: 1, y: 30, opacity: 0 });
     gsap.set('.laptop-lid', { rotationX: -95 });
-    gsap.set('.screen-content', { opacity: 0, y: 6 });
-    gsap.set('.laptop', { scale: 1 });
+    gsap.set('.browser-window', { opacity: 0, scale: 0.97 });
 
     loaderTl
-      // 1. Lid swings open (0 - 0.9s)
-      .to('.laptop-lid', { rotationX: 0, duration: 0.9, ease: 'back.out(1.4)' }, 0)
-      // 2. Screen turns on mid-open (0.55s mark)
-      .call(() => { document.getElementById('laptopScreen').classList.add('on'); }, null, 0.55)
-      // 3. Screen content fades in (0.9 - 1.3s)
-      .to('.screen-content', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.9)
-      // 4. Hold briefly (1.3 - 1.5s) so user can register the mockup
-      // 5. Zoom into the screen — laptop scales up dramatically (1.5 - 2.3s)
-      .to('.laptop', { scale: 22, duration: 0.8, ease: 'power3.inOut' }, 1.5)
-      // 6. Brand label + screen content fade as zoom advances (1.5 - 2.0s)
-      .to('.loader-brand', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 1.5)
-      .to('.screen-content', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 1.8)
-      // 7. Loader overlay fades to reveal the real page (2.0 - 2.4s)
-      .to('#loader', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 2.0)
-      // 8. Clean up DOM
-      .call(() => { const l = document.getElementById('loader'); if (l) l.remove(); }, null, 2.45);
+      // 1. Laptop fades up into place (0 - 0.5s)
+      .to('.laptop', { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, 0)
+      // 2. Lid swings open (0.05 - 0.95s)
+      .to('.laptop-lid', { rotationX: 0, duration: 0.9, ease: 'back.out(1.3)' }, 0.05)
+      // 3. Power LED blinks twice (0.45s mark) before screen turns on
+      .call(() => {
+        const led = document.getElementById('powerLed');
+        if (!led) return;
+        led.classList.add('on');
+        setTimeout(() => led.classList.remove('on'), 80);
+        setTimeout(() => led.classList.add('on'), 200);
+      }, null, 0.45)
+      // 4. Screen turns on with brief flicker (0.75s)
+      .call(() => {
+        const screen = document.getElementById('laptopScreen');
+        if (!screen) return;
+        screen.classList.add('on');
+        // Flicker: dim → bright → dim → settle
+        const flicker = [{ d: 80, o: '0.4' }, { d: 130, o: '1' }, { d: 200, o: '0.65' }, { d: 280, o: '1' }];
+        flicker.forEach(f => setTimeout(() => screen.style.opacity = f.o, f.d));
+      }, null, 0.75)
+      // 5. Browser window fades in (1.0 - 1.4s)
+      .to('.browser-window', { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 1.0)
+      // 6. URL types character-by-character (1.25 - 1.85s)
+      .call(() => {
+        const url = 'pixelhivestudio.in';
+        const urlEl = document.getElementById('urlText');
+        if (!urlEl) return;
+        let i = 0;
+        const typeInt = setInterval(() => {
+          if (i > url.length) { clearInterval(typeInt); return; }
+          urlEl.textContent = url.substring(0, i);
+          i++;
+        }, 35);
+      }, null, 1.25)
+      // 7. Hold briefly so the user registers what they're seeing (1.85 - 2.2s)
+      // 8. Camera dolly-in (2.2 - 3.1s) — slower, softer, more cinematic
+      .to('.laptop', { scale: 7, duration: 0.9, ease: 'expo.inOut' }, 2.2)
+      // 9. Brand label fades during zoom (2.2 - 2.6s)
+      .to('.loader-brand', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 2.2)
+      // 10. Loader overlay fades to reveal the real page (2.75 - 3.15s)
+      .to('#loader', { opacity: 0, duration: 0.4, ease: 'power2.out' }, 2.75)
+      // 11. Clean up DOM
+      .call(() => { const l = document.getElementById('loader'); if (l) l.remove(); }, null, 3.2);
 
-    // Hero
+    // Hero — delays match the laptop-loader fade-out so chars rise as the screen reveals
     gsap.set('.hero .char', { y: '110%' });
-    gsap.to('.hero .char', { y: 0, stagger: 0.018, duration: 1.0, ease: 'expo.out', delay: 2.4 });
-    gsap.to('.hero-footer .lede', { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', delay: 3.3 });
-    gsap.to('.hero-actions', { opacity: 1, duration: 0.9, ease: 'expo.out', delay: 3.5 });
+    gsap.to('.hero .char', { y: 0, stagger: 0.018, duration: 1.0, ease: 'expo.out', delay: 3.0 });
+    gsap.to('.hero-footer .lede', { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', delay: 3.9 });
+    gsap.to('.hero-actions', { opacity: 1, duration: 0.9, ease: 'expo.out', delay: 4.1 });
 
     // Case studies
     gsap.utils.toArray('.case').forEach((caseEl) => {
@@ -2001,7 +2139,7 @@
         scale: 1, y: 0, opacity: 1,
         duration: 1.4,
         ease: 'elastic.out(1, 0.55)',
-        delay: 3.8
+        delay: 4.4
       });
 
       // --- 2. Idle vertical float (paused on hover) ---
@@ -2013,7 +2151,7 @@
         repeat: -1,
         paused: true
       });
-      gsap.delayedCall(5.2, () => idleFloat.play());
+      gsap.delayedCall(5.8, () => idleFloat.play());
 
       // --- 3. Magnetic hover (desktop pointer only) ---
       if (matchMedia('(pointer: fine)').matches && !prefersReducedMotion) {
