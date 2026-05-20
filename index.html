@@ -895,6 +895,97 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
+    /* ============================================================ FLOATING WHATSAPP — Cuberto-style ============================================================ */
+    .float-wa {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 100;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #25d366;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.45s ease;
+      animation: waBreath 3.4s ease-in-out infinite;
+    }
+    .float-wa::before,
+    .float-wa::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(37, 211, 102, 0.55);
+      animation: waRipple 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      pointer-events: none;
+    }
+    .float-wa::after { animation-delay: -1.3s; }
+    @keyframes waRipple {
+      0% { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+    @keyframes waBreath {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    .float-wa .wa-icon {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .float-wa:hover {
+      animation-play-state: paused;
+      transform: scale(1.08);
+      box-shadow: 0 18px 44px rgba(37, 211, 102, 0.55);
+    }
+    .float-wa:hover .wa-icon {
+      transform: rotate(-12deg) scale(1.1);
+    }
+    .float-wa .wa-label {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      margin-right: 16px;
+      padding: 10px 18px;
+      background: var(--ink-bright);
+      color: var(--bg);
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(-50%) translateX(12px);
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .float-wa .wa-label::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: var(--ink-bright);
+    }
+    .float-wa:hover .wa-label {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .float-wa { animation: none; }
+      .float-wa::before, .float-wa::after { animation: none; opacity: 0; }
+    }
+
     /* ============================================================ MOBILE OVERRIDES ============================================================ */
     @media (max-width: 800px) {
       nav { padding: 18px 20px; top: 0; }
@@ -978,6 +1069,12 @@
       .case-text h3 { font-size: 28px; }
     }
 
+    /* Smaller WhatsApp button on phones; hide the tooltip label */
+    @media (max-width: 800px) {
+      .float-wa { bottom: 20px; right: 20px; width: 56px; height: 56px; }
+      .float-wa .wa-label { display: none; }
+    }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .loader { display: none !important; }
@@ -993,7 +1090,7 @@
 
   <!-- ====== LOADER ====== -->
   <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader-label">Pixelhive Studio · Loading</div>
+    <div class="loader-label">PIXEL<span style="color:var(--accent)">·</span>HIVE STUDIO · Loading</div>
     <div class="loader-count" id="loaderCount">0<span class="pct">%</span></div>
     <div class="loader-bar" id="loaderBar"></div>
   </div>
@@ -1441,7 +1538,7 @@
         <span class="ico">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.6-.3z"/><path d="M20 4a10 10 0 0 0-17 9l-1 4 4-1a10 10 0 0 0 14-12zm-8 17a8 8 0 0 1-4-1l-3 1 1-3a8 8 0 1 1 6 3z"/></svg>
         </span>
-        <span>WhatsApp · +91 93603 45471</span>
+        <span>Chat on WhatsApp</span>
       </a>
       <a href="https://instagram.com/pixelhive__studio" target="_blank" rel="noopener" class="pill" data-cursor data-cursor-label="FOLLOW">
         <span class="ico">
@@ -1508,14 +1605,17 @@
     </div>
   </section>
 
-  <!-- ====== FLOATING WHATSAPP ====== -->
+  <!-- ====== FLOATING WHATSAPP — Cuberto-style ====== -->
   <a href="https://wa.me/919360345471?text=Hi%20Pixelhive%2C%20I%27d%20like%20to%20discuss%20a%20project."
      target="_blank" rel="noopener"
      class="float-wa" aria-label="Chat on WhatsApp"
-     style="position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,0.4);z-index:50;transition:transform 0.3s ease,box-shadow 0.3s ease"
-     onmouseover="this.style.transform='translateY(-4px) scale(1.05)';this.style.boxShadow='0 16px 32px rgba(37,211,102,0.5)'"
-     onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(37,211,102,0.4)'">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.3A8 8 0 0 0 4 12.3c0 1.4.4 2.8 1 4L4 20l3.8-1a8 8 0 0 0 11.8-7 8 8 0 0 0-2-5.7zm-5.6 12a6.7 6.7 0 0 1-3.4-.9l-.2-.1-2.3.6.6-2.2-.2-.2a6.7 6.7 0 1 1 5.5 2.8zm3.7-5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1l-.7.8c-.1.2-.3.2-.5.1-.6-.3-1.2-.7-1.7-1.2-.4-.4-.8-1-1.1-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.3a.4.4 0 0 0 0-.4l-.7-1.6c-.2-.4-.3-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.4 2.4 0 0 0-.7 1.7c0 1 .7 2 .9 2.1.1.2 1.5 2.3 3.6 3.2.5.2.9.3 1.2.4.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/></svg>
+     data-cursor data-cursor-label="CHAT">
+    <span class="wa-label">Let's talk on WhatsApp</span>
+    <span class="wa-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.6 6.3A8 8 0 0 0 4 12.3c0 1.4.4 2.8 1 4L4 20l3.8-1a8 8 0 0 0 11.8-7 8 8 0 0 0-2-5.7zm-5.6 12a6.7 6.7 0 0 1-3.4-.9l-.2-.1-2.3.6.6-2.2-.2-.2a6.7 6.7 0 1 1 5.5 2.8zm3.7-5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1l-.7.8c-.1.2-.3.2-.5.1-.6-.3-1.2-.7-1.7-1.2-.4-.4-.8-1-1.1-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.3a.4.4 0 0 0 0-.4l-.7-1.6c-.2-.4-.3-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.4 2.4 0 0 0-.7 1.7c0 1 .7 2 .9 2.1.1.2 1.5 2.3 3.6 3.2.5.2.9.3 1.2.4.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
+      </svg>
+    </span>
   </a>
 
   <!-- ============ ANIMATION LIBRARIES (CDN, no build step) ============ -->
