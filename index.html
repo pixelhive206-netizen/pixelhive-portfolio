@@ -596,6 +596,74 @@
     }
     .testimonial-attr .role { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
+    /* Full testimonial body + read-more toggle */
+    .testimonial-full {
+      margin-top: 64px;
+      max-width: 760px;
+    }
+    .testimonial-body p {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 24px;
+      max-width: 65ch;
+    }
+    .testimonial-body p:last-child { margin-bottom: 0; }
+    .testimonial-body p::first-letter {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15em;
+      color: var(--ink-bright);
+    }
+    .testimonial-more {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.4s ease 0.05s;
+    }
+    .testimonial-more.open {
+      max-height: 2400px;
+      opacity: 1;
+    }
+    .testimonial-more p:first-child { margin-top: 24px; }
+    .testimonial-toggle {
+      margin-top: 32px;
+      padding: 14px 26px;
+      border: 1px solid var(--line-strong);
+      background: transparent;
+      border-radius: 999px;
+      color: var(--ink-bright);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  color 0.35s ease,
+                  border-color 0.35s ease,
+                  gap 0.3s ease;
+    }
+    .testimonial-toggle:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      gap: 16px;
+    }
+    .testimonial-toggle .toggle-label-less { display: none; }
+    .testimonial-toggle.open .toggle-label-more { display: none; }
+    .testimonial-toggle.open .toggle-label-less { display: inline; }
+    .testimonial-toggle .toggle-arrow {
+      font-family: 'JetBrains Mono', monospace;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 14px;
+      line-height: 1;
+    }
+    .testimonial-toggle.open .toggle-arrow { transform: rotate(180deg); }
+
     /* ============================================================ PRICING ============================================================ */
     .pricing-grid {
       display: grid;
@@ -1128,6 +1196,28 @@
         <div class="role">Advocate, Madras High Court · Founder, Maram The Tree Foundation</div>
       </div>
     </div>
+
+    <div class="testimonial-full">
+      <div class="testimonial-body">
+        <p>Working with Pixelhive has been an exceptional experience from both a strategic and operational standpoint. What impressed us most was their ability to deeply understand not just our business requirements, but the core values, vision, and purpose driving our organization.</p>
+
+        <div class="testimonial-more" id="testimonialMore">
+          <p>From the initial discussions to the final deployment, the team demonstrated remarkable professionalism, agility, and commitment. Their turnaround time was outstanding, yet they never compromised on quality or attention to detail. Every interaction reflected transparency, accountability, and a genuine dedication to delivering beyond expectations.</p>
+
+          <p>What truly differentiates Pixelhive is their ability to transform ideas into impactful digital experiences. They didn't simply execute instructions — they brought fresh perspectives, innovative thinking, and highly effective digital solutions that elevated our vision far beyond what we initially imagined. Their out-of-the-box approach, combined with strong technical execution, resulted in a platform that is not only visually impressive but strategically aligned with our long-term goals.</p>
+
+          <p>The communication throughout the project was seamless and highly effective. The team was patient, collaborative, and proactive in refining every aspect of the delivery. Their ability to convert complex business concepts into a clean, engaging, and user-centric digital platform is truly commendable.</p>
+
+          <p>Pixelhive exemplifies what a modern digital transformation partner should be — innovative, reliable, quality-driven, and deeply committed to client success. We look forward to continuing this partnership for future initiatives.</p>
+        </div>
+      </div>
+
+      <button class="testimonial-toggle" id="testimonialToggle" type="button" aria-expanded="false" aria-controls="testimonialMore" data-cursor>
+        <span class="toggle-label-more">Read full testimonial</span>
+        <span class="toggle-label-less">Show less</span>
+        <span class="toggle-arrow">↓</span>
+      </button>
+    </div>
   </section>
 
   <!-- ====== PRICING ====== -->
@@ -1380,6 +1470,19 @@
     }
     updateLiveTimeEarly();
     setInterval(updateLiveTimeEarly, 1000);
+
+    // Testimonial toggle (works regardless of motion preference — it's UI, not decoration)
+    const tToggle = document.getElementById('testimonialToggle');
+    const tMore = document.getElementById('testimonialMore');
+    if (tToggle && tMore) {
+      tToggle.addEventListener('click', () => {
+        const opening = !tMore.classList.contains('open');
+        tMore.classList.toggle('open', opening);
+        tToggle.classList.toggle('open', opening);
+        tToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+        setTimeout(() => { if (window.ScrollTrigger) ScrollTrigger.refresh(); }, 700);
+      });
+    }
 
     if (prefersReducedMotion) {
       document.querySelectorAll('.char').forEach(c => c.style.transform = 'none');
