@@ -895,7 +895,7 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
-    /* ============================================================ FLOATING WHATSAPP — Cuberto rotating-text + Pixelhive avatar ============================================================ */
+    /* ============================================================ FLOATING WHATSAPP — Cinematic Pixelhive avatar (GSAP-driven) ============================================================ */
     .float-wa {
       position: fixed;
       bottom: 32px;
@@ -904,31 +904,67 @@
       width: 148px;
       height: 148px;
       border-radius: 50%;
-      background: var(--accent);
+      background:
+        radial-gradient(circle at 35% 30%, #fde68a 0%, var(--accent) 45%, var(--accent-deep) 100%);
       color: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      box-shadow: 0 14px 36px rgba(251, 191, 36, 0.32);
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.5s ease,
-                  background 0.45s ease,
-                  color 0.45s ease;
+      box-shadow:
+        0 24px 60px -12px rgba(251, 191, 36, 0.55),
+        0 8px 22px -4px rgba(217, 119, 6, 0.35),
+        inset 0 -6px 14px rgba(217, 119, 6, 0.18),
+        inset 0 4px 10px rgba(255, 255, 255, 0.3);
+      transition: background 0.45s ease, color 0.45s ease, box-shadow 0.5s ease;
+      will-change: transform;
+      overflow: hidden;
     }
+    /* Ambient glow ring (outside the button) — pulses softly */
     .float-wa::before {
       content: '';
       position: absolute;
-      inset: -6px;
+      inset: -10px;
       border-radius: 50%;
-      border: 1px solid var(--accent);
-      opacity: 0.5;
-      animation: waPing 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.4), transparent 65%);
+      opacity: 0;
+      pointer-events: none;
+      animation: waAmbient 4.2s ease-in-out infinite;
+    }
+    @keyframes waAmbient {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50%      { opacity: 0.65; transform: scale(1.15); }
+    }
+    /* Expanding ping ring (subtle pulse out) */
+    .float-wa::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(251, 191, 36, 0.55);
+      animation: waPing 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
       pointer-events: none;
     }
     @keyframes waPing {
-      0% { transform: scale(1); opacity: 0.5; }
-      100% { transform: scale(1.55); opacity: 0; }
+      0%   { transform: scale(1);    opacity: 0.55; }
+      100% { transform: scale(1.7);  opacity: 0;    }
+    }
+
+    /* Click ripple (created by JS) */
+    .wa-ripple {
+      position: absolute;
+      width: 14px; height: 14px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: waRippleExpand 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes waRippleExpand {
+      to {
+        width: 320px; height: 320px;
+        opacity: 0;
+      }
     }
 
     .float-wa .rotating-text {
@@ -1009,27 +1045,28 @@
                   box-shadow 0.4s ease;
     }
 
-    /* Hover state — invert palette + character leans in */
-    .float-wa:hover {
-      transform: scale(1.06);
-      background: var(--ink-bright);
-      color: var(--bg);
-      box-shadow: 0 22px 52px rgba(251, 191, 36, 0.5);
+    /* Hover state — palette deepens (transforms handled by GSAP) */
+    .float-wa.is-hover {
+      background: radial-gradient(circle at 35% 30%, #fef3c7 0%, #fbbf24 35%, #b45309 100%);
+      box-shadow:
+        0 32px 80px -10px rgba(251, 191, 36, 0.7),
+        0 12px 28px -4px rgba(217, 119, 6, 0.45),
+        inset 0 -6px 14px rgba(180, 83, 9, 0.25),
+        inset 0 4px 10px rgba(255, 255, 255, 0.4);
     }
-    .float-wa:hover .avatar { transform: scale(1.08) rotate(-5deg); }
-    .float-wa:hover .rotating-text { animation-duration: 8s; }
-    .float-wa:hover .wa-badge {
-      transform: scale(1.1);
-      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6),
-                  0 0 0 3px var(--ink-bright);
+    .float-wa.is-hover .rotating-text { animation-duration: 7s; }
+    .float-wa.is-hover .wa-badge {
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.65),
+                  0 0 0 3px var(--accent);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .float-wa::before { animation: none; opacity: 0; }
+      .float-wa::before, .float-wa::after { animation: none; opacity: 0; }
       .float-wa .rotating-text { animation: none; }
       .float-wa .avatar .eye,
       .float-wa .avatar .pixel-antenna,
       .float-wa .avatar .smile { animation: none; }
+      .wa-ripple { animation: none !important; display: none; }
     }
 
     /* ============================================================ MOBILE OVERRIDES ============================================================ */
@@ -1938,6 +1975,103 @@
         onEnterBack: () => gsap.to('body', { backgroundColor: color, duration: 1.0, ease: 'power2.out', overwrite: 'auto' })
       });
     });
+
+    // ============================================================
+    // FLOAT-WA — premium GSAP interactions (entry, float, magnetic, tilt, ripple)
+    // ============================================================
+    const wa = document.querySelector('.float-wa');
+    const waAvatar = wa && wa.querySelector('.avatar');
+    if (wa && waAvatar) {
+      // --- 1. Page entry: spring up from bottom-right ---
+      gsap.set(wa, { scale: 0, y: 100, opacity: 0, transformOrigin: 'center center' });
+      gsap.to(wa, {
+        scale: 1, y: 0, opacity: 1,
+        duration: 1.4,
+        ease: 'elastic.out(1, 0.55)',
+        delay: 3.8
+      });
+
+      // --- 2. Idle vertical float (paused on hover) ---
+      const idleFloat = gsap.to(wa, {
+        y: -10,
+        duration: 2.6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        paused: true
+      });
+      gsap.delayedCall(5.2, () => idleFloat.play());
+
+      // --- 3. Occasional head tilt (the character "looks around") ---
+      function scheduleHeadTilt() {
+        const tilt = (Math.random() - 0.5) * 10; // -5° to +5°
+        const wait = 6 + Math.random() * 6;       // 6-12s
+        gsap.to(waAvatar, {
+          rotation: tilt,
+          duration: 0.7,
+          ease: 'power2.inOut',
+          delay: wait,
+          onComplete: () => {
+            gsap.to(waAvatar, {
+              rotation: 0,
+              duration: 1.0,
+              ease: 'elastic.out(1, 0.6)',
+              delay: 0.5 + Math.random() * 0.8,
+              onComplete: scheduleHeadTilt
+            });
+          }
+        });
+      }
+      gsap.delayedCall(6.5, scheduleHeadTilt);
+
+      // --- 4. Magnetic hover (desktop pointer only) ---
+      if (matchMedia('(pointer: fine)').matches && !prefersReducedMotion) {
+        let bounds = wa.getBoundingClientRect();
+        const refreshBounds = () => { bounds = wa.getBoundingClientRect(); };
+        window.addEventListener('resize', refreshBounds);
+
+        const xTo = gsap.quickTo(wa, 'x', { duration: 0.55, ease: 'power3.out' });
+        const yTo = gsap.quickTo(wa, 'y', { duration: 0.55, ease: 'power3.out' });
+
+        wa.addEventListener('mouseenter', () => {
+          refreshBounds();
+          wa.classList.add('is-hover');
+          idleFloat.pause();
+          gsap.to(wa, { scale: 1.08, duration: 0.5, ease: 'power3.out' });
+          gsap.to(waAvatar, { scale: 1.1, duration: 0.5, ease: 'power3.out' });
+        });
+
+        wa.addEventListener('mousemove', (e) => {
+          const cx = bounds.left + bounds.width / 2;
+          const cy = bounds.top + bounds.height / 2;
+          xTo((e.clientX - cx) * 0.22);
+          yTo((e.clientY - cy) * 0.22);
+        });
+
+        wa.addEventListener('mouseleave', () => {
+          wa.classList.remove('is-hover');
+          xTo(0); yTo(0);
+          gsap.to(wa, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)' });
+          gsap.to(waAvatar, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.5)',
+            onComplete: () => { idleFloat.resume(); }
+          });
+        });
+      }
+
+      // --- 5. Click ripple (works on touch + mouse) ---
+      wa.addEventListener('click', (e) => {
+        const ripple = document.createElement('span');
+        ripple.className = 'wa-ripple';
+        const rect = wa.getBoundingClientRect();
+        ripple.style.left = ((e.clientX || rect.left + rect.width / 2) - rect.left) + 'px';
+        ripple.style.top  = ((e.clientY || rect.top + rect.height / 2) - rect.top)  + 'px';
+        wa.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 720);
+
+        // Press feedback
+        gsap.to(wa, { scale: 0.94, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 });
+      });
+    }
 
     window.addEventListener('load', () => { ScrollTrigger.refresh(); });
   })();
