@@ -895,95 +895,73 @@
       .mega-footer .pill { padding: 16px 22px; font-size: 14.5px; }
     }
 
-    /* ============================================================ FLOATING WHATSAPP — Cuberto-style ============================================================ */
+    /* ============================================================ FLOATING WHATSAPP — Cuberto rotating-text style ============================================================ */
     .float-wa {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
+      bottom: 32px;
+      right: 32px;
       z-index: 100;
-      width: 64px;
-      height: 64px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       background: #25d366;
       color: white;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);
-      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.45s ease;
-      animation: waBreath 3.4s ease-in-out infinite;
+      text-decoration: none;
+      box-shadow: 0 12px 32px rgba(37, 211, 102, 0.4);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease,
+                  background 0.4s ease;
     }
-    .float-wa::before,
-    .float-wa::after {
+    .float-wa::before {
       content: '';
       position: absolute;
-      inset: 0;
+      inset: -6px;
       border-radius: 50%;
-      border: 2px solid rgba(37, 211, 102, 0.55);
-      animation: waRipple 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      border: 1px solid rgba(37, 211, 102, 0.45);
+      animation: waPing 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
       pointer-events: none;
     }
-    .float-wa::after { animation-delay: -1.3s; }
-    @keyframes waRipple {
-      0% { transform: scale(1); opacity: 0.7; }
-      100% { transform: scale(2.4); opacity: 0; }
+    @keyframes waPing {
+      0% { transform: scale(1); opacity: 0.55; }
+      100% { transform: scale(1.55); opacity: 0; }
     }
-    @keyframes waBreath {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
+    .float-wa .rotating-text {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      animation: waRotate 14s linear infinite;
     }
-    .float-wa .wa-icon {
+    .float-wa .rotating-text text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      fill: currentColor;
+    }
+    @keyframes waRotate { to { transform: rotate(360deg); } }
+    .float-wa .center-icon {
       position: relative;
       z-index: 2;
       display: inline-flex;
-      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .float-wa:hover {
-      animation-play-state: paused;
-      transform: scale(1.08);
-      box-shadow: 0 18px 44px rgba(37, 211, 102, 0.55);
+      transform: scale(1.05);
+      background: #1ea854;
+      box-shadow: 0 20px 48px rgba(37, 211, 102, 0.6);
     }
-    .float-wa:hover .wa-icon {
-      transform: rotate(-12deg) scale(1.1);
-    }
-    .float-wa .wa-label {
-      position: absolute;
-      right: 100%;
-      top: 50%;
-      margin-right: 16px;
-      padding: 10px 18px;
-      background: var(--ink-bright);
-      color: var(--bg);
-      border-radius: 999px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateY(-50%) translateX(12px);
-      pointer-events: none;
-      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    }
-    .float-wa .wa-label::after {
-      content: '';
-      position: absolute;
-      right: -5px;
-      top: 50%;
-      transform: translateY(-50%) rotate(45deg);
-      width: 10px;
-      height: 10px;
-      background: var(--ink-bright);
-    }
-    .float-wa:hover .wa-label {
-      opacity: 1;
-      transform: translateY(-50%) translateX(0);
-    }
+    .float-wa:hover .center-icon { transform: rotate(-14deg) scale(1.18); }
+    .float-wa:hover .rotating-text { animation-duration: 7s; }
     @media (prefers-reduced-motion: reduce) {
-      .float-wa { animation: none; }
-      .float-wa::before, .float-wa::after { animation: none; opacity: 0; }
+      .float-wa::before { animation: none; opacity: 0; }
+      .float-wa .rotating-text { animation: none; }
     }
 
     /* ============================================================ MOBILE OVERRIDES ============================================================ */
@@ -1069,10 +1047,15 @@
       .case-text h3 { font-size: 28px; }
     }
 
-    /* Smaller WhatsApp button on phones; hide the tooltip label */
+    /* Smaller WhatsApp button on phones */
     @media (max-width: 800px) {
-      .float-wa { bottom: 20px; right: 20px; width: 56px; height: 56px; }
-      .float-wa .wa-label { display: none; }
+      .float-wa { bottom: 20px; right: 20px; width: 100px; height: 100px; }
+      .float-wa .rotating-text text { font-size: 16px; letter-spacing: 2px; }
+      .float-wa .center-icon svg { width: 24px; height: 24px; }
+    }
+    @media (max-width: 420px) {
+      .float-wa { width: 88px; height: 88px; }
+      .float-wa .rotating-text text { font-size: 14px; letter-spacing: 1.5px; }
     }
 
     /* Reduced motion */
@@ -1605,14 +1588,21 @@
     </div>
   </section>
 
-  <!-- ====== FLOATING WHATSAPP — Cuberto-style ====== -->
+  <!-- ====== FLOATING WHATSAPP — Cuberto rotating-text circle ====== -->
   <a href="https://wa.me/919360345471?text=Hi%20Pixelhive%2C%20I%27d%20like%20to%20discuss%20a%20project."
      target="_blank" rel="noopener"
-     class="float-wa" aria-label="Chat on WhatsApp"
+     class="float-wa" aria-label="Let's talk on WhatsApp"
      data-cursor data-cursor-label="CHAT">
-    <span class="wa-label">Let's talk on WhatsApp</span>
-    <span class="wa-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="rotating-text" viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <path id="waTextCircle" d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" fill="none"/>
+      </defs>
+      <text>
+        <textPath href="#waTextCircle" startOffset="0">LET'S TALK · LET'S TALK · LET'S TALK · LET'S TALK · </textPath>
+      </text>
+    </svg>
+    <span class="center-icon" aria-hidden="true">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
         <path d="M17.6 6.3A8 8 0 0 0 4 12.3c0 1.4.4 2.8 1 4L4 20l3.8-1a8 8 0 0 0 11.8-7 8 8 0 0 0-2-5.7zm-5.6 12a6.7 6.7 0 0 1-3.4-.9l-.2-.1-2.3.6.6-2.2-.2-.2a6.7 6.7 0 1 1 5.5 2.8zm3.7-5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1l-.7.8c-.1.2-.3.2-.5.1-.6-.3-1.2-.7-1.7-1.2-.4-.4-.8-1-1.1-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.3a.4.4 0 0 0 0-.4l-.7-1.6c-.2-.4-.3-.4-.5-.4h-.4a.8.8 0 0 0-.6.3 2.4 2.4 0 0 0-.7 1.7c0 1 .7 2 .9 2.1.1.2 1.5 2.3 3.6 3.2.5.2.9.3 1.2.4.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.4-.3z"/>
       </svg>
     </span>
