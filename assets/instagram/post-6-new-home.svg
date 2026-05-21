@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+
+  <defs>
+    <!-- Subtle radial vignette to give depth -->
+    <radialGradient id="bgGlow" cx="0.5" cy="0.42" r="0.7">
+      <stop offset="0" stop-color="#1a1f28"/>
+      <stop offset="1" stop-color="#0e1116"/>
+    </radialGradient>
+    <!-- Soft gold glow behind the logo mark -->
+    <radialGradient id="goldGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="url(#bgGlow)"/>
+
+  <!-- Decorative hexagons (very subtle, gold on dark) -->
+  <g opacity="0.10">
+    <g transform="translate(900 140)">
+      <path d="M0 -90 L78 -45 L78 45 L0 90 L-78 45 L-78 -45 Z"
+            fill="none" stroke="#fbbf24" stroke-width="5"/>
+    </g>
+    <g transform="translate(140 940)">
+      <path d="M0 -55 L48 -27 L48 27 L0 55 L-48 27 L-48 -27 Z"
+            fill="#fbbf24"/>
+    </g>
+    <g transform="translate(960 820)">
+      <path d="M0 -35 L30 -17 L30 17 L0 35 L-30 17 L-30 -17 Z"
+            fill="#fbbf24"/>
+    </g>
+  </g>
+
+  <!-- Glow under logo mark -->
+  <circle cx="540" cy="260" r="200" fill="url(#goldGlow)"/>
+
+  <!-- Logo mark: hex outline + inner pixel shapes (matches new profile logo) -->
+  <g transform="translate(540 260)">
+    <path d="M0 -78 L68 -39 L68 39 L0 78 L-68 39 L-68 -39 Z"
+          fill="none" stroke="#fbbf24" stroke-width="7" stroke-linejoin="round"/>
+    <!-- Three offset pixel squares -->
+    <rect x="-22" y="-30" width="20" height="20" rx="3" fill="#fbbf24"/>
+    <rect x="2"   y="-6"  width="20" height="20" rx="3" fill="#fbbf24"/>
+    <rect x="-20" y="18"  width="20" height="20" rx="3" fill="#fbbf24"/>
+  </g>
+
+  <!-- Tag chip -->
+  <g transform="translate(540 410)">
+    <rect x="-105" y="-22" width="210" height="44" rx="22"
+          fill="rgba(251, 191, 36, 0.12)" stroke="rgba(251, 191, 36, 0.3)" stroke-width="1"/>
+    <text x="0" y="6" text-anchor="middle"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="600"
+          font-size="18"
+          fill="#fbbf24"
+          letter-spacing="4">NEW DOMAIN</text>
+  </g>
+
+  <!-- Main headline -->
+  <text x="540" y="600" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
+        font-weight="500"
+        font-size="150"
+        fill="#ffffff"
+        letter-spacing="-5">A new <tspan fill="#fbbf24" font-style="italic">home.</tspan></text>
+
+  <!-- Divider -->
+  <line x1="430" y1="680" x2="650" y2="680" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+
+  <!-- Domain reveal -->
+  <text x="540" y="755" text-anchor="middle"
+        font-family="'Inter', system-ui, sans-serif"
+        font-weight="500"
+        font-size="38"
+        fill="#ffffff">pixelhivestudio.in</text>
+
+  <!-- Subtagline -->
+  <text x="540" y="815" text-anchor="middle"
+        font-family="'Inter', system-ui, sans-serif"
+        font-weight="400"
+        font-size="24"
+        fill="rgba(255,255,255,0.55)">Hand-coded modern websites</text>
+  <text x="540" y="852" text-anchor="middle"
+        font-family="'Inter', system-ui, sans-serif"
+        font-weight="400"
+        font-size="24"
+        fill="rgba(255,255,255,0.55)">for businesses, non-profits and creators</text>
+
+  <!-- Bottom handle -->
+  <text x="540" y="990" text-anchor="middle"
+        font-family="'Inter', system-ui, sans-serif"
+        font-weight="600"
+        font-size="22"
+        fill="#fbbf24"
+        letter-spacing="2">@PIXELHIVE__STUDIO</text>
+
+</svg>
