@@ -1947,7 +1947,9 @@
       });
     }
 
-    if (prefersReducedMotion) {
+    const isCaptureMode = new URLSearchParams(location.search).has('capture');
+
+    if (prefersReducedMotion || isCaptureMode) {
       document.querySelectorAll('.char').forEach(c => c.style.transform = 'none');
       document.querySelectorAll('.case-anim > *, .section-anim > *, .hero-footer .lede, .hero-actions, .testimonial-attr')
         .forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });

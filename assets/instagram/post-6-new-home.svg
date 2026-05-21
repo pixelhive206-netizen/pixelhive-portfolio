@@ -2,98 +2,201 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
 
   <defs>
-    <!-- Subtle radial vignette to give depth -->
-    <radialGradient id="bgGlow" cx="0.5" cy="0.42" r="0.7">
-      <stop offset="0" stop-color="#1a1f28"/>
-      <stop offset="1" stop-color="#0e1116"/>
+    <!-- Layered background: deep base + soft top-light + subtle corner gradient -->
+    <radialGradient id="bgBase" cx="0.5" cy="0.35" r="0.9">
+      <stop offset="0" stop-color="#1c222d"/>
+      <stop offset="0.55" stop-color="#10141b"/>
+      <stop offset="1" stop-color="#080a0f"/>
     </radialGradient>
-    <!-- Soft gold glow behind the logo mark -->
-    <radialGradient id="goldGlow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.22"/>
+
+    <!-- Warm gold glow halo behind the mark -->
+    <radialGradient id="goldHalo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.35"/>
+      <stop offset="0.6" stop-color="#fbbf24" stop-opacity="0.06"/>
       <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
     </radialGradient>
+
+    <!-- Subtle film grain via fractal noise -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+      <feColorMatrix type="matrix"
+        values="0 0 0 0 1
+                0 0 0 0 1
+                0 0 0 0 1
+                0 0 0 0.04 0"/>
+    </filter>
+
+    <!-- Soft glow for headline / mark -->
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Faint hairline pattern (editorial micro-grid) -->
+    <pattern id="microGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M0 0 H60 M0 0 V60"
+            stroke="#ffffff" stroke-opacity="0.018" stroke-width="1"/>
+    </pattern>
+
+    <!-- Gold gradient for the hex outline (subtle 3D feel) -->
+    <linearGradient id="goldStroke" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Inner pixel-square fill -->
+    <linearGradient id="pixelFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="1080" height="1080" fill="url(#bgGlow)"/>
+  <!-- Layered background -->
+  <rect width="1080" height="1080" fill="url(#bgBase)"/>
+  <rect width="1080" height="1080" fill="url(#microGrid)"/>
+
+  <!-- Editorial corner marks (hairline L-brackets) -->
+  <g stroke="#fbbf24" stroke-opacity="0.4" stroke-width="1.5" fill="none">
+    <!-- top-left -->
+    <path d="M50 80 V50 H80"/>
+    <!-- top-right -->
+    <path d="M1030 80 V50 H1000"/>
+    <!-- bottom-left -->
+    <path d="M50 1000 V1030 H80"/>
+    <!-- bottom-right -->
+    <path d="M1030 1000 V1030 H1000"/>
+  </g>
+
+  <!-- Editorial header row: EST. + VOL -->
+  <g font-family="'Inter', system-ui, sans-serif" font-size="14" letter-spacing="3" fill="#fbbf24" fill-opacity="0.55" font-weight="500">
+    <text x="100" y="105">EST.&#160;MMXXV</text>
+    <text x="980" y="105" text-anchor="end">VOL.&#160;06&#160;/&#160;NEW HOME</text>
+  </g>
+  <line x1="100" y1="125" x2="980" y2="125" stroke="#fbbf24" stroke-opacity="0.15" stroke-width="1"/>
 
   <!-- Decorative hexagons (very subtle, gold on dark) -->
-  <g opacity="0.10">
-    <g transform="translate(900 140)">
-      <path d="M0 -90 L78 -45 L78 45 L0 90 L-78 45 L-78 -45 Z"
-            fill="none" stroke="#fbbf24" stroke-width="5"/>
+  <g opacity="0.08">
+    <g transform="translate(900 200)">
+      <path d="M0 -75 L65 -38 L65 38 L0 75 L-65 38 L-65 -38 Z"
+            fill="none" stroke="#fbbf24" stroke-width="4"/>
     </g>
-    <g transform="translate(140 940)">
+    <g transform="translate(160 920)">
       <path d="M0 -55 L48 -27 L48 27 L0 55 L-48 27 L-48 -27 Z"
             fill="#fbbf24"/>
     </g>
-    <g transform="translate(960 820)">
+    <g transform="translate(150 220)">
+      <path d="M0 -28 L24 -14 L24 14 L0 28 L-24 14 L-24 -14 Z"
+            fill="none" stroke="#fbbf24" stroke-width="2"/>
+    </g>
+    <g transform="translate(920 880)">
       <path d="M0 -35 L30 -17 L30 17 L0 35 L-30 17 L-30 -17 Z"
             fill="#fbbf24"/>
     </g>
   </g>
 
-  <!-- Glow under logo mark -->
-  <circle cx="540" cy="260" r="200" fill="url(#goldGlow)"/>
+  <!-- Glow halo under logo mark -->
+  <circle cx="540" cy="285" r="220" fill="url(#goldHalo)"/>
 
-  <!-- Logo mark: hex outline + inner pixel shapes (matches new profile logo) -->
-  <g transform="translate(540 260)">
-    <path d="M0 -78 L68 -39 L68 39 L0 78 L-68 39 L-68 -39 Z"
-          fill="none" stroke="#fbbf24" stroke-width="7" stroke-linejoin="round"/>
-    <!-- Three offset pixel squares -->
-    <rect x="-22" y="-30" width="20" height="20" rx="3" fill="#fbbf24"/>
-    <rect x="2"   y="-6"  width="20" height="20" rx="3" fill="#fbbf24"/>
-    <rect x="-20" y="18"  width="20" height="20" rx="3" fill="#fbbf24"/>
+  <!-- Logo mark: refined hex + 3 pixel squares -->
+  <g transform="translate(540 285)" filter="url(#softGlow)">
+    <!-- Outer hex with gradient stroke -->
+    <path d="M0 -82 L71 -41 L71 41 L0 82 L-71 41 L-71 -41 Z"
+          fill="none" stroke="url(#goldStroke)" stroke-width="6" stroke-linejoin="round"/>
+    <!-- Inner accent hairline -->
+    <path d="M0 -68 L59 -34 L59 34 L0 68 L-59 34 L-59 -34 Z"
+          fill="none" stroke="#fbbf24" stroke-opacity="0.25" stroke-width="1"/>
+    <!-- Three offset pixel squares (staircase pattern) -->
+    <rect x="-26" y="-34" width="22" height="22" rx="3" fill="url(#pixelFill)"/>
+    <rect x="2"   y="-7"  width="22" height="22" rx="3" fill="url(#pixelFill)"/>
+    <rect x="-24" y="20"  width="22" height="22" rx="3" fill="url(#pixelFill)"/>
   </g>
 
-  <!-- Tag chip -->
-  <g transform="translate(540 410)">
-    <rect x="-105" y="-22" width="210" height="44" rx="22"
-          fill="rgba(251, 191, 36, 0.12)" stroke="rgba(251, 191, 36, 0.3)" stroke-width="1"/>
+  <!-- Live status dot under mark -->
+  <g transform="translate(540 405)">
+    <circle r="5" fill="#fbbf24"/>
+    <circle r="11" fill="none" stroke="#fbbf24" stroke-opacity="0.35" stroke-width="1.5"/>
+  </g>
+
+  <!-- Tag chip with flanking dots -->
+  <g transform="translate(540 460)">
+    <circle cx="-130" cy="0" r="2" fill="#fbbf24" fill-opacity="0.5"/>
+    <circle cx="130" cy="0" r="2" fill="#fbbf24" fill-opacity="0.5"/>
+    <rect x="-110" y="-20" width="220" height="40" rx="20"
+          fill="rgba(251, 191, 36, 0.10)" stroke="rgba(251, 191, 36, 0.35)" stroke-width="1"/>
     <text x="0" y="6" text-anchor="middle"
           font-family="'Inter', system-ui, sans-serif"
           font-weight="600"
-          font-size="18"
+          font-size="16"
           fill="#fbbf24"
-          letter-spacing="4">NEW DOMAIN</text>
+          letter-spacing="5">NEW DOMAIN</text>
   </g>
 
-  <!-- Main headline -->
-  <text x="540" y="600" text-anchor="middle"
+  <!-- Main headline (two-line for editorial weight) -->
+  <text x="540" y="610" text-anchor="middle"
         font-family="'Fraunces', 'Playfair Display', Georgia, serif"
         font-weight="500"
-        font-size="150"
+        font-size="120"
         fill="#ffffff"
-        letter-spacing="-5">A new <tspan fill="#fbbf24" font-style="italic">home.</tspan></text>
-
-  <!-- Divider -->
-  <line x1="430" y1="680" x2="650" y2="680" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
-
-  <!-- Domain reveal -->
-  <text x="540" y="755" text-anchor="middle"
-        font-family="'Inter', system-ui, sans-serif"
+        letter-spacing="-4">A new</text>
+  <text x="540" y="730" text-anchor="middle"
+        font-family="'Fraunces', 'Playfair Display', Georgia, serif"
         font-weight="500"
-        font-size="38"
-        fill="#ffffff">pixelhivestudio.in</text>
+        font-style="italic"
+        font-size="130"
+        fill="#fbbf24"
+        letter-spacing="-4"
+        filter="url(#softGlow)">home.</text>
+
+  <!-- Decorative divider with center diamond -->
+  <g transform="translate(540 790)">
+    <line x1="-200" y1="0" x2="-14" y2="0" stroke="#fbbf24" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="14" y1="0" x2="200" y2="0" stroke="#fbbf24" stroke-opacity="0.25" stroke-width="1"/>
+    <path d="M0 -5 L5 0 L0 5 L-5 0 Z" fill="#fbbf24" fill-opacity="0.6"/>
+  </g>
+
+  <!-- Domain capsule -->
+  <g transform="translate(540 855)">
+    <rect x="-220" y="-30" width="440" height="60" rx="30"
+          fill="rgba(255,255,255,0.04)" stroke="rgba(251, 191, 36, 0.25)" stroke-width="1"/>
+    <text x="-185" y="8" text-anchor="start"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="400"
+          font-size="22"
+          fill="#fbbf24"
+          fill-opacity="0.7">↗</text>
+    <text x="0" y="9" text-anchor="middle"
+          font-family="'Inter', 'SF Mono', system-ui, sans-serif"
+          font-weight="500"
+          font-size="28"
+          fill="#ffffff"
+          letter-spacing="0.5">pixelhivestudio.in</text>
+  </g>
 
   <!-- Subtagline -->
-  <text x="540" y="815" text-anchor="middle"
+  <text x="540" y="935" text-anchor="middle"
         font-family="'Inter', system-ui, sans-serif"
         font-weight="400"
-        font-size="24"
-        fill="rgba(255,255,255,0.55)">Hand-coded modern websites</text>
-  <text x="540" y="852" text-anchor="middle"
-        font-family="'Inter', system-ui, sans-serif"
-        font-weight="400"
-        font-size="24"
-        fill="rgba(255,255,255,0.55)">for businesses, non-profits and creators</text>
+        font-size="20"
+        fill="rgba(255,255,255,0.5)"
+        letter-spacing="0.3">Hand-coded modern websites for businesses, non-profits and creators</text>
 
-  <!-- Bottom handle -->
-  <text x="540" y="990" text-anchor="middle"
-        font-family="'Inter', system-ui, sans-serif"
-        font-weight="600"
-        font-size="22"
-        fill="#fbbf24"
-        letter-spacing="2">@PIXELHIVE__STUDIO</text>
+  <!-- Bottom handle with flanking hairlines -->
+  <g transform="translate(540 1005)">
+    <line x1="-260" y1="0" x2="-160" y2="0" stroke="#fbbf24" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="160" y1="0" x2="260" y2="0" stroke="#fbbf24" stroke-opacity="0.25" stroke-width="1"/>
+    <text x="0" y="6" text-anchor="middle"
+          font-family="'Inter', system-ui, sans-serif"
+          font-weight="600"
+          font-size="20"
+          fill="#fbbf24"
+          letter-spacing="3">@PIXELHIVE__STUDIO</text>
+  </g>
+
+  <!-- Top film grain overlay -->
+  <rect width="1080" height="1080" filter="url(#grain)" opacity="0.6"/>
 
 </svg>
