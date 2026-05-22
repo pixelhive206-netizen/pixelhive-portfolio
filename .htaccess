@@ -1,0 +1,17 @@
+# Pixelhive Studio — Apache config (Hostinger)
+# Keep minimal; expand only as needed.
+
+# Custom 404 page
+ErrorDocument 404 /404.html
+
+# Browser caching for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/xml "access plus 1 day"
+</IfModule>

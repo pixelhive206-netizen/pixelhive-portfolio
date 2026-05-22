@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page not found · Pixelhive Studio</title>
+  <meta name="description" content="The page you're looking for doesn't exist. Head back to Pixelhive Studio." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://pixelhivestudio.in/404.html" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><path d='M50 7 L87 28 L87 72 L50 93 L13 72 L13 28 Z' fill='none' stroke='%23fbbf24' stroke-width='8'/><rect x='28' y='28' width='14' height='14' rx='2'/><rect x='42' y='44' width='14' height='14' rx='2'/><rect x='30' y='60' width='14' height='14' rx='2'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --ink: #f5f1ea;
+      --muted: rgba(245, 241, 234, 0.55);
+      --line: rgba(245, 241, 234, 0.12);
+      --accent: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Skip link */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+    /* Top nav minimal */
+    nav {
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--ink); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      letter-spacing: -0.01em;
+    }
+    .logo .mark {
+      width: 22px; height: 22px;
+      display: inline-flex; color: var(--accent);
+    }
+    .logo .dot { color: var(--accent); }
+    .nav-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--muted); text-decoration: none;
+      text-transform: uppercase;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* Main 404 stage */
+    main {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 32px;
+      position: relative;
+      text-align: center;
+    }
+
+    /* Glow blobs */
+    .bg-glow {
+      position: absolute; pointer-events: none;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.6;
+    }
+    .bg-glow-1 {
+      top: -200px; left: -150px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, rgba(251, 191, 36, 0) 65%);
+      animation: glowDrift1 22s ease-in-out infinite;
+    }
+    .bg-glow-2 {
+      bottom: -250px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.28) 0%, rgba(217, 119, 6, 0) 65%);
+      animation: glowDrift2 28s ease-in-out infinite;
+    }
+    @keyframes glowDrift1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(80px, 60px) scale(1.1); }
+    }
+    @keyframes glowDrift2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(-80px, -60px) scale(1.05); }
+    }
+
+    /* Hexagon mark above 404 */
+    .stage-hex {
+      width: 70px; height: 80px;
+      margin-bottom: 36px;
+      animation: hexBob 4s ease-in-out infinite;
+      position: relative; z-index: 1;
+    }
+    @keyframes hexBob {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .code {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(96px, 22vw, 240px);
+      font-weight: 500; line-height: 0.9;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      position: relative; z-index: 1;
+    }
+    .code em {
+      font-style: italic; font-weight: 500;
+      background: linear-gradient(
+        90deg,
+        var(--accent) 0%,
+        var(--accent) 40%,
+        #fff4cc 50%,
+        var(--accent) 60%,
+        var(--accent) 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: var(--accent);
+      animation: shineSweep 5.5s linear infinite;
+    }
+    @keyframes shineSweep {
+      0%   { background-position: 220% 0; }
+      100% { background-position: -120% 0; }
+    }
+
+    .headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 500;
+      margin: 28px 0 14px;
+      letter-spacing: -0.01em;
+      position: relative; z-index: 1;
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 44ch;
+      line-height: 1.6;
+      margin: 0 auto 40px;
+      position: relative; z-index: 1;
+    }
+
+    .actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px;
+      border: 1px solid rgba(245, 241, 234, 0.25);
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 500;
+      color: var(--ink); text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
+    .btn:hover {
+      background: var(--accent); color: #0b0f14;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background: var(--accent); color: #0b0f14;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: #fde68a;
+      border-color: #fde68a;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 32px;
+      text-align: center;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { padding: 18px 22px; }
+      main { padding: 40px 22px; }
+      .bg-glow-2 { display: none; }
+      .bg-glow-1 { width: 360px; height: 360px; filter: blur(34px); }
+      .actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; }
+      .btn { justify-content: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg-glow, .stage-hex, .code em { animation: none; }
+      .code em { background: none; color: var(--accent); -webkit-text-fill-color: currentColor; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <span class="mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 7 L17 9.5 L17 14.5 L12 17 L7 14.5 L7 9.5 Z" fill="currentColor"/></svg>
+      </span>
+      PIXEL<span class="dot">·</span>HIVE
+    </a>
+    <a href="/" class="nav-back">← Back to home</a>
+  </nav>
+
+  <main>
+    <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+    <svg class="stage-hex" viewBox="0 0 70 80" aria-hidden="true">
+      <path d="M35 4 L66 22 L66 58 L35 76 L4 58 L4 22 Z" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <rect x="22" y="22" width="11" height="11" rx="2" fill="#fbbf24"/>
+      <rect x="33" y="34" width="11" height="11" rx="2" fill="#fbbf24"/>
+      <rect x="24" y="46" width="11" height="11" rx="2" fill="#fbbf24"/>
+    </svg>
+
+    <h1 class="code">4<em>0</em>4</h1>
+
+    <p class="headline">This URL slipped past us.</p>
+    <p class="lede">The page you're looking for doesn't exist — or it's been moved. Hand-coded with care, but even we miss the occasional link.</p>
+
+    <div class="actions">
+      <a href="/" class="btn btn-primary">← Back to home</a>
+      <a href="/#work" class="btn">See our work</a>
+      <a href="/#contact" class="btn">Start a project</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Pixelhive Studio · <a href="/">pixelhivestudio.in</a>
+  </footer>
+
+</body>
+</html>

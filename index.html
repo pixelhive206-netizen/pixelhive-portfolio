@@ -26,15 +26,33 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "Pixelhive Studio",
-    "description": "A creative web studio based in India, building hand-coded websites for businesses, non-profits, restaurants, and creators.",
-    "url": "https://pixelhivestudio.in/",
-    "email": "pixelhive206@gmail.com",
-    "address": { "@type": "PostalAddress", "addressCountry": "IN", "addressRegion": "Tamil Nadu" },
-    "areaServed": "IN",
-    "priceRange": "₹₹",
-    "serviceType": ["Web design", "Web development", "Landing pages", "SEO setup"]
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://pixelhivestudio.in/#website",
+        "url": "https://pixelhivestudio.in/",
+        "name": "Pixelhive Studio",
+        "description": "Hand-coded modern websites for businesses, non-profits and creators.",
+        "publisher": { "@id": "https://pixelhivestudio.in/#studio" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://pixelhivestudio.in/#studio",
+        "name": "Pixelhive Studio",
+        "description": "A creative web studio based in India, building hand-coded websites for businesses, non-profits, restaurants, and creators.",
+        "url": "https://pixelhivestudio.in/",
+        "email": "pixelhive206@gmail.com",
+        "telephone": "+91-82204-04529",
+        "address": { "@type": "PostalAddress", "addressCountry": "IN", "addressRegion": "Tamil Nadu" },
+        "areaServed": "IN",
+        "priceRange": "₹₹",
+        "serviceType": ["Web design", "Web development", "Landing pages", "SEO setup"],
+        "sameAs": [
+          "https://instagram.com/pixelhive__studio"
+        ]
+      }
+    ]
   }
   </script>
 
@@ -42,6 +60,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <!-- Animation libraries loaded early (in <head>) with defer so they download in parallel with HTML parsing and execute before DOMContentLoaded. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <!--
+    Analytics (uncomment one when ready):
+    Plausible (privacy-friendly, $9/mo, no banner needed):
+      <script defer data-domain="pixelhivestudio.in" src="https://plausible.io/js/script.js"></script>
+    Cloudflare Web Analytics (free, no banner needed, needs token from cloudflare.com/web-analytics):
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"YOUR_TOKEN"}'></script>
+  -->
 
   <style>
     :root {
@@ -56,6 +87,27 @@
       --accent-deep: #d97706;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Keyboard accessibility — visible focus ring on any focusable element via keyboard. */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+    /* Skip-to-content — hidden until keyboard-focused, then slides in from the top. */
+    .skip-to-content {
+      position: fixed;
+      top: -100px; left: 16px;
+      z-index: 10000;
+      padding: 12px 20px;
+      background: var(--accent); color: #0b0f14;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 14px;
+      text-decoration: none; border-radius: 8px;
+      transition: top 0.22s ease;
+    }
+    .skip-to-content:focus-visible { top: 16px; outline: none; }
+
     html { background: var(--bg); }
     html.lenis-smooth { scroll-behavior: auto; }
     body {
@@ -1501,6 +1553,8 @@
 </head>
 <body>
 
+  <a href="#hero" class="skip-to-content">Skip to content</a>
+
   <!-- ====== LOADER — laptop opens, browser appears, URL types, camera dollies in ====== -->
   <div class="loader" id="loader" aria-hidden="true">
     <div class="loader-brand">PIXEL<span style="color:var(--accent)">·</span>HIVE STUDIO</div>
@@ -1581,7 +1635,7 @@
   </nav>
 
   <!-- ====== HERO ====== -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-meta">
       <span class="status">Available · Booking 2026</span>
       <span>Tamil Nadu, IN · IST</span>
@@ -2089,13 +2143,9 @@
      class="float-wa" aria-label="Contact Pixelhive on WhatsApp"
      data-cursor data-cursor-label="CHAT"></a>
 
-  <!-- ============ ANIMATION LIBRARIES (CDN, no build step) ============ -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-
   <script>
-  (function() {
+  // Wrapped in DOMContentLoaded so deferred GSAP/ScrollTrigger/Lenis in <head> have executed before this runs.
+  document.addEventListener('DOMContentLoaded', () => {
     'use strict';
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -2546,7 +2596,7 @@
     }
 
     window.addEventListener('load', () => { ScrollTrigger.refresh(); });
-  })();
+  });
   </script>
 </body>
 </html>
