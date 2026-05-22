@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing — Pixelhive Studio</title>
+  <meta name="description" content="Notes on building modern websites, hand-coded craft, and what we've learned shipping for businesses, non-profits, and creators." />
+  <link rel="canonical" href="https://pixelhivestudio.in/blog/" />
+
+  <meta property="og:title" content="Writing — Pixelhive Studio" />
+  <meta property="og:description" content="Notes on building modern websites, hand-coded craft, and what we've learned." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pixelhivestudio.in/blog/" />
+  <meta property="og:image" content="https://pixelhivestudio.in/og-image.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><path d='M50 7 L87 28 L87 72 L50 93 L13 72 L13 28 Z' fill='none' stroke='%23fbbf24' stroke-width='8'/><rect x='28' y='28' width='14' height='14' rx='2'/><rect x='42' y='44' width='14' height='14' rx='2'/><rect x='30' y='60' width='14' height='14' rx='2'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.35s; }
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation: none !important; }
+    }
+
+    :root {
+      --bg: #0b0f14;
+      --ink: #f5f1ea;
+      --ink-bright: #ffffff;
+      --muted: rgba(245, 241, 234, 0.55);
+      --line: rgba(245, 241, 234, 0.12);
+      --line-strong: rgba(245, 241, 234, 0.25);
+      --accent: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Nav */
+    nav {
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 20px;
+      letter-spacing: -0.02em;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .logo .mark { width: 22px; height: 22px; color: var(--accent); display: inline-flex; }
+    .logo .dot { color: var(--accent); }
+    .nav-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* Hero */
+    main { flex: 1; max-width: 1100px; margin: 0 auto; padding: 80px 40px 100px; width: 100%; }
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    h1.page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(48px, 9vw, 96px);
+      font-weight: 500; line-height: 0.95;
+      letter-spacing: -0.045em;
+      color: var(--ink-bright);
+      margin-bottom: 22px;
+    }
+    h1.page-title em {
+      font-style: italic; font-weight: 500;
+      color: var(--accent);
+    }
+    .lede {
+      font-size: 19px; line-height: 1.55;
+      color: var(--muted);
+      max-width: 56ch;
+      margin-bottom: 80px;
+    }
+
+    /* Post list */
+    .post-list { display: grid; gap: 0; }
+    .post-card {
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: 40px; align-items: start;
+      padding: 36px 0;
+      border-top: 1px solid var(--line);
+      transition: padding 0.3s ease;
+      position: relative;
+    }
+    .post-card:last-child { border-bottom: 1px solid var(--line); }
+    .post-card:hover { padding-left: 12px; }
+    .post-card::before {
+      content: '→'; position: absolute; right: 0; top: 50%;
+      transform: translateY(-50%) translateX(-12px);
+      color: var(--accent); opacity: 0;
+      font-family: 'Space Grotesk', sans-serif; font-size: 20px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .post-card:hover::before { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--muted); text-transform: uppercase;
+      line-height: 1.7;
+    }
+    .post-meta .post-date { color: var(--accent); display: block; }
+    .post-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(22px, 2.4vw, 28px);
+      font-weight: 500; line-height: 1.2;
+      color: var(--ink-bright); margin-bottom: 10px;
+      letter-spacing: -0.015em;
+      transition: color 0.25s ease;
+    }
+    .post-card:hover .post-title { color: var(--accent); }
+    .post-excerpt {
+      color: var(--muted);
+      font-size: 15.5px; line-height: 1.6;
+      max-width: 56ch;
+    }
+    .post-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      color: var(--muted); text-transform: uppercase;
+      align-self: center; white-space: nowrap;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 30px 40px;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-wrap: wrap; gap: 20px;
+    }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 800px) {
+      nav { padding: 20px 22px; }
+      main { padding: 50px 22px 70px; }
+      .lede { margin-bottom: 50px; font-size: 16.5px; }
+      .post-card {
+        grid-template-columns: 1fr;
+        gap: 14px; padding: 28px 0;
+      }
+      .post-card:hover { padding-left: 0; }
+      .post-card::before { display: none; }
+      .post-cta { display: none; }
+      footer { padding: 22px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 7 L17 9.5 L17 14.5 L12 17 L7 14.5 L7 9.5 Z" fill="currentColor"/></svg></span>
+      PIXEL<span class="dot">·</span>HIVE
+    </a>
+    <a href="/" class="nav-back">← Back to home</a>
+  </nav>
+
+  <main>
+    <div class="hero-tag">/ Writing</div>
+    <h1 class="page-title">Notes on <em>building</em><br/>the modern web.</h1>
+    <p class="lede">Thoughts on hand-coded craft, what we've learned shipping for businesses and non-profits, and the occasional rant about why most websites are slow.</p>
+
+    <div class="post-list">
+
+      <a href="/blog/hand-coded-vs-wordpress.html" class="post-card">
+        <div class="post-meta">
+          <span class="post-date">23 May 2026</span>
+          <span>5 min read</span>
+        </div>
+        <div>
+          <h2 class="post-title">Hand-coded vs WordPress: why we don't reach for a page-builder</h2>
+          <p class="post-excerpt">If you're spending ₹50,000 on a website, you deserve to know what's under the hood. Here's what hand-coded actually means, what page-builders quietly cost you, and when each one is the right call.</p>
+        </div>
+        <span class="post-cta">Read →</span>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2026 Pixelhive Studio</span>
+    <span><a href="/">pixelhivestudio.in</a></span>
+  </footer>
+
+</body>
+</html>

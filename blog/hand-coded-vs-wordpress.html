@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hand-coded vs WordPress: why we don't reach for a page-builder — Pixelhive Studio</title>
+  <meta name="description" content="If you're spending ₹50,000 on a website, you deserve to know what's under the hood. Here's what hand-coded actually means, what page-builders quietly cost you, and when each one is the right call." />
+  <link rel="canonical" href="https://pixelhivestudio.in/blog/hand-coded-vs-wordpress.html" />
+
+  <meta property="og:title" content="Hand-coded vs WordPress: why we don't reach for a page-builder" />
+  <meta property="og:description" content="What hand-coded actually means, what page-builders quietly cost you, and when each one is the right call." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://pixelhivestudio.in/blog/hand-coded-vs-wordpress.html" />
+  <meta property="og:image" content="https://pixelhivestudio.in/og-image.svg" />
+  <meta property="article:published_time" content="2026-05-23" />
+  <meta property="article:author" content="Pixelhive Studio" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hand-coded vs WordPress — Pixelhive Studio" />
+  <meta name="twitter:description" content="What hand-coded actually means, and when each approach is the right call." />
+  <meta name="twitter:image" content="https://pixelhivestudio.in/og-image.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><path d='M50 7 L87 28 L87 72 L50 93 L13 72 L13 28 Z' fill='none' stroke='%23fbbf24' stroke-width='8'/><rect x='28' y='28' width='14' height='14' rx='2'/><rect x='42' y='44' width='14' height='14' rx='2'/><rect x='30' y='60' width='14' height='14' rx='2'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Hand-coded vs WordPress: why we don't reach for a page-builder",
+    "description": "What hand-coded actually means, what page-builders quietly cost you, and when each one is the right call.",
+    "datePublished": "2026-05-23",
+    "author": { "@type": "Organization", "name": "Pixelhive Studio", "url": "https://pixelhivestudio.in/" },
+    "publisher": { "@type": "Organization", "name": "Pixelhive Studio", "url": "https://pixelhivestudio.in/" },
+    "mainEntityOfPage": "https://pixelhivestudio.in/blog/hand-coded-vs-wordpress.html"
+  }
+  </script>
+
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.35s; }
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation: none !important; }
+    }
+
+    :root {
+      --bg: #0b0f14;
+      --ink: #f5f1ea;
+      --ink-bright: #ffffff;
+      --muted: rgba(245, 241, 234, 0.55);
+      --line: rgba(245, 241, 234, 0.12);
+      --line-strong: rgba(245, 241, 234, 0.25);
+      --accent: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; transition: opacity 0.2s ease; }
+    a:hover { opacity: 0.7; }
+
+    /* Nav */
+    nav {
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--ink-bright);
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .logo .mark { width: 20px; height: 20px; color: var(--accent); display: inline-flex; }
+    .logo .dot { color: var(--accent); }
+    .nav-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .nav-back:hover { color: var(--accent); opacity: 1; }
+
+    main { flex: 1; }
+
+    /* Article header */
+    .article-header {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 70px 40px 40px;
+    }
+    .article-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 22px;
+      display: flex; gap: 18px; align-items: center;
+    }
+    .article-eyebrow span { color: var(--muted); }
+    h1.article-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(32px, 5.5vw, 56px);
+      font-weight: 500; line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--ink-bright);
+      margin-bottom: 22px;
+    }
+    h1.article-title em {
+      font-style: italic; font-weight: 500; color: var(--accent);
+    }
+    .article-lede {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 22px; line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-style: italic;
+    }
+    .article-byline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--muted); text-transform: uppercase;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* Article body */
+    article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 40px 100px;
+    }
+    article p {
+      font-size: 17.5px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 26px;
+    }
+    article h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 500; line-height: 1.2;
+      letter-spacing: -0.015em;
+      color: var(--ink-bright);
+      margin: 56px 0 22px;
+    }
+    article h2:first-child { margin-top: 0; }
+    article h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 21px; font-weight: 500;
+      color: var(--ink-bright);
+      margin: 42px 0 16px;
+    }
+    article ul, article ol {
+      margin: 0 0 26px 24px;
+      font-size: 17px; line-height: 1.7;
+      color: var(--ink);
+    }
+    article li { margin-bottom: 10px; }
+    article li::marker { color: var(--accent); }
+    article strong { color: var(--ink-bright); font-weight: 600; }
+    article em { font-style: italic; }
+    article blockquote {
+      border-left: 2px solid var(--accent);
+      padding: 4px 0 4px 24px;
+      margin: 30px 0;
+      color: var(--muted);
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 19px;
+      line-height: 1.5;
+    }
+    article code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: rgba(251, 191, 36, 0.08);
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    article hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 50px auto;
+      max-width: 100px;
+    }
+
+    /* CTA at end of article */
+    .article-cta {
+      max-width: 720px; margin: 40px auto 0;
+      padding: 36px;
+      background: rgba(251, 191, 36, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 14px;
+      text-align: center;
+    }
+    .article-cta h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 500;
+      color: var(--ink-bright);
+      margin-bottom: 10px;
+    }
+    .article-cta p {
+      color: var(--muted);
+      font-size: 15px; line-height: 1.55;
+      margin-bottom: 22px;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px;
+      background: var(--accent); color: #0b0f14;
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 14.5px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .cta-btn:hover { background: #fde68a; transform: translateY(-1px); opacity: 1; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 30px 40px;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-wrap: wrap; gap: 20px;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); opacity: 1; }
+    footer .back-to-blog { color: var(--accent); }
+
+    @media (max-width: 800px) {
+      nav { padding: 18px 22px; }
+      .article-header { padding: 50px 22px 32px; }
+      article { padding: 30px 22px 60px; }
+      .article-lede { font-size: 18px; }
+      article p { font-size: 16.5px; }
+      article ul, article ol { font-size: 16px; margin-left: 20px; }
+      .article-cta { padding: 28px 22px; margin: 30px 22px 0; }
+      footer { padding: 22px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <span class="mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 7 L17 9.5 L17 14.5 L12 17 L7 14.5 L7 9.5 Z" fill="currentColor"/></svg></span>
+      PIXEL<span class="dot">·</span>HIVE
+    </a>
+    <a href="/blog/" class="nav-back">← Back to writing</a>
+  </nav>
+
+  <main>
+    <header class="article-header">
+      <div class="article-eyebrow">
+        <span class="post-date">/ 23 May 2026</span>
+        <span>5 min read</span>
+        <span>Craft</span>
+      </div>
+      <h1 class="article-title">Hand-coded vs WordPress: why we don't <em>reach for</em> a page-builder.</h1>
+      <p class="article-lede">If you're spending ₹50,000 on a website, you deserve to know what's under the hood. Here's what "hand-coded" actually means, what page-builders quietly cost you, and when each one is the right call.</p>
+      <div class="article-byline">By Pixelhive Studio · Tamil Nadu, India</div>
+    </header>
+
+    <article>
+      <p>Most websites in India today aren't built — they're <em>assembled</em>. A WordPress theme, an Elementor template, a fistful of plugins, and a logo dropped in. It works. It looks fine on a 1080p monitor. The client is happy until, six months later, they ask the question every web-builder dreads: <em>"Why is our site so slow on mobile?"</em></p>
+
+      <p>That's where the conversation gets uncomfortable. Because the truth is, page-builders make sites that are slow, brittle, and hard to change later. Hand-coding makes sites that load fast, behave the way you expect, and stay yours forever. But the trade-off isn't as one-sided as that sounds — and it's worth understanding both sides before you spend money.</p>
+
+      <h2>What "hand-coded" actually means</h2>
+
+      <p>When we say a site is hand-coded, we mean every line of HTML, CSS, and JavaScript was written by a human (us) with a specific purpose. There's no theme. No page-builder. No 20-megabyte JavaScript bundle that you didn't ask for. Just the exact code your site needs, in roughly the right order, with nothing extra.</p>
+
+      <p>The opposite of hand-coded isn't "WordPress" — it's <em>generated</em>. Page-builders like Elementor, Divi, and WPBakery generate code. They take what you drag onto the page and translate it into HTML, CSS, and JS. The output works, but it's optimized for the builder's flexibility, not for your visitor's experience.</p>
+
+      <h2>What page-builders quietly cost you</h2>
+
+      <p>This is the part nobody mentions when you're shopping for a website. Here's what generated sites carry that hand-coded ones don't:</p>
+
+      <h3>1. Weight.</h3>
+      <p>An average Elementor page loads <strong>1.5–4 megabytes</strong> of JavaScript before anything appears. A hand-coded equivalent is often under 200 kilobytes. That's a 10–20x difference, which translates directly into how long your visitor stares at a blank screen — especially on patchy mobile data.</p>
+
+      <h3>2. Plugin sprawl.</h3>
+      <p>WordPress sites typically ship with 15–30 plugins to handle things like contact forms, SEO, caching, and security. Each plugin is third-party code you didn't write. Each one is a potential security hole, a potential conflict with another plugin, and a guaranteed source of future "the site is broken" emails when one of them updates and breaks something. Hand-coded sites have zero plugins.</p>
+
+      <h3>3. Lock-in.</h3>
+      <p>Page-builders create content in their own proprietary format. If you ever want to move off Elementor, you can't just export your pages — the layouts only render inside Elementor. So you keep paying for the builder (and its premium add-ons), forever. Hand-coded sites are just files. You can host them anywhere, edit them with any tool, hand them to any developer.</p>
+
+      <h3>4. The "looks fine in the builder, broken in reality" problem.</h3>
+      <p>Builders show you a polished preview. The actual rendered page on a slow phone, in a real browser, with real users — often looks meaningfully different. Hand-coded sites have no preview layer. What you see <em>is</em> what visitors see.</p>
+
+      <blockquote>If you've ever wondered why your shiny new website feels different from the demo your designer showed you — this is usually why.</blockquote>
+
+      <h2>What page-builders are good at</h2>
+
+      <p>Let's be fair. Page-builders aren't evil. They're tools, and they're the right tool for certain jobs:</p>
+
+      <ul>
+        <li><strong>You need to update content constantly.</strong> If your site is a daily blog, a news magazine, or an e-commerce store with 500 products you reorganise weekly, a CMS like WordPress (with or without a builder) gives you control without needing a developer every time.</li>
+        <li><strong>The budget is genuinely small.</strong> A ₹10,000 Elementor build is faster to ship than a ₹10,000 hand-coded site, because the builder has done most of the work already. Sometimes "good enough fast" beats "great later".</li>
+        <li><strong>You want to edit pages yourself.</strong> Drag-and-drop is a real productivity gain for non-technical owners who want to tweak copy without calling anyone.</li>
+      </ul>
+
+      <p>For most of the businesses, non-profits, and creators we work with, none of these apply. They want a site that looks sharp, loads fast, and gets out of the way. They update it maybe twice a year. They don't care about drag-and-drop. They care about whether their phone visitors actually see the page before bouncing.</p>
+
+      <h2>The honest comparison</h2>
+
+      <p>If we line them up side by side on the things that actually matter:</p>
+
+      <ul>
+        <li><strong>Load speed.</strong> Hand-coded wins by a wide margin. A 2-second page is a different business from a 6-second page.</li>
+        <li><strong>SEO.</strong> Both can rank, but Google explicitly rewards fast, clean sites. Page-builders make this harder by default.</li>
+        <li><strong>Long-term cost.</strong> Hand-coded has higher upfront cost, lower running cost. Builders have lower upfront cost, ongoing license fees and a perpetual "the site is broken" tax.</li>
+        <li><strong>Ownership.</strong> Hand-coded is yours forever, host anywhere. Builders lock content into their format.</li>
+        <li><strong>Time to ship.</strong> Builders are faster off the line. Hand-coded takes 1–2 weeks vs a few days.</li>
+        <li><strong>Editing without a developer.</strong> Builders win cleanly here, if you actually need to.</li>
+      </ul>
+
+      <h2>What we'd tell a friend</h2>
+
+      <p>If you're a business owner shopping for a website right now, here's the honest framework:</p>
+
+      <p><strong>Choose hand-coded if</strong> your site needs to feel premium, load fast, and stay out of your way for the next 3–5 years. You're investing in a brand asset, not a content-management tool.</p>
+
+      <p><strong>Choose WordPress + a builder if</strong> you're going to edit content weekly, you have a real budget for hosting and ongoing plugin maintenance, and you're okay with a slightly slower, heavier site in exchange for the ability to drag-and-drop edits.</p>
+
+      <p>There's no one right answer. Just an honest one for your situation. Anyone who tells you their approach is universally better is selling you something.</p>
+
+      <hr/>
+
+      <p style="color: var(--muted); font-size: 15px;">We build hand-coded modern websites for businesses, non-profits, and creators. Most of our projects ship in two weeks. If you're weighing this decision and want a second opinion on your current site, we offer <a href="/#audit">a free 5-minute audit</a> — no sales pitch, just an honest look.</p>
+    </article>
+
+    <aside class="article-cta">
+      <h3>Want an honest take on your website?</h3>
+      <p>We'll spend 15 minutes looking at your site and send back a short audit covering speed, mobile experience, SEO basics, and a few conversion ideas. No obligation.</p>
+      <a href="/#audit" class="cta-btn">Get a free audit →</a>
+    </aside>
+  </main>
+
+  <footer>
+    <a href="/blog/" class="back-to-blog">← More writing</a>
+    <span>© 2026 Pixelhive Studio</span>
+    <a href="/">pixelhivestudio.in</a>
+  </footer>
+
+</body>
+</html>
