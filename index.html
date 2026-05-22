@@ -1124,12 +1124,36 @@
     .mega-footer h2 {
       max-width: 1480px; margin: 0 auto;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(72px, 16vw, 260px);
-      font-weight: 500; line-height: 0.85;
-      letter-spacing: -0.06em;
+      font-size: clamp(56px, 10.5vw, 168px);
+      font-weight: 500; line-height: 0.88;
+      letter-spacing: -0.055em;
       color: var(--ink-bright);
     }
-    .mega-footer h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
+    /* 21st.dev-inspired shiny-text shimmer on the gold italic word */
+    .mega-footer h2 em {
+      font-style: italic; font-weight: 500;
+      color: var(--accent);
+      background: linear-gradient(
+        90deg,
+        var(--accent) 0%,
+        var(--accent) 40%,
+        #fff4cc 50%,
+        var(--accent) 60%,
+        var(--accent) 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: heroShine 5.5s linear infinite;
+    }
+    @keyframes heroShine {
+      0%   { background-position: 220% 0; }
+      100% { background-position: -120% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mega-footer h2 em { animation: none; background: none; color: var(--accent); -webkit-text-fill-color: currentColor; }
+    }
     .mega-footer h2 .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
     .mega-footer .actions { max-width: 1480px; margin: 60px auto 0; display: flex; gap: 14px; flex-wrap: wrap; }
     .mega-footer .pill {
