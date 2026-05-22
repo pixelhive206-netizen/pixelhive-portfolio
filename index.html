@@ -634,12 +634,17 @@
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
     }
-    .case:hover .case-marquee { transform: translateY(0); }
     .case-marquee-track {
       display: flex;
       white-space: nowrap;
       width: max-content;
       animation: marqueeScroll 16s linear infinite;
+      animation-play-state: paused;
+    }
+    /* Hover devices only — touch devices skip the marquee reveal entirely */
+    @media (hover: hover) {
+      .case:hover .case-marquee { transform: translateY(0); }
+      .case:hover .case-marquee-track { animation-play-state: running; }
     }
     .case-marquee-track span {
       font-family: 'Space Grotesk', sans-serif;
@@ -1155,6 +1160,91 @@
       .mega-footer h2 em { animation: none; background: none; color: var(--accent); -webkit-text-fill-color: currentColor; }
     }
     .mega-footer h2 .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+
+    /* ========== CONTACT SECTION PREMIUM BACKGROUND ========== */
+    .contact-bg {
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .mega-footer > *:not(.contact-bg) { position: relative; z-index: 1; }
+
+    /* Aurora glow blobs — large radial gradients that slowly morph */
+    .contact-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      will-change: transform;
+    }
+    .contact-glow-1 {
+      width: 720px; height: 720px;
+      top: -220px; left: -180px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.42) 0%, rgba(251, 191, 36, 0) 60%);
+      animation: contactGlow1 22s ease-in-out infinite;
+    }
+    .contact-glow-2 {
+      width: 820px; height: 820px;
+      bottom: -260px; right: -160px;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.32) 0%, rgba(217, 119, 6, 0) 65%);
+      animation: contactGlow2 28s ease-in-out infinite;
+    }
+    @keyframes contactGlow1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%      { transform: translate(120px, 80px) scale(1.12); }
+      66%      { transform: translate(-60px, 140px) scale(0.92); }
+    }
+    @keyframes contactGlow2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%      { transform: translate(-100px, -80px) scale(1.08); }
+      66%      { transform: translate(80px, -120px) scale(0.96); }
+    }
+
+    /* Floating hexagons (brand mark, drifting + rotating) */
+    .contact-hex {
+      position: absolute;
+      will-change: transform;
+    }
+    .contact-hex-1 { width: 280px; height: 322px; top: 8%; right: 6%; animation: hexFloat1 26s ease-in-out infinite; }
+    .contact-hex-2 { width: 180px; height: 207px; bottom: 22%; left: 8%; animation: hexFloat2 32s ease-in-out infinite; }
+    .contact-hex-3 { width: 140px; height: 161px; top: 55%; right: 28%; animation: hexFloat3 24s ease-in-out infinite; }
+    .contact-hex-4 { width: 110px; height: 126px; top: 28%; left: 38%; animation: hexFloat4 28s ease-in-out infinite; }
+    @keyframes hexFloat1 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50%      { transform: translate(-30px, -50px) rotate(180deg); }
+    }
+    @keyframes hexFloat2 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50%      { transform: translate(40px, 30px) rotate(-180deg); }
+    }
+    @keyframes hexFloat3 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50%      { transform: translate(25px, -30px) rotate(120deg); }
+    }
+    @keyframes hexFloat4 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50%      { transform: translate(-20px, 40px) rotate(-90deg); }
+    }
+
+    /* Twinkling accent dots — small "stars" pulse independently */
+    .contact-star {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+      opacity: 0;
+      animation: starTwinkle 4s ease-in-out infinite;
+    }
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50%      { opacity: 0.85; transform: scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .contact-bg * { animation: none !important; }
+    }
+
     .mega-footer .actions { max-width: 1480px; margin: 60px auto 0; display: flex; gap: 14px; flex-wrap: wrap; }
     .mega-footer .pill {
       position: relative; overflow: hidden;
@@ -1372,6 +1462,15 @@
       .mega-footer .stat .stat-num { font-size: 26px; }
       .mega-footer .bottom { padding: 20px 0 32px; font-size: 9px; gap: 14px; }
       .mega-footer .bottom .logo-big { font-size: 16px; }
+
+      /* Contact background — lighter for mobile performance */
+      .contact-glow { filter: blur(34px); }
+      .contact-glow-1 { width: 420px; height: 420px; top: -120px; left: -100px; }
+      .contact-glow-2 { display: none; }
+      .contact-hex-1 { width: 200px; height: 230px; right: -40px; top: 4%; }
+      .contact-hex-2 { width: 130px; height: 150px; bottom: 18%; left: -20px; }
+      .contact-hex-3 { display: none; }
+      .contact-hex-4 { width: 80px; height: 92px; top: 32%; left: 60%; }
     }
 
     /* Tighter for very small phones */
@@ -1880,6 +1979,20 @@
 
   <!-- ====== MEGA FOOTER ====== -->
   <section class="mega-footer" id="contact">
+    <div class="contact-bg" aria-hidden="true">
+      <div class="contact-glow contact-glow-1"></div>
+      <div class="contact-glow contact-glow-2"></div>
+      <svg class="contact-hex contact-hex-1" viewBox="0 0 200 230" preserveAspectRatio="xMidYMid meet"><path d="M100 5 L190 55 L190 175 L100 225 L10 175 L10 55 Z" fill="none" stroke="rgba(251,191,36,0.10)" stroke-width="1.5"/></svg>
+      <svg class="contact-hex contact-hex-2" viewBox="0 0 200 230" preserveAspectRatio="xMidYMid meet"><path d="M100 5 L190 55 L190 175 L100 225 L10 175 L10 55 Z" fill="rgba(251,191,36,0.045)"/></svg>
+      <svg class="contact-hex contact-hex-3" viewBox="0 0 200 230" preserveAspectRatio="xMidYMid meet"><path d="M100 5 L190 55 L190 175 L100 225 L10 175 L10 55 Z" fill="none" stroke="rgba(251,191,36,0.08)" stroke-width="2"/></svg>
+      <svg class="contact-hex contact-hex-4" viewBox="0 0 200 230" preserveAspectRatio="xMidYMid meet"><path d="M100 5 L190 55 L190 175 L100 225 L10 175 L10 55 Z" fill="rgba(217,119,6,0.05)"/></svg>
+      <span class="contact-star" style="top: 12%; left: 18%; animation-delay: 0s;"></span>
+      <span class="contact-star" style="top: 22%; left: 78%; animation-delay: 1.2s;"></span>
+      <span class="contact-star" style="top: 48%; left: 12%; animation-delay: 2.4s;"></span>
+      <span class="contact-star" style="top: 62%; left: 58%; animation-delay: 0.8s;"></span>
+      <span class="contact-star" style="top: 80%; left: 28%; animation-delay: 3.1s;"></span>
+      <span class="contact-star" style="top: 38%; left: 88%; animation-delay: 1.8s;"></span>
+    </div>
     <div class="top-meta">
       <span><span class="num">/</span> Contact · 010</span>
       <span class="live-time" id="liveTime">— : — : — IST</span>
