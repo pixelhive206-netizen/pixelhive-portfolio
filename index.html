@@ -2468,7 +2468,7 @@
     });
 
     // Section heading + grids reveal
-    gsap.utils.toArray('.section-block, .mega-footer').forEach((section) => {
+    gsap.utils.toArray('.section-block, .mega-footer, .audit-section').forEach((section) => {
       const items = section.querySelectorAll('.section-anim > *, .section-anim');
       gsap.to(items, {
         opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'expo.out',
