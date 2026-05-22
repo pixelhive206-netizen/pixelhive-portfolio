@@ -1034,6 +1034,103 @@
     }
     .testimonial-toggle.open .toggle-arrow { transform: rotate(180deg); }
 
+    /* ============================================================ FREE AUDIT (LEAD MAGNET) ============================================================ */
+    .audit-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 90px 40px;
+      border-top: 1px solid var(--line);
+    }
+    .audit-card { max-width: 720px; margin: 0 auto; }
+    .audit-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 6px 14px;
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.22);
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+    .audit-tag::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .audit-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 500; line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--ink-bright);
+      margin-bottom: 18px;
+    }
+    .audit-section h2 em { font-style: italic; color: var(--accent); font-weight: 500; }
+    .audit-lede {
+      color: var(--muted);
+      font-size: 16.5px; line-height: 1.65;
+      margin-bottom: 38px;
+      max-width: 58ch;
+    }
+    .audit-form { display: grid; gap: 20px; }
+    .audit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .audit-field { display: grid; gap: 8px; }
+    .audit-field label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .audit-field label .req { color: var(--accent); margin-left: 3px; }
+    .audit-field input,
+    .audit-field textarea {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      padding: 13px 15px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      transition: border-color 0.2s ease, background 0.2s ease;
+      width: 100%;
+    }
+    .audit-field input:focus,
+    .audit-field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.07);
+    }
+    .audit-field textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
+    .audit-honey { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+    .audit-submit {
+      margin-top: 8px;
+      padding: 16px 30px;
+      background: var(--accent); color: #0b0f14;
+      border: none; border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 15.5px;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      justify-self: start;
+    }
+    .audit-submit:hover {
+      background: #fde68a;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px -16px rgba(251, 191, 36, 0.6);
+    }
+    .audit-fineprint {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    @media (max-width: 800px) {
+      .audit-section { padding: 60px 22px; }
+      .audit-row { grid-template-columns: 1fr; gap: 20px; }
+      .audit-section h2 { font-size: clamp(28px, 8vw, 42px); }
+      .audit-submit { width: 100%; justify-self: stretch; text-align: center; }
+    }
+
     /* ============================================================ PRICING ============================================================ */
     .pricing-grid {
       display: grid;
@@ -1922,6 +2019,47 @@
         <span class="toggle-label-less">Show less</span>
         <span class="toggle-arrow">↓</span>
       </button>
+    </div>
+  </section>
+
+  <!-- ====== FREE AUDIT (LEAD MAGNET) ====== -->
+  <section class="audit-section section-anim" id="audit">
+    <div class="audit-card">
+      <span class="audit-tag">Free · 5-minute audit</span>
+      <h2>Want an <em>honest take</em> on your website?</h2>
+      <p class="audit-lede">Drop your URL below and we'll send you a short audit covering speed, mobile experience, SEO basics, and a few conversion ideas. No sales pitch, no obligation — just a useful second opinion from someone who builds sites every day.</p>
+
+      <form action="https://formsubmit.co/pixelhive206@gmail.com" method="POST" class="audit-form" id="auditForm">
+        <input type="hidden" name="_subject" value="Free audit request — Pixelhive Studio" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="true" />
+        <input type="hidden" name="_next" value="https://pixelhivestudio.in/audit-thanks.html" />
+        <input type="text" name="_honey" class="audit-honey" tabindex="-1" autocomplete="off" />
+
+        <div class="audit-row">
+          <div class="audit-field">
+            <label for="audit-name">Your name <span class="req">*</span></label>
+            <input id="audit-name" type="text" name="Name" required autocomplete="name" />
+          </div>
+          <div class="audit-field">
+            <label for="audit-email">Email <span class="req">*</span></label>
+            <input id="audit-email" type="email" name="Email" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="audit-field">
+          <label for="audit-url">Your website URL <span class="req">*</span></label>
+          <input id="audit-url" type="url" name="Website URL" required placeholder="https://yourbusiness.com" inputmode="url" />
+        </div>
+
+        <div class="audit-field">
+          <label for="audit-notes">What would be most useful to hear about? (optional)</label>
+          <textarea id="audit-notes" name="What to focus on" rows="3" placeholder="e.g. mobile speed, conversion ideas, what's confusing for first-time visitors"></textarea>
+        </div>
+
+        <button type="submit" class="audit-submit" data-cursor>Send my audit request →</button>
+        <p class="audit-fineprint">You'll usually hear back within 48 hours. We never share your details.</p>
+      </form>
     </div>
   </section>
 

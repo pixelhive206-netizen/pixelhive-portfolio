@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audit request received — Pixelhive Studio</title>
+  <meta name="description" content="Thanks for requesting a free website audit from Pixelhive Studio." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://pixelhivestudio.in/audit-thanks.html" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><path d='M50 7 L87 28 L87 72 L50 93 L13 72 L13 28 Z' fill='none' stroke='%23fbbf24' stroke-width='8'/><rect x='28' y='28' width='14' height='14' rx='2'/><rect x='42' y='44' width='14' height='14' rx='2'/><rect x='30' y='60' width='14' height='14' rx='2'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --ink: #f5f1ea;
+      --muted: rgba(245, 241, 234, 0.55);
+      --line: rgba(245, 241, 234, 0.12);
+      --accent: #fbbf24;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    nav {
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1480px; margin: 0 auto; width: 100%;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--ink); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      letter-spacing: -0.01em;
+    }
+    .logo .mark { width: 22px; height: 22px; display: inline-flex; color: var(--accent); }
+    .logo .dot { color: var(--accent); }
+    .nav-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      color: var(--muted); text-decoration: none;
+      text-transform: uppercase;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    main {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 32px;
+      position: relative;
+      text-align: center;
+    }
+
+    .bg-glow {
+      position: absolute; pointer-events: none;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+    }
+    .bg-glow-1 {
+      top: -180px; left: -140px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.32) 0%, rgba(251, 191, 36, 0) 65%);
+      animation: glowDrift 22s ease-in-out infinite;
+    }
+    @keyframes glowDrift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(70px, 50px) scale(1.08); }
+    }
+
+    .check-mark {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.12);
+      border: 1.5px solid rgba(251, 191, 36, 0.4);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 30px;
+      position: relative; z-index: 1;
+    }
+    .check-mark svg { color: var(--accent); }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 500; line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+    h1 em {
+      font-style: italic; font-weight: 500;
+      color: var(--accent);
+    }
+    .lede {
+      color: var(--muted);
+      font-size: 16.5px; line-height: 1.6;
+      max-width: 52ch;
+      margin: 0 auto 36px;
+      position: relative; z-index: 1;
+    }
+
+    .next {
+      max-width: 540px;
+      margin: 0 auto 38px;
+      padding: 22px 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      text-align: left;
+      position: relative; z-index: 1;
+    }
+    .next-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .next ul { list-style: none; display: grid; gap: 10px; }
+    .next li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 12px; align-items: start;
+      font-size: 14.5px; color: var(--ink);
+      line-height: 1.55;
+    }
+    .next li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); margin-top: 8px;
+    }
+    .next li b { color: var(--ink); font-weight: 600; }
+
+    .actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 24px;
+      border: 1px solid rgba(245, 241, 234, 0.25);
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14.5px; font-weight: 500;
+      color: var(--ink); text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
+    .btn:hover { background: var(--accent); color: #0b0f14; border-color: var(--accent); transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); color: #0b0f14; border-color: var(--accent); }
+    .btn-primary:hover { background: #fde68a; border-color: #fde68a; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 32px; text-align: center;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { padding: 18px 22px; }
+      main { padding: 40px 22px; }
+      .bg-glow { width: 380px; height: 380px; filter: blur(34px); }
+      .actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; }
+      .btn { justify-content: center; }
+      .next { padding: 18px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg-glow { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">
+      <span class="mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 7 L17 9.5 L17 14.5 L12 17 L7 14.5 L7 9.5 Z" fill="currentColor"/></svg>
+      </span>
+      PIXEL<span class="dot">·</span>HIVE
+    </a>
+    <a href="/" class="nav-back">← Back to home</a>
+  </nav>
+
+  <main>
+    <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+
+    <div class="check-mark" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <h1>Audit request <em>received.</em></h1>
+    <p class="lede">Thanks for trusting us with a look at your site. You'll usually hear back within 48 hours with a short audit and a few honest suggestions.</p>
+
+    <div class="next">
+      <div class="next-label">What happens next</div>
+      <ul>
+        <li><b>Within 48 hours</b> — a written audit lands in your inbox covering speed, mobile experience, SEO basics, and a couple of conversion ideas.</li>
+        <li><b>No sales pitch.</b> If a redesign or refresh makes sense, we'll say so. If not, we'll say that too.</li>
+        <li><b>Reply anytime.</b> Questions? Just reply to the email and we'll keep talking.</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <a href="/" class="btn btn-primary">← Back to home</a>
+      <a href="/#work" class="btn">See our work</a>
+      <a href="https://wa.me/918220404529?text=Hi%20Pixelhive%2C%20I%20just%20submitted%20a%20free%20audit%20request." target="_blank" rel="noopener" class="btn">WhatsApp us</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Pixelhive Studio · <a href="/">pixelhivestudio.in</a>
+  </footer>
+
+</body>
+</html>
