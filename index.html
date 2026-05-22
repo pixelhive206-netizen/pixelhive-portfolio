@@ -396,6 +396,7 @@
                   background 0.2s ease;
     }
     .cursor.active { width: 64px; height: 64px; background: var(--accent); }
+    .cursor.case-active { width: 104px; height: 104px; background: var(--accent); }
     .cursor-label {
       position: fixed; top: 0; left: 0;
       pointer-events: none; z-index: 9998;
@@ -620,7 +621,41 @@
     .case:last-of-type { border-bottom: none; }
     .case.reverse { direction: rtl; }
     .case.reverse > * { direction: ltr; }
-    .case-visual-wrap { overflow: hidden; border-radius: 4px; will-change: transform; }
+    .case-visual-wrap { overflow: hidden; border-radius: 4px; will-change: transform; position: relative; }
+
+    /* Cuberto-style hover marquee — slides up from below case visual on hover */
+    .case-marquee {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: var(--accent); color: #0b0f14;
+      padding: 14px 0;
+      z-index: 5;
+      overflow: hidden;
+      transform: translateY(101%);
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .case:hover .case-marquee { transform: translateY(0); }
+    .case-marquee-track {
+      display: flex;
+      white-space: nowrap;
+      width: max-content;
+      animation: marqueeScroll 16s linear infinite;
+    }
+    .case-marquee-track span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 13px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      flex-shrink: 0;
+      padding: 0 32px;
+    }
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .case-marquee { display: none; }
+    }
+
     .case-visual {
       aspect-ratio: 4 / 3;
       position: relative; overflow: hidden;
@@ -860,7 +895,7 @@
       overflow: hidden; flex-shrink: 0;
       border: 1px solid var(--line);
     }
-    .testimonial-attr .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .testimonial-attr .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
     .testimonial-attr .name {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 22px; font-weight: 500;
@@ -1519,6 +1554,11 @@
           <div class="ground"></div>
           <span class="mockup-label">Planting for the <em>future</em></span>
         </div>
+        <div class="case-marquee" aria-hidden="true">
+          <div class="case-marquee-track">
+            <span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span><span>Visit live site ↗</span>
+          </div>
+        </div>
       </div>
       <div class="case-text case-anim">
         <div class="case-meta">
@@ -1544,6 +1584,11 @@
             <div class="item"><div class="name">Burnt honey tart</div><div class="price">— fourteen</div></div>
           </div>
           <span class="mockup-label">Olive & <em>Ember</em></span>
+        </div>
+        <div class="case-marquee" aria-hidden="true">
+          <div class="case-marquee-track">
+            <span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span>
+          </div>
         </div>
       </div>
       <div class="case-text case-anim">
@@ -1572,6 +1617,11 @@
           </div>
           <span class="mockup-label">Smart strategy <em>that scales</em></span>
         </div>
+        <div class="case-marquee" aria-hidden="true">
+          <div class="case-marquee-track">
+            <span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span>
+          </div>
+        </div>
       </div>
       <div class="case-text case-anim">
         <div class="case-meta">
@@ -1595,6 +1645,11 @@
             <div class="card"><div class="card-icon"></div><div class="card-content"><div class="card-title"></div><div class="card-meta"></div></div><div class="card-stat">567</div></div>
           </div>
           <span class="mockup-label">Every link, <em>smarter</em></span>
+        </div>
+        <div class="case-marquee" aria-hidden="true">
+          <div class="case-marquee-track">
+            <span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span><span>View sample →</span>
+          </div>
         </div>
       </div>
       <div class="case-text case-anim">
@@ -2065,9 +2120,9 @@
       const textChildren = caseEl.querySelectorAll('.case-anim > *');
 
       gsap.fromTo(visual,
-        { clipPath: 'inset(100% 0 0 0)' },
+        { clipPath: 'circle(0% at 50% 60%)' },
         {
-          clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'expo.out',
+          clipPath: 'circle(140% at 50% 60%)', duration: 1.4, ease: 'expo.inOut',
           scrollTrigger: { trigger: caseEl, start: 'top 80%', toggleActions: 'play none none reverse' }
         }
       );
@@ -2101,24 +2156,30 @@
       scrollTrigger: { trigger: '.testimonial-section', start: 'top 50%', toggleActions: 'play none none reverse' }
     });
 
-    // Custom cursor
+    // Custom cursor — gsap.quickTo for smooth subpixel tracking + idle breathing
     const cursor = document.getElementById('cursor');
     const cursorLabel = document.getElementById('cursorLabel');
     if (cursor && matchMedia('(pointer: fine)').matches) {
-      let mx = innerWidth / 2, my = innerHeight / 2;
-      let cx = mx, cy = my;
-      document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
-      gsap.ticker.add(() => {
-        cx += (mx - cx) * 0.18; cy += (my - cy) * 0.18;
-        cursor.style.transform = `translate3d(${cx - 6}px, ${cy - 6}px, 0)`;
-        // Use left/top so the CSS transform: translate(-50%, -50%) keeps the
-        // label centered on the cursor instead of anchored at top-left
-        cursorLabel.style.left = mx + 'px';
-        cursorLabel.style.top = my + 'px';
+      const xTo = gsap.quickTo(cursor, 'x', { duration: 0.4, ease: 'power3.out' });
+      const yTo = gsap.quickTo(cursor, 'y', { duration: 0.4, ease: 'power3.out' });
+      document.addEventListener('mousemove', (e) => {
+        const half = cursor.offsetWidth / 2;
+        xTo(e.clientX - half);
+        yTo(e.clientY - half);
+        cursorLabel.style.left = e.clientX + 'px';
+        cursorLabel.style.top = e.clientY + 'px';
       });
+
+      // Very gentle idle pulse — alive but never distracting
+      gsap.to(cursor, {
+        scale: 1.08, duration: 2.2, ease: 'sine.inOut', repeat: -1, yoyo: true,
+      });
+
+      // Hover state — larger ring over case cards, regular grow over other links
       document.querySelectorAll('[data-cursor]').forEach((el) => {
+        const isCase = el.classList.contains('case');
         el.addEventListener('mouseenter', () => {
-          cursor.classList.add('active');
+          cursor.classList.add(isCase ? 'case-active' : 'active');
           const label = el.dataset.cursorLabel;
           if (label) {
             cursorLabel.textContent = label;
@@ -2126,15 +2187,15 @@
           }
         });
         el.addEventListener('mouseleave', () => {
-          cursor.classList.remove('active');
+          cursor.classList.remove('active', 'case-active');
           cursorLabel.classList.remove('visible');
         });
       });
     }
 
-    // Magnetic CTAs
+    // Magnetic CTAs — extended to contact pills + testimonial toggle
     if (matchMedia('(pointer: fine)').matches) {
-      document.querySelectorAll('.hero-cta, .case-cta, .price-cta').forEach((btn) => {
+      document.querySelectorAll('.hero-cta, .case-cta, .price-cta, .pill, .testimonial-toggle').forEach((btn) => {
         btn.addEventListener('mousemove', (e) => {
           const rect = btn.getBoundingClientRect();
           const x = (e.clientX - (rect.left + rect.width / 2)) * 0.2;
