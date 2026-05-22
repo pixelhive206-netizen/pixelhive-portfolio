@@ -4,6 +4,25 @@
 # Custom 404 page
 ErrorDocument 404 /404.html
 
+# Security headers — safe defaults, no CSP yet (CSP needs careful testing).
+<IfModule mod_headers.c>
+  # Prevent MIME-type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Disallow embedding in iframes from other origins (clickjacking protection)
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Modern equivalent of X-Frame-Options
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Disable browser features the site never uses
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+
+  # HSTS — start short (1 day) so we can revert easily if HTTPS breaks.
+  # Extend to max-age=31536000; includeSubDomains; preload once we're confident.
+  Header always set Strict-Transport-Security "max-age=86400"
+</IfModule>
+
 # Browser caching for static assets
 <IfModule mod_expires.c>
   ExpiresActive On

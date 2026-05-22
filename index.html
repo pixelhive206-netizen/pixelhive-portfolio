@@ -499,13 +499,19 @@
       text-shadow: 0 0 12px var(--accent), 0 0 28px rgba(251, 191, 36, 0.5);
     }
     .nav-links { display: flex; gap: 32px; font-size: 13px; font-weight: 500; color: white; }
-    .nav-links a { position: relative; padding-bottom: 4px; }
+    /* Cuberto-style marker underline: draws in from left, erases out to right */
+    .nav-links a { position: relative; padding-bottom: 5px; display: inline-block; }
     .nav-links a::after {
-      content: ''; position: absolute; bottom: 0; left: 0;
-      width: 0; height: 1px; background: currentColor;
-      transition: width 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right center;
+      transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
     }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
     @media (max-width: 800px) { .nav-links { display: none; } }
 
     /* ============================================================ HERO ============================================================ */
@@ -1376,7 +1382,7 @@
       width: 148px;
       height: 148px;
       border-radius: 50%;
-      background: url('assets/pixelhive-contact-avatar.png') center/cover no-repeat #faf7f1;
+      background: url('assets/pixelhive-contact-avatar.webp') center/cover no-repeat #faf7f1;
       display: block;
       text-decoration: none;
       box-shadow:
@@ -1888,7 +1894,7 @@
     </blockquote>
     <div class="testimonial-attr">
       <div class="avatar" aria-hidden="true">
-        <img src="assets/gopal.jpeg" alt="" width="72" height="72" loading="lazy" />
+        <img src="assets/gopal.webp" alt="" width="72" height="72" loading="lazy" />
       </div>
       <div>
         <div class="name">Gopal Bakthavachalam</div>
@@ -2377,6 +2383,23 @@
           cursor.classList.remove('active', 'case-active');
           cursorLabel.classList.remove('visible');
         });
+      });
+    }
+
+    // 3D card tilt on case visuals — Cuberto-style perspective rotation tracking cursor
+    if (matchMedia('(hover: hover)').matches) {
+      gsap.set('.case-visual-wrap', { transformPerspective: 1000, transformStyle: 'preserve-3d' });
+      gsap.utils.toArray('.case-visual-wrap').forEach((wrap) => {
+        const rotXTo = gsap.quickTo(wrap, 'rotationX', { duration: 0.55, ease: 'power3.out' });
+        const rotYTo = gsap.quickTo(wrap, 'rotationY', { duration: 0.55, ease: 'power3.out' });
+        wrap.addEventListener('mousemove', (e) => {
+          const rect = wrap.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          rotYTo((px - 0.5) * 10);
+          rotXTo(-(py - 0.5) * 8);
+        });
+        wrap.addEventListener('mouseleave', () => { rotYTo(0); rotXTo(0); });
       });
     }
 
