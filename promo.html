@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixelhive Studio — Cinematic promo (record this in OBS)</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #000000;
+      --ink: #ffffff;
+      --gold: #fbbf24;
+      --gold-bright: #fde68a;
+      --gold-deep: #d97706;
+    }
+
+    html, body {
+      background: #0a0a0a;
+      color: var(--ink);
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Stage — fixed 1080x1920 for screen recording at native IG resolution */
+    .stage {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      background: var(--bg);
+      overflow: hidden;
+      margin: 0 auto;
+      transform-origin: top center;
+    }
+
+    /* If viewport is smaller than 1080x1920, scale down to fit (lets user record at native size or preview at any size). */
+    @media (max-height: 1920px) {
+      body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+      .stage { transform: scale(var(--scale, 1)); }
+    }
+
+    /* Subtle vignette + grain — applied globally for filmic feel */
+    .vignette {
+      position: absolute; inset: 0; pointer-events: none; z-index: 100;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    }
+    .grain {
+      position: absolute; inset: 0; pointer-events: none; z-index: 101;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+    }
+    .grain svg { width: 100%; height: 100%; }
+
+    /* Letterbox bars (cinematic) */
+    .letterbox-top, .letterbox-bottom {
+      position: absolute; left: 0; right: 0;
+      height: 0;
+      background: #000;
+      z-index: 99;
+      transition: none;
+    }
+    .letterbox-top { top: 0; }
+    .letterbox-bottom { bottom: 0; }
+
+    /* Scene base */
+    .scene {
+      position: absolute; inset: 0;
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 80px;
+    }
+    .scene.active { opacity: 1; }
+
+    /* ============================================================ SCENE 1: OPENING ============================================================ */
+    .scene-1 .opening-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 30px var(--gold), 0 0 80px rgba(251, 191, 36, 0.6);
+      position: absolute;
+      top: 38%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    .scene-1 .opening-hex {
+      position: absolute;
+      top: 38%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 220px; height: 254px;
+      opacity: 0;
+    }
+
+    .scene-1 .opening-wordmark {
+      position: absolute;
+      top: 48%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 56px;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .scene-1 .opening-wordmark .dot { color: var(--gold); }
+    .scene-1 .opening-tag {
+      position: absolute;
+      top: 53%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px; letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    .scene-1 .headlines {
+      position: absolute;
+      top: 64%; left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      text-align: center;
+      padding: 0 60px;
+    }
+    .scene-1 .headline {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 86px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      opacity: 0;
+      transform: translateY(40px);
+      margin-bottom: 8px;
+    }
+    .scene-1 .headline em { font-style: italic; color: var(--gold); }
+
+    /* ============================================================ SCENE 2: WEBSITE SHOWCASE ============================================================ */
+    .scene-2 .phone-frame {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-3deg);
+      width: 500px; height: 1080px;
+      border-radius: 60px;
+      background: linear-gradient(145deg, #1a1a1a, #050505);
+      box-shadow:
+        0 50px 100px -30px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 0 0 3px #0a0a0a;
+      padding: 20px;
+      opacity: 0;
+    }
+    .scene-2 .phone-screen {
+      width: 100%; height: 100%;
+      background: #0b0f14;
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Phone notch */
+    .scene-2 .phone-notch {
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 130px; height: 32px;
+      background: #000;
+      border-radius: 0 0 18px 18px;
+      z-index: 10;
+    }
+    /* Site content scrolling inside phone */
+    .scene-2 .site-content {
+      position: absolute; top: 0; left: 0; right: 0;
+      transform: translateY(0);
+      padding: 60px 24px 40px;
+    }
+    .site-section {
+      margin-bottom: 50px;
+    }
+    .site-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 60px;
+    }
+    .site-nav .logo-mini {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 14px;
+      letter-spacing: -0.02em;
+    }
+    .site-nav .logo-mini .dot { color: var(--gold); }
+    .site-nav .menu-dots {
+      display: flex; gap: 4px;
+    }
+    .site-nav .menu-dots span {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+    }
+    .site-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 56px; line-height: 0.95;
+      font-weight: 500; letter-spacing: -0.04em;
+      margin-bottom: 30px;
+    }
+    .site-hero h1 em { font-style: italic; color: var(--gold); }
+    .site-hero p {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px; line-height: 1.5;
+      color: rgba(255,255,255,0.55);
+      max-width: 340px;
+    }
+    .site-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px; line-height: 1.1;
+      margin-bottom: 18px;
+      font-weight: 500; letter-spacing: -0.02em;
+    }
+    .site-section h2 em { font-style: italic; color: var(--gold); }
+    .site-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 12px;
+    }
+    .site-card .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .site-card .ttl {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px; font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .site-card .desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+    }
+    .site-mockup {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.1));
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .site-mockup .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px; font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+    .site-mockup .num em { font-style: italic; color: var(--gold); font-size: 28px; }
+    .site-mockup .lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.16em; text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Floating callouts */
+    .scene-2 .callout {
+      position: absolute;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px; font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      opacity: 0;
+    }
+    .scene-2 .callout em { font-style: italic; color: var(--gold); }
+    .scene-2 .callout-1 { top: 12%; left: 60px; transform: translateY(20px); }
+    .scene-2 .callout-2 { bottom: 28%; right: 60px; transform: translateY(20px); text-align: right; }
+    .scene-2 .callout-3 { bottom: 10%; left: 60px; transform: translateY(20px); }
+
+    /* ============================================================ SCENE 3: HOW WE WORK ============================================================ */
+    .scene-3 .scene-tag {
+      position: absolute;
+      top: 140px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+    .scene-3 .scene-title {
+      position: absolute;
+      top: 200px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 88px; font-weight: 500;
+      letter-spacing: -0.04em;
+      opacity: 0;
+      text-align: center;
+    }
+    .scene-3 .scene-title em { font-style: italic; color: var(--gold); }
+
+    .scene-3 .workflow {
+      position: absolute;
+      top: 460px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+    }
+    .scene-3 .step {
+      display: flex; align-items: center; gap: 28px;
+      padding: 28px 32px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      position: relative;
+    }
+    .scene-3 .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      flex-shrink: 0;
+      min-width: 50px;
+    }
+    .scene-3 .step-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+    }
+    .scene-3 .step-glow {
+      position: absolute;
+      left: -2px; right: -2px; top: -2px; bottom: -2px;
+      border-radius: 18px;
+      border: 1px solid var(--gold);
+      opacity: 0;
+      pointer-events: none;
+    }
+    /* Connector line between steps */
+    .scene-3 .step::after {
+      content: '';
+      position: absolute;
+      left: 50px; top: 100%;
+      width: 1px; height: 28px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      opacity: 0;
+    }
+    .scene-3 .step:last-child::after { display: none; }
+
+    /* Code snippets in background */
+    .scene-3 .code-bg {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: rgba(251, 191, 36, 0.25);
+      pointer-events: none;
+      white-space: pre;
+      opacity: 0;
+    }
+    .scene-3 .code-1 { top: 480px; left: 30px; transform: rotate(-3deg); }
+    .scene-3 .code-2 { bottom: 240px; right: 20px; transform: rotate(2deg); }
+    .scene-3 .code-3 { top: 800px; right: 40px; transform: rotate(-4deg); }
+
+    /* ============================================================ SCENE 4: PREMIUM ============================================================ */
+    .scene-4 .big-word {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 220px; font-weight: 500;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+      opacity: 0;
+    }
+    .scene-4 .big-word em {
+      font-style: italic; color: var(--gold);
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold) 40%, var(--gold-bright) 50%, var(--gold) 60%, var(--gold) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineSweep 2s linear infinite;
+    }
+    @keyframes shineSweep {
+      0%   { background-position: 220% 0; }
+      100% { background-position: -120% 0; }
+    }
+
+    /* ============================================================ SCENE 5: IDENTITY ============================================================ */
+    .scene-5 .grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(251, 191, 36, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 191, 36, 0.08) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0;
+    }
+    .scene-5 .id-tag {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-size: 18px;
+      opacity: 0;
+    }
+    .scene-5 .id-line-1 { top: 32%; }
+    .scene-5 .id-text {
+      position: absolute;
+      left: 50%; transform: translate(-50%, 20px);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      text-align: center;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .scene-5 .id-line-2 { top: 38%; font-size: 84px; }
+    .scene-5 .id-line-2 em { font-style: italic; color: var(--gold); }
+    .scene-5 .id-line-3 { top: 52%; font-size: 56px; }
+    .scene-5 .id-line-4 { top: 64%; font-size: 36px; }
+    .scene-5 .id-line-4 em { font-style: italic; color: var(--gold); }
+
+    /* Floating gold particles */
+    .scene-5 .particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+      opacity: 0;
+    }
+
+    /* ============================================================ SCENE 6: FINAL ============================================================ */
+    .scene-6 .deserves {
+      position: absolute;
+      top: 30%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 86px; font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      text-align: center;
+      width: 100%;
+      padding: 0 80px;
+      color: var(--ink);
+      opacity: 0;
+    }
+    .scene-6 .deserves em {
+      font-style: italic; color: var(--gold);
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold) 40%, var(--gold-bright) 50%, var(--gold) 60%, var(--gold) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineSweep 4s linear infinite;
+    }
+
+    .scene-6 .final-logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center; gap: 24px;
+      opacity: 0;
+    }
+    .scene-6 .final-logo .mark { width: 80px; height: 92px; }
+    .scene-6 .final-logo .wordmark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 64px;
+      letter-spacing: -0.04em;
+    }
+    .scene-6 .final-logo .wordmark .dot { color: var(--gold); }
+
+    .scene-6 .cta-main {
+      position: absolute;
+      top: 65%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 48px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-align: center;
+      opacity: 0;
+    }
+    .scene-6 .cta-main em { font-style: italic; color: var(--gold); }
+
+    .scene-6 .cta-url {
+      position: absolute;
+      top: 73%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      opacity: 0;
+      padding: 14px 30px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 999px;
+    }
+
+    /* Glow at bottom of scene 6 */
+    .scene-6 .final-glow {
+      position: absolute;
+      bottom: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(251, 191, 36, 0.25), transparent 60%);
+      filter: blur(40px);
+      opacity: 0;
+    }
+
+    /* Recording overlay note (only visible to person previewing, not in stage) */
+    .record-hint {
+      position: fixed;
+      bottom: 10px; left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(0,0,0,0.7);
+      padding: 6px 12px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .record-hint.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="stage" id="stage">
+
+    <!-- ============== SCENE 1: OPENING ============== -->
+    <div class="scene scene-1" id="scene-1">
+      <div class="opening-dot" id="openingDot"></div>
+      <svg class="opening-hex" id="openingHex" viewBox="0 0 220 254">
+        <path d="M110 10 L205 60 L205 194 L110 244 L15 194 L15 60 Z" fill="none" stroke="#fbbf24" stroke-width="3" stroke-linejoin="round"/>
+        <rect x="65" y="60" width="32" height="32" rx="4" fill="#fbbf24"/>
+        <rect x="97" y="92" width="32" height="32" rx="4" fill="#fbbf24"/>
+        <rect x="69" y="124" width="32" height="32" rx="4" fill="#fbbf24"/>
+      </svg>
+      <div class="opening-wordmark" id="openingWordmark">PIXEL<span class="dot">·</span>HIVE</div>
+      <div class="opening-tag" id="openingTag">STUDIO</div>
+      <div class="headlines">
+        <span class="headline" data-headline="1">Websites that <em>load fast.</em></span>
+        <span class="headline" data-headline="2">Look <em>sharp.</em></span>
+        <span class="headline" data-headline="3">And <em>convert.</em></span>
+      </div>
+    </div>
+
+    <!-- ============== SCENE 2: WEBSITE SHOWCASE ============== -->
+    <div class="scene scene-2" id="scene-2">
+      <div class="phone-frame" id="phoneFrame">
+        <div class="phone-screen">
+          <div class="phone-notch"></div>
+          <div class="site-content" id="siteContent">
+
+            <div class="site-nav">
+              <div class="logo-mini">PIXEL<span class="dot">·</span>HIVE</div>
+              <div class="menu-dots"><span></span><span></span><span></span></div>
+            </div>
+
+            <div class="site-section site-hero">
+              <h1>Websites that load <em>fast</em>, look <em>sharp</em>, and <em>convert.</em></h1>
+              <p>A creative web studio based in India, building hand-coded sites for businesses and creators.</p>
+            </div>
+
+            <div class="site-section">
+              <h2>Selected <em>work</em></h2>
+              <div class="site-mockup">
+                <div class="num">10,<em>000,000</em></div>
+                <div class="lbl">Native trees · pledge</div>
+              </div>
+              <div class="site-card">
+                <span class="num">001 — Live</span>
+                <div class="ttl">Maram The Tree Foundation</div>
+                <div class="desc">A complete digital home for a Tamil Nadu reforestation movement.</div>
+              </div>
+            </div>
+
+            <div class="site-section">
+              <h2>How we <em>work</em></h2>
+              <div class="site-card">
+                <span class="num">01</span>
+                <div class="ttl">Discovery</div>
+                <div class="desc">We listen first. Goals, audience, constraints — clarified before we touch design.</div>
+              </div>
+              <div class="site-card">
+                <span class="num">02</span>
+                <div class="ttl">Design</div>
+                <div class="desc">Wireframes to high-fidelity. We share work weekly.</div>
+              </div>
+              <div class="site-card">
+                <span class="num">03</span>
+                <div class="ttl">Hand-code</div>
+                <div class="desc">No page-builders. No templates. Just clean, fast code.</div>
+              </div>
+            </div>
+
+            <div class="site-section">
+              <h2>Packages</h2>
+              <div class="site-card">
+                <span class="num">Starter</span>
+                <div class="ttl">₹25,000 – ₹40,000</div>
+                <div class="desc">One-page sites. Delivered in 7 days.</div>
+              </div>
+              <div class="site-card">
+                <span class="num">Standard</span>
+                <div class="ttl">₹50,000 – ₹90,000</div>
+                <div class="desc">3–5 page sites. Delivered in 2 weeks.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-1">Delivered in <em>2 weeks.</em></div>
+      <div class="callout callout-2"><em>Yours</em> forever.</div>
+      <div class="callout callout-3">Hand-coded, <em>no templates.</em></div>
+    </div>
+
+    <!-- ============== SCENE 3: HOW WE WORK ============== -->
+    <div class="scene scene-3" id="scene-3">
+      <div class="scene-tag">/ Process</div>
+      <div class="scene-title">How we <em>work.</em></div>
+
+      <div class="code-bg code-1" id="code-1">&lt;header&gt;
+  &lt;nav&gt;
+    &lt;a href="/"&gt;
+&lt;/header&gt;</div>
+      <div class="code-bg code-2" id="code-2">const visual = $('.case');
+gsap.from(visual, {
+  clipPath: 'circle(0%)',
+  duration: 1.4
+});</div>
+      <div class="code-bg code-3" id="code-3">@media (max-width: 800px) {
+  .hero { font-size: 56px; }
+}</div>
+
+      <div class="workflow" id="workflow">
+        <div class="step" data-step="1">
+          <span class="step-num">01</span>
+          <span class="step-text">Discovery call</span>
+          <div class="step-glow"></div>
+        </div>
+        <div class="step" data-step="2">
+          <span class="step-num">02</span>
+          <span class="step-text">Wireframe &amp; design</span>
+          <div class="step-glow"></div>
+        </div>
+        <div class="step" data-step="3">
+          <span class="step-num">03</span>
+          <span class="step-text">Hand coding</span>
+          <div class="step-glow"></div>
+        </div>
+        <div class="step" data-step="4">
+          <span class="step-num">04</span>
+          <span class="step-text">Testing &amp; optimization</span>
+          <div class="step-glow"></div>
+        </div>
+        <div class="step" data-step="5">
+          <span class="step-num">05</span>
+          <span class="step-text">Launch</span>
+          <div class="step-glow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== SCENE 4: PREMIUM ============== -->
+    <div class="scene scene-4" id="scene-4">
+      <div class="big-word" data-word="1"><em>Fast.</em></div>
+      <div class="big-word" data-word="2">Modern.</div>
+      <div class="big-word" data-word="3"><em>Responsive.</em></div>
+      <div class="big-word" data-word="4">Built to <em>convert.</em></div>
+    </div>
+
+    <!-- ============== SCENE 5: IDENTITY ============== -->
+    <div class="scene scene-5" id="scene-5">
+      <div class="grid-bg" id="gridBg"></div>
+      <span class="particle" style="top: 18%; left: 22%;"></span>
+      <span class="particle" style="top: 24%; left: 76%;"></span>
+      <span class="particle" style="top: 50%; left: 14%;"></span>
+      <span class="particle" style="top: 68%; left: 84%;"></span>
+      <span class="particle" style="top: 80%; left: 30%;"></span>
+      <span class="particle" style="top: 42%; left: 90%;"></span>
+
+      <div class="id-tag id-line-1">/ Studio</div>
+      <div class="id-text id-line-2">Tamil <em>Nadu</em>, India</div>
+      <div class="id-text id-line-3">Booking <em>2026</em></div>
+      <div class="id-text id-line-4">Creative web <em>studio</em></div>
+    </div>
+
+    <!-- ============== SCENE 6: FINAL ============== -->
+    <div class="scene scene-6" id="scene-6">
+      <div class="final-glow" id="finalGlow"></div>
+
+      <div class="deserves" id="deserves">Your business deserves<br/>better than <em>templates.</em></div>
+
+      <div class="final-logo" id="finalLogo">
+        <svg class="mark" viewBox="0 0 80 92">
+          <path d="M40 6 L73 24 L73 68 L40 86 L7 68 L7 24 Z" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"/>
+          <rect x="22" y="22" width="14" height="14" rx="2" fill="#fbbf24"/>
+          <rect x="36" y="36" width="14" height="14" rx="2" fill="#fbbf24"/>
+          <rect x="24" y="52" width="14" height="14" rx="2" fill="#fbbf24"/>
+        </svg>
+        <div class="wordmark">PIXEL<span class="dot">·</span>HIVE</div>
+      </div>
+
+      <div class="cta-main" id="ctaMain">Start your <em>project.</em></div>
+      <div class="cta-url" id="ctaUrl">pixelhivestudio.in</div>
+    </div>
+
+    <!-- Vignette + grain (cinematic film feel) -->
+    <div class="vignette"></div>
+    <div class="grain">
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <filter id="noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5"/>
+          <feColorMatrix values="0 0 0 0 1
+                                 0 0 0 0 1
+                                 0 0 0 0 1
+                                 0 0 0 1 0"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noise)"/>
+      </svg>
+    </div>
+    <!-- Letterbox bars -->
+    <div class="letterbox-top" id="letterboxTop"></div>
+    <div class="letterbox-bottom" id="letterboxBottom"></div>
+
+  </div>
+
+  <div class="record-hint" id="recordHint">
+    Press SPACE to start animation · F11 for fullscreen · Record at 1080×1920 · Or scale: <span id="scaleInfo">1.0x</span>
+  </div>
+
+  <script>
+    /* Scale the 1080x1920 stage to fit viewport while preserving aspect ratio */
+    function fitStage() {
+      const stage = document.getElementById('stage');
+      const scaleW = window.innerWidth / 1080;
+      const scaleH = window.innerHeight / 1920;
+      const scale = Math.min(scaleW, scaleH, 1);
+      document.body.style.setProperty('--scale', scale);
+      const info = document.getElementById('scaleInfo');
+      if (info) info.textContent = scale.toFixed(2) + 'x';
+    }
+    fitStage();
+    window.addEventListener('resize', fitStage);
+
+    /* Build the full timeline. Press SPACE to start (allows screen-recorder to begin first). */
+    function buildTimeline() {
+      const tl = gsap.timeline({ paused: true });
+
+      /* Hide all scenes initially */
+      gsap.set(['#scene-1','#scene-2','#scene-3','#scene-4','#scene-5','#scene-6'], { opacity: 0 });
+
+      // === SCENE 1: OPENING (0 - 6.5s) ===
+      tl.set('#scene-1', { opacity: 1 }, 0)
+        // Dot fades in and pulses
+        .fromTo('#openingDot',
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.6, ease: 'power2.out' },
+          0.3)
+        .to('#openingDot', { scale: 1.4, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 1.0)
+        // Dot expands to hex logo
+        .to('#openingDot', { scale: 8, opacity: 0, duration: 0.7, ease: 'power3.in' }, 1.6)
+        .fromTo('#openingHex',
+          { scale: 0.3, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.9, ease: 'expo.out' },
+          1.7)
+        // Wordmark + tag fade in
+        .fromTo('#openingWordmark',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+          2.4)
+        .fromTo('#openingTag',
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+          2.7)
+        // Headlines stagger in
+        .fromTo('[data-headline="1"]',
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          3.4)
+        .fromTo('[data-headline="2"]',
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          3.8)
+        .fromTo('[data-headline="3"]',
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          4.2)
+        // Scene 1 exit
+        .to('#scene-1', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 6.0);
+
+      // === SCENE 2: WEBSITE SHOWCASE (6.5 - 14s) ===
+      tl.set('#scene-2', { opacity: 1 }, 6.5)
+        .fromTo('#phoneFrame',
+          { opacity: 0, x: 600, rotation: 8 },
+          { opacity: 1, x: 0, rotation: -3, duration: 1.2, ease: 'expo.out' },
+          6.5)
+        // Scroll the site content inside the phone
+        .to('#siteContent',
+          { y: -1300, duration: 6, ease: 'power1.inOut' },
+          7.5)
+        // Callouts appear sequentially
+        .fromTo('.callout-1',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          7.5)
+        .to('.callout-1', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 9.2)
+
+        .fromTo('.callout-2',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          9.5)
+        .to('.callout-2', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 11.2)
+
+        .fromTo('.callout-3',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          11.5)
+        .to('.callout-3', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 13.2)
+
+        // Scene 2 exit
+        .to('#scene-2', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 13.6);
+
+      // === SCENE 3: HOW WE WORK (14 - 22s) ===
+      tl.set('#scene-3', { opacity: 1 }, 14)
+        .fromTo('.scene-3 .scene-tag',
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          14)
+        .fromTo('.scene-3 .scene-title',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          14.3)
+        // Code snippets fade in
+        .to(['#code-1','#code-2','#code-3'],
+          { opacity: 1, duration: 1, stagger: 0.2, ease: 'power2.out' },
+          14.8)
+        // Steps appear one by one
+        .fromTo('[data-step="1"]',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          15.2)
+        .to('[data-step="1"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 15.5)
+
+        .fromTo('[data-step="2"]',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          15.8)
+        .to('[data-step="2"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 16.1)
+
+        .fromTo('[data-step="3"]',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          16.4)
+        .to('[data-step="3"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 16.7)
+
+        .fromTo('[data-step="4"]',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          17.0)
+        .to('[data-step="4"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 17.3)
+
+        .fromTo('[data-step="5"]',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+          17.6)
+        .to('[data-step="5"] .step-glow', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 18.0)
+
+        // Hold scene 3
+        // Exit
+        .to('#scene-3', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 21.5);
+
+      // === SCENE 4: PREMIUM (22 - 28s) ===
+      tl.set('#scene-4', { opacity: 1 }, 22)
+        .fromTo('[data-word="1"]',
+          { opacity: 0, scale: 1.3 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
+          22)
+        .to('[data-word="1"]',
+          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
+          23.3)
+
+        .fromTo('[data-word="2"]',
+          { opacity: 0, scale: 1.3 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
+          23.7)
+        .to('[data-word="2"]',
+          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
+          25.0)
+
+        .fromTo('[data-word="3"]',
+          { opacity: 0, scale: 1.3 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
+          25.4)
+        .to('[data-word="3"]',
+          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
+          26.7)
+
+        .fromTo('[data-word="4"]',
+          { opacity: 0, scale: 1.3 },
+          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
+          27.1)
+        .to('#scene-4', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 28.4);
+
+      // === SCENE 5: IDENTITY (29 - 33s) ===
+      tl.set('#scene-5', { opacity: 1 }, 29)
+        .fromTo('#gridBg',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: 'power2.out' },
+          29)
+        .fromTo('.scene-5 .particle',
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+          29.2)
+        .fromTo('.id-line-1',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.4 },
+          29.4)
+        .fromTo('.id-line-2',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          29.6)
+        .fromTo('.id-line-3',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          30.5)
+        .fromTo('.id-line-4',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          31.3)
+        .to('#scene-5', { opacity: 0, duration: 0.7, ease: 'power2.in' }, 32.6);
+
+      // === SCENE 6: FINAL (33 - 42s) ===
+      tl.set('#scene-6', { opacity: 1 }, 33)
+        // "Your business deserves better..." headline
+        .fromTo('#deserves',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out' },
+          33)
+        // Hold
+        .to('#deserves',
+          { opacity: 0, y: -30, duration: 0.7, ease: 'power2.in' },
+          36)
+        // Logo lockup appears with glow
+        .fromTo('#finalGlow',
+          { opacity: 0 },
+          { opacity: 1, duration: 1.2, ease: 'power2.out' },
+          36.3)
+        .fromTo('#finalLogo',
+          { opacity: 0, scale: 0.85 },
+          { opacity: 1, scale: 1, duration: 1.0, ease: 'expo.out' },
+          36.5)
+        // CTA appears
+        .fromTo('#ctaMain',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          37.8)
+        .fromTo('#ctaUrl',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
+          38.3)
+        // Hold + slow fade out
+        .to('#scene-6', { opacity: 0, duration: 1.0, ease: 'power2.in' }, 41);
+
+      // Letterbox bars slide in at start, out at end
+      gsap.set(['#letterboxTop', '#letterboxBottom'], { height: 0 });
+      tl.to(['#letterboxTop', '#letterboxBottom'],
+        { height: 100, duration: 0.7, ease: 'power3.out' }, 0);
+      tl.to(['#letterboxTop', '#letterboxBottom'],
+        { height: 0, duration: 0.8, ease: 'power3.in' }, 41);
+
+      return tl;
+    }
+
+    const tl = buildTimeline();
+
+    /* Hide the record hint when animation starts, show again when done */
+    const hint = document.getElementById('recordHint');
+
+    /* Press SPACE to start (gives time to start screen-recorder, then press play) */
+    function startAnimation() {
+      hint.classList.add('hidden');
+      tl.restart();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        startAnimation();
+      }
+      if (e.code === 'KeyR') {
+        e.preventDefault();
+        tl.pause(0);
+        tl.seek(0);
+        hint.classList.remove('hidden');
+      }
+    });
+
+    /* Click anywhere to start (alternative to space) */
+    document.addEventListener('click', () => {
+      if (tl.paused() && tl.time() === 0) startAnimation();
+    });
+
+    /* When timeline completes, restore the hint after a delay */
+    tl.eventCallback('onComplete', () => {
+      setTimeout(() => hint.classList.remove('hidden'), 2000);
+    });
+  </script>
+
+</body>
+</html>
