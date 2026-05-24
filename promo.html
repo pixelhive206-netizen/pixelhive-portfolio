@@ -49,28 +49,43 @@
       .stage { transform: scale(var(--scale, 1)); }
     }
 
-    /* Subtle vignette + grain — applied globally for filmic feel */
+    /* Cinematic atmospheric layers — applied globally */
     .vignette {
       position: absolute; inset: 0; pointer-events: none; z-index: 100;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+      background:
+        radial-gradient(ellipse 80% 60% at center, transparent 35%, rgba(0,0,0,0.6) 95%),
+        radial-gradient(ellipse at 50% 100%, rgba(251, 191, 36, 0.04), transparent 50%);
+    }
+    /* Warm color grading — very subtle gold tint over deep blacks */
+    .color-grade {
+      position: absolute; inset: 0; pointer-events: none; z-index: 98;
+      background: linear-gradient(180deg, rgba(251, 191, 36, 0.015), transparent 30%, transparent 70%, rgba(217, 119, 6, 0.025));
+      mix-blend-mode: screen;
     }
     .grain {
       position: absolute; inset: 0; pointer-events: none; z-index: 101;
-      opacity: 0.06;
+      opacity: 0.10;
       mix-blend-mode: overlay;
     }
     .grain svg { width: 100%; height: 100%; }
 
-    /* Letterbox bars (cinematic) */
+    /* Letterbox bars (cinematic 2.35:1 inside 9:16 frame) */
     .letterbox-top, .letterbox-bottom {
       position: absolute; left: 0; right: 0;
       height: 0;
       background: #000;
       z-index: 99;
       transition: none;
+      box-shadow: 0 0 30px 0 rgba(0,0,0,0.9);
     }
     .letterbox-top { top: 0; }
     .letterbox-bottom { bottom: 0; }
+
+    /* Scene container — used for camera push-in */
+    .scene-inner {
+      position: absolute; inset: 0;
+      transform-origin: center center;
+    }
 
     /* Scene base */
     .scene {
@@ -138,13 +153,13 @@
       display: block;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 500;
-      font-size: 86px;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      font-size: 96px;
+      line-height: 1.02;
+      letter-spacing: -0.045em;
       color: var(--ink);
       opacity: 0;
       transform: translateY(40px);
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
     .scene-1 .headline em { font-style: italic; color: var(--gold); }
 
@@ -153,7 +168,7 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%) rotate(-3deg);
-      width: 500px; height: 1080px;
+      width: 580px; height: 1180px;
       border-radius: 60px;
       background: linear-gradient(145deg, #1a1a1a, #050505);
       box-shadow:
@@ -276,10 +291,12 @@
     .scene-2 .callout {
       position: absolute;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 48px; font-weight: 500;
-      letter-spacing: -0.02em;
+      font-size: 56px; font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
       color: var(--ink);
       opacity: 0;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.8);
     }
     .scene-2 .callout em { font-style: italic; color: var(--gold); }
     .scene-2 .callout-1 { top: 12%; left: 60px; transform: translateY(20px); }
@@ -449,15 +466,15 @@
     /* ============================================================ SCENE 6: FINAL ============================================================ */
     .scene-6 .deserves {
       position: absolute;
-      top: 30%; left: 50%;
+      top: 38%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 86px; font-weight: 500;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      font-size: 100px; font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.045em;
       text-align: center;
       width: 100%;
-      padding: 0 80px;
+      padding: 0 60px;
       color: var(--ink);
       opacity: 0;
     }
@@ -725,7 +742,8 @@ gsap.from(visual, {
       <div class="cta-url" id="ctaUrl">pixelhivestudio.in</div>
     </div>
 
-    <!-- Vignette + grain (cinematic film feel) -->
+    <!-- Atmospheric layers (cinematic film feel) -->
+    <div class="color-grade"></div>
     <div class="vignette"></div>
     <div class="grain">
       <svg xmlns="http://www.w3.org/2000/svg">
@@ -763,231 +781,265 @@ gsap.from(visual, {
     fitStage();
     window.addEventListener('resize', fitStage);
 
-    /* Build the full timeline. Press SPACE to start (allows screen-recorder to begin first). */
+    /* Build the full timeline. Press SPACE to start (allows screen-recorder to begin first).
+       Total runtime ~45s. Cinematic pacing: every hold has a subtle scale push-in (1.0 -> 1.04)
+       to suggest a camera dolly. Transitions are slow fades, not hard cuts. */
     function buildTimeline() {
       const tl = gsap.timeline({ paused: true });
 
       /* Hide all scenes initially */
       gsap.set(['#scene-1','#scene-2','#scene-3','#scene-4','#scene-5','#scene-6'], { opacity: 0 });
+      gsap.set(['#scene-1','#scene-2','#scene-3','#scene-4','#scene-5','#scene-6'], { scale: 1, transformOrigin: 'center center' });
 
-      // === SCENE 1: OPENING (0 - 6.5s) ===
-      tl.set('#scene-1', { opacity: 1 }, 0)
-        // Dot fades in and pulses
-        .fromTo('#openingDot',
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.6, ease: 'power2.out' },
-          0.3)
-        .to('#openingDot', { scale: 1.4, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 1.0)
-        // Dot expands to hex logo
-        .to('#openingDot', { scale: 8, opacity: 0, duration: 0.7, ease: 'power3.in' }, 1.6)
-        .fromTo('#openingHex',
-          { scale: 0.3, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.9, ease: 'expo.out' },
-          1.7)
-        // Wordmark + tag fade in
-        .fromTo('#openingWordmark',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
-          2.4)
-        .fromTo('#openingTag',
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          2.7)
-        // Headlines stagger in
-        .fromTo('[data-headline="1"]',
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          3.4)
-        .fromTo('[data-headline="2"]',
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          3.8)
-        .fromTo('[data-headline="3"]',
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          4.2)
-        // Scene 1 exit
-        .to('#scene-1', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 6.0);
-
-      // === SCENE 2: WEBSITE SHOWCASE (6.5 - 14s) ===
-      tl.set('#scene-2', { opacity: 1 }, 6.5)
-        .fromTo('#phoneFrame',
-          { opacity: 0, x: 600, rotation: 8 },
-          { opacity: 1, x: 0, rotation: -3, duration: 1.2, ease: 'expo.out' },
-          6.5)
-        // Scroll the site content inside the phone
-        .to('#siteContent',
-          { y: -1300, duration: 6, ease: 'power1.inOut' },
-          7.5)
-        // Callouts appear sequentially
-        .fromTo('.callout-1',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          7.5)
-        .to('.callout-1', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 9.2)
-
-        .fromTo('.callout-2',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          9.5)
-        .to('.callout-2', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 11.2)
-
-        .fromTo('.callout-3',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          11.5)
-        .to('.callout-3', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 13.2)
-
-        // Scene 2 exit
-        .to('#scene-2', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 13.6);
-
-      // === SCENE 3: HOW WE WORK (14 - 22s) ===
-      tl.set('#scene-3', { opacity: 1 }, 14)
-        .fromTo('.scene-3 .scene-tag',
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          14)
-        .fromTo('.scene-3 .scene-title',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          14.3)
-        // Code snippets fade in
-        .to(['#code-1','#code-2','#code-3'],
-          { opacity: 1, duration: 1, stagger: 0.2, ease: 'power2.out' },
-          14.8)
-        // Steps appear one by one
-        .fromTo('[data-step="1"]',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          15.2)
-        .to('[data-step="1"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 15.5)
-
-        .fromTo('[data-step="2"]',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          15.8)
-        .to('[data-step="2"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 16.1)
-
-        .fromTo('[data-step="3"]',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          16.4)
-        .to('[data-step="3"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 16.7)
-
-        .fromTo('[data-step="4"]',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          17.0)
-        .to('[data-step="4"] .step-glow', { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 }, 17.3)
-
-        .fromTo('[data-step="5"]',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          17.6)
-        .to('[data-step="5"] .step-glow', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 18.0)
-
-        // Hold scene 3
-        // Exit
-        .to('#scene-3', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 21.5);
-
-      // === SCENE 4: PREMIUM (22 - 28s) ===
-      tl.set('#scene-4', { opacity: 1 }, 22)
-        .fromTo('[data-word="1"]',
-          { opacity: 0, scale: 1.3 },
-          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
-          22)
-        .to('[data-word="1"]',
-          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
-          23.3)
-
-        .fromTo('[data-word="2"]',
-          { opacity: 0, scale: 1.3 },
-          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
-          23.7)
-        .to('[data-word="2"]',
-          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
-          25.0)
-
-        .fromTo('[data-word="3"]',
-          { opacity: 0, scale: 1.3 },
-          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
-          25.4)
-        .to('[data-word="3"]',
-          { opacity: 0, scale: 0.85, duration: 0.4, ease: 'power2.in' },
-          26.7)
-
-        .fromTo('[data-word="4"]',
-          { opacity: 0, scale: 1.3 },
-          { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' },
-          27.1)
-        .to('#scene-4', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 28.4);
-
-      // === SCENE 5: IDENTITY (29 - 33s) ===
-      tl.set('#scene-5', { opacity: 1 }, 29)
-        .fromTo('#gridBg',
-          { opacity: 0 },
-          { opacity: 1, duration: 0.8, ease: 'power2.out' },
-          29)
-        .fromTo('.scene-5 .particle',
-          { opacity: 0, scale: 0 },
-          { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
-          29.2)
-        .fromTo('.id-line-1',
-          { opacity: 0 },
-          { opacity: 1, duration: 0.4 },
-          29.4)
-        .fromTo('.id-line-2',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          29.6)
-        .fromTo('.id-line-3',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          30.5)
-        .fromTo('.id-line-4',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          31.3)
-        .to('#scene-5', { opacity: 0, duration: 0.7, ease: 'power2.in' }, 32.6);
-
-      // === SCENE 6: FINAL (33 - 42s) ===
-      tl.set('#scene-6', { opacity: 1 }, 33)
-        // "Your business deserves better..." headline
-        .fromTo('#deserves',
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out' },
-          33)
-        // Hold
-        .to('#deserves',
-          { opacity: 0, y: -30, duration: 0.7, ease: 'power2.in' },
-          36)
-        // Logo lockup appears with glow
-        .fromTo('#finalGlow',
-          { opacity: 0 },
-          { opacity: 1, duration: 1.2, ease: 'power2.out' },
-          36.3)
-        .fromTo('#finalLogo',
-          { opacity: 0, scale: 0.85 },
-          { opacity: 1, scale: 1, duration: 1.0, ease: 'expo.out' },
-          36.5)
-        // CTA appears
-        .fromTo('#ctaMain',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          37.8)
-        .fromTo('#ctaUrl',
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' },
-          38.3)
-        // Hold + slow fade out
-        .to('#scene-6', { opacity: 0, duration: 1.0, ease: 'power2.in' }, 41);
-
-      // Letterbox bars slide in at start, out at end
+      // Letterbox: tall cinematic bars (160px each = ~16% of 1920) slide in slow at start, retract at end
       gsap.set(['#letterboxTop', '#letterboxBottom'], { height: 0 });
       tl.to(['#letterboxTop', '#letterboxBottom'],
-        { height: 100, duration: 0.7, ease: 'power3.out' }, 0);
+        { height: 160, duration: 1.2, ease: 'power3.out' }, 0);
+
+      // === SCENE 1: OPENING (0 - 8s) — slower, more dramatic ===
+      tl.set('#scene-1', { opacity: 1 }, 0)
+        // Dot fades in — slower, almost too slow
+        .fromTo('#openingDot',
+          { scale: 0, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.0, ease: 'power2.out' },
+          0.6)
+        // Two slow pulses (heartbeat feel)
+        .to('#openingDot', { scale: 1.5, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 1.8)
+        // Dramatic expansion as dot blooms into logo
+        .to('#openingDot', { scale: 12, opacity: 0, duration: 0.9, ease: 'power3.in' }, 2.8)
+        .fromTo('#openingHex',
+          { scale: 0.2, opacity: 0, filter: 'blur(8px)' },
+          { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.1, ease: 'expo.out' },
+          2.9)
+        // Subtle camera push on hex while it holds
+        .to('#openingHex', { scale: 1.05, duration: 4, ease: 'sine.inOut' }, 4.0)
+        // Wordmark + tag fade in (slower, more space)
+        .fromTo('#openingWordmark',
+          { opacity: 0, y: 24, filter: 'blur(4px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power3.out' },
+          3.8)
+        .fromTo('#openingTag',
+          { opacity: 0, y: 12, letterSpacing: '0.6em' },
+          { opacity: 1, y: 0, letterSpacing: '0.4em', duration: 0.9, ease: 'power3.out' },
+          4.2)
+        // Headlines stagger in — slower stagger for clarity
+        .fromTo('[data-headline="1"]',
+          { opacity: 0, y: 48, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          5.0)
+        .fromTo('[data-headline="2"]',
+          { opacity: 0, y: 48, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          5.6)
+        .fromTo('[data-headline="3"]',
+          { opacity: 0, y: 48, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          6.2)
+        // Hold the full composition with subtle camera push
+        .to('#scene-1', { scale: 1.03, duration: 1.4, ease: 'sine.inOut' }, 6.6)
+        // Scene 1 exit — slower with blur
+        .to('#scene-1', { opacity: 0, filter: 'blur(8px)', duration: 0.8, ease: 'power2.in' }, 7.4);
+
+      // === SCENE 2: WEBSITE SHOWCASE (8 - 16.5s) — bigger, slower scroll ===
+      tl.set('#scene-2', { opacity: 1 }, 8.0)
+        .fromTo('#phoneFrame',
+          { opacity: 0, x: 500, rotation: 10, filter: 'blur(8px)' },
+          { opacity: 1, x: 0, rotation: -3, filter: 'blur(0px)', duration: 1.4, ease: 'expo.out' },
+          8.0)
+        // Slow camera push-in on phone during the scene
+        .to('#phoneFrame', { scale: 1.06, duration: 7, ease: 'sine.inOut' }, 9.2)
+        // Slower scroll inside phone (more cinematic, less frantic)
+        .to('#siteContent',
+          { y: -1400, duration: 7, ease: 'power1.inOut' },
+          9.2)
+        // Two callouts (was three), each holding longer
+        .fromTo('.callout-1',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' },
+          9.6)
+        .to('.callout-1',
+          { opacity: 0, y: -12, filter: 'blur(4px)', duration: 0.6, ease: 'power2.in' },
+          12.0)
+
+        .fromTo('.callout-2',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' },
+          12.6)
+        .to('.callout-2',
+          { opacity: 0, y: -12, filter: 'blur(4px)', duration: 0.6, ease: 'power2.in' },
+          14.6)
+
+        .fromTo('.callout-3',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, ease: 'power3.out' },
+          14.8)
+
+        // Scene 2 exit with blur
+        .to('#scene-2', { opacity: 0, filter: 'blur(10px)', duration: 0.9, ease: 'power2.in' }, 16.2);
+
+      // === SCENE 3: HOW WE WORK (17 - 25s) — slower step reveal ===
+      tl.set('#scene-3', { opacity: 1 }, 17.0)
+        .fromTo('.scene-3 .scene-tag',
+          { opacity: 0, y: 12, letterSpacing: '0.6em' },
+          { opacity: 1, y: 0, letterSpacing: '0.4em', duration: 0.7, ease: 'power3.out' },
+          17.0)
+        .fromTo('.scene-3 .scene-title',
+          { opacity: 0, y: 28, filter: 'blur(8px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'expo.out' },
+          17.4)
+        // Code snippets — appear slower, more ambient
+        .to(['#code-1','#code-2','#code-3'],
+          { opacity: 1, duration: 1.4, stagger: 0.3, ease: 'power2.out' },
+          17.8)
+        // Steps appear with 0.8s gaps (was 0.6s), each more deliberate
+        .fromTo('[data-step="1"]',
+          { opacity: 0, x: -20, filter: 'blur(4px)' },
+          { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' },
+          18.4)
+        .to('[data-step="1"] .step-glow', { opacity: 1, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 18.7)
+
+        .fromTo('[data-step="2"]',
+          { opacity: 0, x: -20, filter: 'blur(4px)' },
+          { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' },
+          19.2)
+        .to('[data-step="2"] .step-glow', { opacity: 1, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 19.5)
+
+        .fromTo('[data-step="3"]',
+          { opacity: 0, x: -20, filter: 'blur(4px)' },
+          { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' },
+          20.0)
+        .to('[data-step="3"] .step-glow', { opacity: 1, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 20.3)
+
+        .fromTo('[data-step="4"]',
+          { opacity: 0, x: -20, filter: 'blur(4px)' },
+          { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' },
+          20.8)
+        .to('[data-step="4"] .step-glow', { opacity: 1, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 21.1)
+
+        .fromTo('[data-step="5"]',
+          { opacity: 0, x: -20, filter: 'blur(4px)' },
+          { opacity: 1, x: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' },
+          21.6)
+        // Final step gets a brighter, longer glow
+        .to('[data-step="5"] .step-glow', { opacity: 1, duration: 1.0, ease: 'power2.out' }, 22.0)
+
+        // Subtle camera push during the hold
+        .to('#scene-3', { scale: 1.03, duration: 2.5, ease: 'sine.inOut' }, 22.5)
+        // Exit
+        .to('#scene-3', { opacity: 0, filter: 'blur(8px)', duration: 0.9, ease: 'power2.in' }, 24.2);
+
+      // === SCENE 4: PREMIUM (25 - 32s) — bigger, more punchy ===
+      tl.set('#scene-4', { opacity: 1 }, 25.0)
+        .fromTo('[data-word="1"]',
+          { opacity: 0, scale: 1.4, filter: 'blur(12px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'expo.out' },
+          25.0)
+        .to('[data-word="1"]',
+          { opacity: 0, scale: 0.82, filter: 'blur(8px)', duration: 0.5, ease: 'power2.in' },
+          26.5)
+
+        .fromTo('[data-word="2"]',
+          { opacity: 0, scale: 1.4, filter: 'blur(12px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'expo.out' },
+          27.0)
+        .to('[data-word="2"]',
+          { opacity: 0, scale: 0.82, filter: 'blur(8px)', duration: 0.5, ease: 'power2.in' },
+          28.5)
+
+        .fromTo('[data-word="3"]',
+          { opacity: 0, scale: 1.4, filter: 'blur(12px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.7, ease: 'expo.out' },
+          29.0)
+        .to('[data-word="3"]',
+          { opacity: 0, scale: 0.82, filter: 'blur(8px)', duration: 0.5, ease: 'power2.in' },
+          30.4)
+
+        .fromTo('[data-word="4"]',
+          { opacity: 0, scale: 1.4, filter: 'blur(12px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.8, ease: 'expo.out' },
+          30.9)
+        // Last word holds with subtle scale
+        .to('[data-word="4"]', { scale: 1.04, duration: 1.0, ease: 'sine.inOut' }, 31.8)
+        .to('#scene-4', { opacity: 0, filter: 'blur(8px)', duration: 0.8, ease: 'power2.in' }, 32.0);
+
+      // === SCENE 5: IDENTITY (33 - 38s) — calmer, atmospheric ===
+      tl.set('#scene-5', { opacity: 1 }, 33.0)
+        .fromTo('#gridBg',
+          { opacity: 0 },
+          { opacity: 1, duration: 1.2, ease: 'power2.out' },
+          33.0)
+        .fromTo('.scene-5 .particle',
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power2.out' },
+          33.3)
+        // Slow drift on particles during the scene
+        .to('.scene-5 .particle',
+          { y: -30, opacity: 0.6, duration: 4, ease: 'sine.inOut' },
+          34.0)
+        .fromTo('.id-line-1',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: 'power2.out' },
+          33.6)
+        .fromTo('.id-line-2',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          34.0)
+        .fromTo('.id-line-3',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          35.0)
+        .fromTo('.id-line-4',
+          { opacity: 0, y: 24, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          36.0)
+        // Subtle camera push during hold
+        .to('#scene-5', { scale: 1.03, duration: 1.5, ease: 'sine.inOut' }, 36.5)
+        .to('#scene-5', { opacity: 0, filter: 'blur(10px)', duration: 0.9, ease: 'power2.in' }, 37.3);
+
+      // === SCENE 6: FINAL (38 - 49s) — long dramatic close ===
+      tl.set('#scene-6', { opacity: 1 }, 38.0)
+        // "Your business deserves better..." — slower, more dramatic entrance
+        .fromTo('#deserves',
+          { opacity: 0, y: 40, filter: 'blur(12px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4, ease: 'expo.out' },
+          38.0)
+        // Hold (3.5s) with subtle scale push
+        .to('#deserves', { scale: 1.03, duration: 3, ease: 'sine.inOut' }, 39.5)
+        // Exit upward with blur
+        .to('#deserves',
+          { opacity: 0, y: -50, filter: 'blur(10px)', duration: 1.0, ease: 'power2.in' },
+          42.0)
+
+        // Glow rises
+        .fromTo('#finalGlow',
+          { opacity: 0, scale: 0.5 },
+          { opacity: 1, scale: 1, duration: 1.6, ease: 'power2.out' },
+          42.3)
+
+        // Logo lockup — slow scale up
+        .fromTo('#finalLogo',
+          { opacity: 0, scale: 0.8, filter: 'blur(10px)' },
+          { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out' },
+          42.8)
+        // Subtle scale on logo while it holds
+        .to('#finalLogo', { scale: 1.03, duration: 4, ease: 'sine.inOut' }, 44.5)
+
+        // CTA appears
+        .fromTo('#ctaMain',
+          { opacity: 0, y: 28, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          44.4)
+        .fromTo('#ctaUrl',
+          { opacity: 0, y: 20, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' },
+          45.0)
+
+        // Long final hold — let it breathe before the fade
+        .to('#scene-6', { opacity: 0, duration: 1.4, ease: 'power2.in' }, 47.5);
+
+      // Letterbox retracts slowly at very end
       tl.to(['#letterboxTop', '#letterboxBottom'],
-        { height: 0, duration: 0.8, ease: 'power3.in' }, 41);
+        { height: 0, duration: 1.4, ease: 'power3.in' }, 47.5);
 
       return tl;
     }
