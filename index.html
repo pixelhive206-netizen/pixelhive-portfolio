@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pixelhive Studio — Hand-coded websites that load fast, look sharp.</title>
-  <meta name="description" content="A creative web studio based in India, building hand-coded sites for businesses, non-profits, and creators. Delivered in 2 weeks. Yours forever." />
+  <meta name="description" content="A creative web studio building hand-coded sites for ambitious businesses, restaurants, clinics, and creators worldwide. Delivered in 2 weeks. Based in India." />
   <link rel="canonical" href="https://pixelhivestudio.in/" />
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23fbbf24'><path d='M50 7 L87 28 L87 72 L50 93 L13 72 L13 28 Z' fill='none' stroke='%23fbbf24' stroke-width='8'/><rect x='28' y='28' width='14' height='14' rx='2'/><rect x='42' y='44' width='14' height='14' rx='2'/><rect x='30' y='60' width='14' height='14' rx='2'/></svg>" />
 
   <meta property="og:title" content="Pixelhive Studio — Hand-coded websites that load fast, look sharp." />
-  <meta property="og:description" content="A creative web studio based in India, building hand-coded sites for businesses, non-profits, and creators. Delivered in 2 weeks." />
+  <meta property="og:description" content="A creative web studio building hand-coded sites for ambitious businesses, restaurants, clinics, and creators worldwide. Delivered in 2 weeks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pixelhivestudio.in/" />
   <meta property="og:image" content="https://pixelhivestudio.in/og-image.svg" />
@@ -19,7 +19,7 @@
   <meta property="og:image:alt" content="Pixelhive Studio — Websites that load fast, look sharp, and convert." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Pixelhive Studio — Hand-coded websites that load fast, look sharp." />
-  <meta name="twitter:description" content="A creative web studio based in India, building hand-coded sites for businesses, non-profits, and creators." />
+  <meta name="twitter:description" content="A creative web studio building hand-coded sites for ambitious businesses, restaurants, clinics, and creators worldwide." />
   <meta name="twitter:image" content="https://pixelhivestudio.in/og-image.svg" />
   <meta name="theme-color" content="#0b0f14" />
 
@@ -40,13 +40,13 @@
         "@type": "ProfessionalService",
         "@id": "https://pixelhivestudio.in/#studio",
         "name": "Pixelhive Studio",
-        "description": "A creative web studio based in India, building hand-coded websites for businesses, non-profits, restaurants, and creators.",
+        "description": "A creative web studio building hand-coded websites for ambitious businesses, restaurants, clinics, and creators worldwide. Based in India.",
         "url": "https://pixelhivestudio.in/",
         "email": "pixelhive206@gmail.com",
         "telephone": "+91-82204-04529",
         "address": { "@type": "PostalAddress", "addressCountry": "IN", "addressRegion": "Tamil Nadu" },
-        "areaServed": "IN",
-        "priceRange": "₹₹",
+        "areaServed": { "@type": "Place", "name": "Worldwide" },
+        "priceRange": "$$",
         "serviceType": ["Web design", "Web development", "Landing pages", "SEO setup"],
         "sameAs": [
           "https://instagram.com/pixelhive__studio"
@@ -1170,11 +1170,19 @@
     .price-blurb { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin-bottom: 28px; min-height: 3em; }
     .price-amount {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 36px; font-weight: 500;
-      letter-spacing: -0.03em; line-height: 1;
-      color: var(--accent);
+      font-size: 22px; font-weight: 400;
+      letter-spacing: -0.01em; line-height: 1.1;
+      color: var(--muted);
       margin-bottom: 4px;
     }
+    .price-amount em {
+      font-style: normal; font-weight: 600;
+      font-size: 44px;
+      letter-spacing: -0.03em;
+      color: var(--ink-bright);
+      margin-left: 4px;
+    }
+    .price-card.featured .price-amount em { color: var(--accent); }
     .price-from {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px; color: var(--muted);
@@ -1741,7 +1749,7 @@
   <section class="hero" id="hero">
     <div class="hero-meta">
       <span class="status">Available · Booking 2026</span>
-      <span>Tamil Nadu, IN · IST</span>
+      <span>Worldwide · Replies in 24h</span>
     </div>
 
     <div class="hero-headline">
@@ -1753,7 +1761,7 @@
     </div>
 
     <div class="hero-footer">
-      <p class="lede">A creative web studio based in India, building hand-coded sites for businesses, non-profits, and creators. Delivered in 2 weeks. Yours forever.</p>
+      <p class="lede">A creative web studio building hand-coded sites for ambitious businesses, restaurants, clinics, and creators worldwide. Based in India. Delivered in 2 weeks. Yours forever.</p>
       <div class="hero-actions">
         <a href="#work" class="hero-cta" data-cursor>See the work →</a>
         <a href="#contact" class="hero-cta secondary" data-cursor>Start a project</a>
@@ -2076,13 +2084,13 @@
     <div class="pricing-grid section-anim">
       <div class="price-card">
         <div class="price-name">Starter</div>
-        <div class="price-blurb">A polished single-page site for a growing brand or personal project.</div>
-        <div class="price-amount">Get a quote</div>
-        <div class="price-from">Perfect for a quick launch</div>
+        <div class="price-blurb">A polished single-page site for a small business, brand, or personal project.</div>
+        <div class="price-amount">From <em>$1,500</em></div>
+        <div class="price-from">Delivered in 7 days</div>
         <ul class="price-features">
           <li>1-page landing site</li>
           <li>Mobile-responsive design</li>
-          <li>Contact form (mailto)</li>
+          <li>Contact form + email setup</li>
           <li>Basic SEO setup</li>
           <li>Delivered in 7 days</li>
         </ul>
@@ -2092,9 +2100,9 @@
       <div class="price-card featured">
         <div class="price-tag">Most popular</div>
         <div class="price-name">Standard</div>
-        <div class="price-blurb">A full multi-page site for businesses, restaurants, and growing brands.</div>
-        <div class="price-amount">Get a quote</div>
-        <div class="price-from">Our most popular package</div>
+        <div class="price-blurb">A full multi-page site for businesses, restaurants, clinics, and growing brands.</div>
+        <div class="price-amount">From <em>$3,500</em></div>
+        <div class="price-from">Delivered in 2 weeks</div>
         <ul class="price-features">
           <li>Up to 5 pages</li>
           <li>Custom design + mockups</li>
@@ -2110,13 +2118,13 @@
       <div class="price-card">
         <div class="price-name">Custom</div>
         <div class="price-blurb">For larger sites, SaaS landing pages, or anything more ambitious.</div>
-        <div class="price-amount">Let's talk</div>
-        <div class="price-from">Tailored to your project</div>
+        <div class="price-amount">From <em>$5,000</em></div>
+        <div class="price-from">Scoped to your project</div>
         <ul class="price-features">
           <li>Unlimited pages</li>
-          <li>Custom features & integrations</li>
+          <li>Custom features &amp; integrations</li>
           <li>Bespoke design system</li>
-          <li>Performance & SEO audit</li>
+          <li>Performance &amp; SEO audit</li>
           <li>Priority support</li>
           <li>Flexible timeline</li>
         </ul>
@@ -2158,15 +2166,23 @@
       </details>
       <details class="faq-item">
         <summary>How do payments work?</summary>
-        <p>50% upfront to start the project, 50% on launch. Payments via UPI, bank transfer, or PayPal. You get a proper invoice for each payment.</p>
+        <p>50% upfront to start the project, 50% on launch. International clients pay in USD via <strong>Wise, PayPal, or bank transfer</strong>. Indian clients can also pay via UPI. You get a proper invoice for each payment.</p>
       </details>
       <details class="faq-item">
         <summary>Do you only build with HTML, CSS, and JavaScript?</summary>
         <p>That's our default — it makes sites fast, easy to host, and easy to maintain. For projects that need a CMS (so you can edit content yourself), we can also work with WordPress or headless options. Just ask.</p>
       </details>
       <details class="faq-item">
+        <summary>I'm not in India. Will the time difference be a problem?</summary>
+        <p>No. We work <strong>async-first</strong> — daily progress updates by email or short Loom video, so you always know what's happening without needing live meetings. For live calls, we have about a 4-hour overlap with UK / Europe (afternoons) and a 2-hour overlap with US Eastern (mornings). Most of our international clients prefer the async approach — fewer interruptions, more thoughtful work.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why work with an India-based studio?</summary>
+        <p>Same craft, fair price. A small US or UK agency would quote $8,000–$25,000 for the kind of work we ship for $3,500–$5,000. We pass the cost difference on to you, not because we cut corners, but because we're not paying San Francisco rent. Everything is hand-coded, fully owned by you after launch, and built to last.</p>
+      </details>
+      <details class="faq-item">
         <summary>Do you work with clients outside India?</summary>
-        <p>Yes — we work with clients globally over email and WhatsApp. We accept international payments via PayPal or bank transfer, and we'll match our working hours to overlap with yours where it helps.</p>
+        <p>Yes — we work with clients across the UK, US, Europe, Australia, and beyond. Communication is fully in English by email, WhatsApp, or video call. International payments via Wise, PayPal, or wire transfer.</p>
       </details>
       <details class="faq-item">
         <summary>Can you redesign or rebuild an existing site?</summary>
@@ -2194,7 +2210,7 @@
     <div class="top-meta">
       <span><span class="num">/</span> Contact · 010</span>
       <span class="live-time" id="liveTime">— : — : — IST</span>
-      <span>Tamil Nadu, IN</span>
+      <span>Working worldwide · Based in India</span>
     </div>
 
     <h2 class="section-anim">
